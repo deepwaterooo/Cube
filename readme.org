@@ -1,0 +1,5 @@
+* Cube
+- for Java course project. 
+- code doesn't compile yet, will work on it. 
+- As the starting point for the course project (to integrate gestures, music etc), & starting point for android opengl es. will need to fully understand the code. 
+- won't be able to work on it any more today (for including references), Will work on it on coming Monday. (ps: DorkyMonkey imgs was downloaded by classmates, but just one fits, the others don't. I like my previous colorful imgs.)
