@@ -9,20 +9,22 @@ public class Cube {
     public static final int TEXTURE_BUFFER = 1; 
     private float one = 1.0f; 
  
-    private float[] vertices = new float[] { -one, -one, one, one, -one, one, 
-                                             one, one, one, -one, one, one, -one, -one, -one, -one, one, -one, 
-                                             one, one, -one, one, -one, -one, -one, one, -one, -one, one, one, 
-                                             one, one, one, one, one, -one, -one, -one, -one, one, -one, -one, 
-                                             one, -one, one, -one, -one, one, one, -one, -one, one, one, -one, 
-                                             one, one, one, one, -one, one, -one, -one, -one, -one, -one, one, 
-                                             -one, one, one, -one, one, -one }; 
-    private float[] texCoords = new float[] { one, 0, 0, 0, 0, one, one, one, 
-                                              0, 0, 0, one, one, one, one, 0, one, one, one, 0, 0, 0, 0, one, 0, 
-                                              one, one, one, one, 0, 0, 0, 0, 0, 0, one, one, one, one, 0, one, 
-                                              0, 0, 0, 0, one, one, one }; 
-    private byte[] indices = new byte[] { 0, 1, 3, 2, 4, 5, 7, 6, 8, 9, 11, 10, 
-                                          12, 13, 15, 14, 16, 17, 19, 18, 20, 21, 23, 22 }; 
-    public int surface = -1; 
+    private float[] vertices = new float[] { -one, -one, one, one, -one, one, one, one, one, 
+                                             -one, one, one, -one, -one, -one, -one, one, -one, 
+                                             one, one, -one, one, -one, -one, -one, one, -one,
+                                             -one, one, one, one, one, one, one, one, -one,
+                                              -one, -one, -one, one, -one, -one, one, -one, one,
+                                              -one, -one, one, one, -one, -one, one, one, -one, 
+                                             one, one, one, one, -one, one, -one, -one, -one,
+                                             -one, -one, one, -one, one, one, -one, one, -one }; 
+    private float[] texCoords = new float[] { one, 0, 0, 0, 0, one, one, one, 0,
+                                              0, 0, one, one, one, one, 0, one, one,
+                                              one, 0, 0, 0, 0, one, 0, one, one,
+                                              one, one, 0, 0, 0, 0, 0, 0, one,
+                                              one, one, one, 0, one, 0, 0, 0, 0,
+                                              one, one, one }; 
+    private byte[] indices = new byte[] { 0, 1, 3, 2, 4, 5, 7, 6, 8, 9, 11, 10, 12, 13, 15, 14, 16, 17, 19, 18, 20, 21, 23, 22 }; 
+    public int surface = -1; // 0-5
  
     public FloatBuffer getCoordinate(int coord_id) { 
         switch (coord_id) { 
@@ -35,10 +37,6 @@ public class Cube {
         } 
     } 
  
-    public ByteBuffer getIndices() { 
-        return ByteBuffer.wrap(indices); 
-    } 
- 
     public FloatBuffer getDirectBuffer(float[] buffer) { 
         ByteBuffer bb = ByteBuffer.allocateDirect(buffer.length * 4); 
         bb.order(ByteOrder.nativeOrder()); 
@@ -48,6 +46,7 @@ public class Cube {
         return directBuffer; 
     } 
  
+    public ByteBuffer getIndices() { return ByteBuffer.wrap(indices); } 
     public Vector3f getSphereCenter() { return new Vector3f(0, 0, 0);  } 
     public float getSphereRadius() { return 1.732051f;  } 
 
@@ -70,7 +69,7 @@ public class Cube {
                     v2 = getVector3f(indices[i * 4 + j + 1]); 
                 } 
  
-                if (ray.intersectTriangle(v0, v1, v2, location)) { 
+                if (ray.intersectTriangle(v0, v1, v2, location)) { // Ray
                     if (!bFound) { 
                         bFound = true; 
                         closeDis = location.w; 
@@ -94,7 +93,6 @@ public class Cube {
     } 
  
     private Vector3f getVector3f(int start) { 
-        return new Vector3f(vertices[3 * start], vertices[3 * start + 1], 
-                            vertices[3 * start + 2]); 
+        return new Vector3f(vertices[3 * start], vertices[3 * start + 1], vertices[3 * start + 2]); 
     } 
 } 

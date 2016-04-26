@@ -23,8 +23,9 @@ public class RayPickRenderer implements Renderer {
     public float mfAngleX = 0.0f; 
     public float mfAngleY = 0.0f; 
     public float gesDistance = 0.0f; 
- 
-    private Vector3f mvEye = new Vector3f(0, 0, 7f), mvCenter = new Vector3f(0, 0, 0), mvUp = new Vector3f(0, 1, 0); 
+    private Vector3f mvEye = new Vector3f(0, 0, 7f);
+    private Vector3f mvCenter = new Vector3f(0, 0, 0);
+    private Vector3f mvUp = new Vector3f(0, 1, 0); 
     private OnSurfacePickedListener onSurfacePickedListener; 
 
     public RayPickRenderer(Context context) { 
@@ -34,13 +35,13 @@ public class RayPickRenderer implements Renderer {
  
     @Override 
     public void onDrawFrame(GL10 gl) { 
- 
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT); 
         gl.glLoadIdentity(); 
  
         setUpCamera(gl); 
  
-        gl.glPushMatrix();  { 
+        gl.glPushMatrix();
+        { 
             drawModel(gl); 
         } 
         gl.glPopMatrix(); 
@@ -51,7 +52,8 @@ public class RayPickRenderer implements Renderer {
         // } 
         // gl.glPopMatrix(); 
  
-        gl.glPushMatrix();  { 
+        gl.glPushMatrix();
+        { 
             drawPickedTriangle(gl); 
         } 
         gl.glPopMatrix(); 
@@ -62,8 +64,7 @@ public class RayPickRenderer implements Renderer {
     private void setUpCamera(GL10 gl) { 
         gl.glMatrixMode(GL10.GL_MODELVIEW); 
         gl.glLoadIdentity(); 
-        // GLU.gluLookAt(gl, mfEyeX, mfEyeY, mfEyeZ, mfCenterX, mfCenterY, 
-        // mfCenterZ, 0, 1, 0);
+        // GLU.gluLookAt(gl, mfEyeX, mfEyeY, mfEyeZ, mfCenterX, mfCenterY, mfCenterZ, 0, 1, 0);
         Matrix4f.gluLookAt(mvEye, mvCenter, mvUp, AppConfig.gMatView); 
         gl.glLoadMatrixf(AppConfig.gMatView.asFloatBuffer()); 
     } 
@@ -74,11 +75,19 @@ public class RayPickRenderer implements Renderer {
     private Matrix4f matRot = new Matrix4f(); 
     private Vector3f point; 
  
-    private void drawModel(GL10 gl) { 
+    private Vector3f transformedSphereCenter = new Vector3f(); 
+    private Ray transformedRay = new Ray(); 
+    private Matrix4f matInvertModel = new Matrix4f(); 
+    private Vector3f[] mpTriangle = {
+        new Vector3f(),
+        new Vector3f(), 
+        new Vector3f()
+    }; 
+    private FloatBuffer mBufPickedTriangle = IBufferFactory.newFloatBuffer(3 * 3); 
  
+    private void drawModel(GL10 gl) { 
         // gl.glRotatef(mfAngleX, 1, 0, 0);
         // gl.glRotatef(mfAngleY, 0, 1, 0);
- 
         // matRotX.setIdentity(); 
         // matRotY.setIdentity(); 
         // matRotX.rotX((float) (mfAngleX * Math.PI / 180)); 
@@ -87,7 +96,6 @@ public class RayPickRenderer implements Renderer {
         // AppConfig.gMatModel.mul(matRotY); 
  
         matRot.setIdentity(); 
- 
         point = new Vector3f(mfAngleX, mfAngleY, 0); 
  
         try { 
@@ -96,36 +104,24 @@ public class RayPickRenderer implements Renderer {
             matInvertModel.transform(point, point); 
  
             float d = Vector3f.distance(new Vector3f(), point); 
- 
             if (Math.abs(d - gesDistance) <= 1E-4) { 
- 
-                matRot.glRotatef((float) (gesDistance * Math.PI / 180), point.x 
-                                 / d, point.y / d, point.z / d); 
- 
-                if (0 != gesDistance) { 
+                matRot.glRotatef((float) (gesDistance * Math.PI / 180), point.x / d, point.y / d, point.z / d); 
+                if (0 != gesDistance) 
                     AppConfig.gMatModel.mul(matRot); 
-                } 
             } 
         } catch (Exception e) { 
         } 
         gesDistance = 0; 
- 
         gl.glMultMatrixf(AppConfig.gMatModel.asFloatBuffer()); 
- 
         gl.glColor4f(1.0f, 1.0f, 1.0f, 0.0f); 
- 
         gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); 
- 
         gl.glEnable(GL10.GL_TEXTURE_2D); 
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY); 
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY); 
  
-        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, 
-                           cube.getCoordinate(Cube.VERTEX_BUFFER)); 
-        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, 
-                             cube.getCoordinate(Cube.TEXTURE_BUFFER)); 
-        gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 24, GL10.GL_UNSIGNED_BYTE, 
-                          cube.getIndices()); 
+        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, cube.getCoordinate(Cube.VERTEX_BUFFER)); 
+        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, cube.getCoordinate(Cube.TEXTURE_BUFFER)); 
+        gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 24, GL10.GL_UNSIGNED_BYTE, cube.getIndices()); 
  
         gl.glDisable(GL10.GL_TEXTURE_2D); 
         gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY); 
@@ -134,13 +130,6 @@ public class RayPickRenderer implements Renderer {
         drawCoordinateSystem(gl); 
     } 
  
-    private Vector3f transformedSphereCenter = new Vector3f(); 
-    private Ray transformedRay = new Ray(); 
-    private Matrix4f matInvertModel = new Matrix4f(); 
-    private Vector3f[] mpTriangle = { new Vector3f(), new Vector3f(), 
-                                      new Vector3f() }; 
-    private FloatBuffer mBufPickedTriangle = IBufferFactory.newFloatBuffer(3 * 3); 
- 
     private void updatePick() { 
         if (!AppConfig.gbNeedPick) { 
             return; 
@@ -148,7 +137,7 @@ public class RayPickRenderer implements Renderer {
         AppConfig.gbNeedPick = false; 
         PickFactory.update(AppConfig.gScreenX, AppConfig.gScreenY); 
         Ray ray = PickFactory.getPickRay(); 
-        AppConfig.gMatModel.transform(cube.getSphereCenter(), transformedSphereCenter); 
+        AppConfig.gMatModel.transform(cube.getSphereCenter(), transformedSphereCenter); // transformation
         cube.surface = -1; 
  
         if (ray.intersectSphere(transformedSphereCenter, cube.getSphereRadius())) { 
@@ -158,15 +147,12 @@ public class RayPickRenderer implements Renderer {
             if (cube.intersect(transformedRay, mpTriangle)) { 
                 AppConfig.gbTrianglePicked = true; 
                 Log.i("the surface touched", "mark: " + cube.surface); 
-                if (null != onSurfacePickedListener) { 
+                if (null != onSurfacePickedListener) 
                     onSurfacePickedListener.onSurfacePicked(cube.surface); 
-                } 
                 mBufPickedTriangle.clear(); 
                 for (int i = 0; i < 3; i++) { 
-                    IBufferFactory 
-                        .fillBuffer(mBufPickedTriangle, mpTriangle[i]); 
-                    // Log.i("point: " + i, mpTriangle[i].x + "\t" + mpTriangle[i].y 
-                    // + "\t" + mpTriangle[i].z); 
+                    IBufferFactory.fillBuffer(mBufPickedTriangle, mpTriangle[i]); 
+                    //Log.i("point: " + i, mpTriangle[i].x + "\t" + mpTriangle[i].y + "\t" + mpTriangle[i].z); 
                 } 
                 mBufPickedTriangle.position(0); 
             } 
@@ -176,11 +162,11 @@ public class RayPickRenderer implements Renderer {
     } 
  
     private void drawPickedTriangle(GL10 gl) { 
-        if (!AppConfig.gbTrianglePicked) { 
+        if (!AppConfig.gbTrianglePicked) 
             return; 
-        } 
         gl.glMultMatrixf(AppConfig.gMatModel.asFloatBuffer()); 
-        gl.glColor4f(1.0f, 0.0f, 0.0f, 0.7f); 
+        //gl.glColor4f(1.0f, 0.0f, 0.0f, 0.7f);
+        gl.glColor4f(1.0f, 1.0f, 0.0f, 0.7f); 
         gl.glEnable(GL10.GL_BLEND); 
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA); 
         gl.glDisable(GL10.GL_DEPTH_TEST); 
@@ -209,7 +195,7 @@ public class RayPickRenderer implements Renderer {
         fb.clear(); 
         fb.put(new float[] { 0, 0, 0, 0, 1.4f, 0 }); 
         fb.position(0); 
-        gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+        gl.glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, fb); 
         gl.glDrawArrays(GL10.GL_LINES, 0, 2); 
  
@@ -228,10 +214,10 @@ public class RayPickRenderer implements Renderer {
     @Override 
     public void onSurfaceCreated(GL10 gl, EGLConfig config) { 
         gl.glEnable(GL10.GL_DITHER); 
- 
         gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST); 
         // gl.glClearColor(0, 0, 0, 0); 
-        gl.glClearColor(0.5f, 0.5f, 0.5f, 1); 
+        gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+        //gl.glClearColor(1.0f, 1.0f, 0.0f, 0.0f); // yellow, doesn't work as I wished
         gl.glShadeModel(GL10.GL_SMOOTH); 
  
         gl.glEnable(GL10.GL_CULL_FACE); 
@@ -241,7 +227,6 @@ public class RayPickRenderer implements Renderer {
         gl.glDisable(GL10.GL_BLEND); 
  
         loadTexture(gl); 
- 
         AppConfig.gMatModel.setIdentity(); 
     } 
  
@@ -273,18 +258,14 @@ public class RayPickRenderer implements Renderer {
             texture = intBuffer.get(); 
             gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); 
  
-            InputStream is = mContext.getResources().openRawResource( 
-                                                                     R.drawable.snow_leopard); 
+            InputStream is = mContext.getResources().openRawResource(R.drawable.snow_leopard); 
             Bitmap mBitmap = BitmapFactory.decodeStream(is); 
  
             GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap, 0); 
  
-            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, 
-                               GL10.GL_LINEAR); 
-            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, 
-                               GL10.GL_LINEAR); 
- 
-            is.close(); 
+            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR); 
+            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR); 
+             is.close(); 
         } catch (IOException e) { 
             // TODO Auto-generated catch block 
             e.printStackTrace(); 
@@ -294,5 +275,4 @@ public class RayPickRenderer implements Renderer {
     public void setOnSurfacePickedListener(OnSurfacePickedListener onSurfacePickedListener) { 
         this.onSurfacePickedListener = onSurfacePickedListener; 
     } 
- 
 } 

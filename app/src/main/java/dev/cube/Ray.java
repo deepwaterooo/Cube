@@ -62,8 +62,7 @@ public class Ray {
 	private static final float MAX_ABSOLUTE_ERROR = 0.000001f;
 
 	private static Vector3f tmp0 = new Vector3f(), tmp1 = new Vector3f(),
-			tmp2 = new Vector3f(), tmp3 = new Vector3f(),
-			tmp4 = new Vector3f();
+        tmp2 = new Vector3f(), tmp3 = new Vector3f(), tmp4 = new Vector3f();
 
 	private boolean intersect(Vector3f v0, Vector3f v1, Vector3f v2, Vector4f loc) {
 		Vector3f diff = tmp0;
@@ -118,13 +117,9 @@ public class Ray {
 		diff.sub(mvOrigin, center);
 		float r2 = radius * radius;
 		float a = diff.dot(diff) - r2;
-		
 		if (a <= 0.0f) { return true; 	}
-
 		float b = mvDirection.dot(diff);
-		
 		if (b >= 0.0f) { return false; 	}
-
 		return b * b >= a;
 	}
 }

@@ -16,7 +16,6 @@ import android.graphics.BitmapFactory;
 
 public class MyGLSurfaceView extends GLSurfaceView { 
     // private final float TOUCH_SCALE_FACTOR = 180.0f / 480; 
-
     private RayPickRenderer mRenderer; 
     private float mPreviousX, mPreviousY; 
  
@@ -41,7 +40,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
         AppConfig.setTouchPosition(x, y); 
         switch (e.getAction()) { 
         case MotionEvent.ACTION_MOVE: 
- 
             float dx = y - mPreviousY; 
             float dy = x - mPreviousX; 
             float d = (float) (Math.sqrt(dx * dx + dy * dy)); 

@@ -12,7 +12,6 @@ import android.content.Context;
 
 public class RayPickActivity extends Activity implements OnSurfacePickedListener { 
     private GLSurfaceView mGLSurfaceView; 
- 
     @Override 
     public void onCreate(Bundle savedInstanceState) { 
         super.onCreate(savedInstanceState); 
@@ -38,8 +37,7 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
     private Handler myHandler = new Handler() { 
             @Override 
             public void handleMessage(Message msg) { 
-                Toast.makeText(RayPickActivity.this, "selected" + msg.what + "surface", 
-                               Toast.LENGTH_SHORT).show(); 
+                Toast.makeText(RayPickActivity.this, "selected" + msg.what + "surface", Toast.LENGTH_SHORT).show(); 
             } 
         }; 
  
@@ -47,5 +45,4 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
     public void onSurfacePicked(int which) { 
         myHandler.sendEmptyMessage(which); 
     } 
- 
 } 

@@ -169,28 +169,6 @@ public class Matrix4f {
 		this.m33 = 1;
 	}
 
-	/*
-	 * 
-	 * s 0 0 0
-	 * 
-	 * 0 s 0 0
-	 * 
-	 * 0 0 s 0
-	 * 
-	 * 0 0 0 1
-	 */
-
-	/*
-	 * 
-	 * 1 0 0 0
-	 * 
-	 * 0 1 0 0
-	 * 
-	 * 0 0 1 0
-	 * 
-	 * dx dy dz 1
-	 */
-
 	public final void set(Matrix4f m1) {
 		this.m00 = m1.m00;
 		this.m01 = m1.m01;
