@@ -13,13 +13,13 @@ public class Ray {
 		Vector3f v1 = Vector3f.TEMP1;
 		v0.set(mvOrigin);
 		v1.set(mvOrigin);
-		v1.add(mvDirection);
+		v1.add(mvDirection); // add before transformation
 
-		matrix.transform(v0, v0);
-		matrix.transform(v1, v1);
+		matrix.transform(v0, v0); // transformation for the two points, bgn end
+		matrix.transform(v1, v1); 
 
 		out.mvOrigin.set(v0);
-		v1.sub(v0);
+		v1.sub(v0);          // sub after transformation
 		v1.normalize();
 		out.mvDirection.set(v1);
 	}
@@ -60,11 +60,14 @@ public class Ray {
 	}
 
 	private static final float MAX_ABSOLUTE_ERROR = 0.000001f;
+	private static Vector3f
+        tmp0 = new Vector3f(),
+        tmp1 = new Vector3f(),
+        tmp2 = new Vector3f(),
+        tmp3 = new Vector3f(),
+        tmp4 = new Vector3f();
 
-	private static Vector3f tmp0 = new Vector3f(), tmp1 = new Vector3f(),
-        tmp2 = new Vector3f(), tmp3 = new Vector3f(), tmp4 = new Vector3f();
-
-	private boolean intersect(Vector3f v0, Vector3f v1, Vector3f v2, Vector4f loc) {
+	private boolean intersect(Vector3f v0, Vector3f v1, Vector3f v2, Vector4f loc) { // got lost here
 		Vector3f diff = tmp0;
 		Vector3f edge1 = tmp1;
 		Vector3f edge2 = tmp2;

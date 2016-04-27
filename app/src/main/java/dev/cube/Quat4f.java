@@ -5,34 +5,30 @@ public class Quat4f {
 
 	/**
 	 * convert euler angle to Quat4f
-	 * 
 	 * @param euler
 	 */
 	public final void set(Vector3f euler) {
 		float angle = 0.0f;
-		float sr, sp, sy, cr, cp, cy;
-
+        float sx, sy, sz, cx, cy, cz;      // if anything went wrong, check here if I subsititute wrong
 		// rescale the inputs to 1/2 angle
 		angle = euler.z * 0.5f;
+		sz = (float) Math.sin(angle);
+		cz = (float) Math.cos(angle);
+		angle = euler.y * 0.5f;
 		sy = (float) Math.sin(angle);
 		cy = (float) Math.cos(angle);
-		angle = euler.y * 0.5f;
-		sp = (float) Math.sin(angle);
-		cp = (float) Math.cos(angle);
 		angle = euler.x * 0.5f;
-		sr = (float) Math.sin(angle);
-		cr = (float) Math.cos(angle);
-
-		x = sr * cp * cy - cr * sp * sy; // X
-		y = cr * sp * cy + sr * cp * sy; // Y
-		z = cr * cp * sy - sr * sp * cy; // Z
-		w = cr * cp * cy + sr * sp * sy; // W
+		sx = (float) Math.sin(angle);
+		cx = (float) Math.cos(angle);
+		x = sx * cy * cz - cx * sy * sz; // X 
+		y = cx * sy * cz + sx * cy * sz; // Y 
+		z = cx * cy * sz - sx * sy * cz; // Z
+		w = cx * cy * cz + sx * sy * sz; // W
 	}
 
 	/**
 	 * Performs a great circle interpolation between quaternion q1 and
 	 * quaternion q2 and places the result into this quaternion.
-	 * 
 	 * @param q1
 	 *            the first quaternion
 	 * @param q2
@@ -49,9 +45,7 @@ public class Quat4f {
 		// dot product of q1 and this is negative. Second case was not needed.
 
 		double dot, s1, s2, om, sinom;
-
 		dot = q2.x * q1.x + q2.y * q1.y + q2.z * q1.z + q2.w * q1.w;
-
 		if (dot < 0) {
 			// negate quaternion
 			q1.x = -q1.x;
@@ -60,13 +54,13 @@ public class Quat4f {
 			q1.w = -q1.w;
 			dot = -dot;
 		}
-
-		if ((1.0 - dot) > 0.000001f) {
-			om = Math.acos(dot);
-			sinom = Math.sin(om);
+        // page 153
+		if ((1.0 - dot) > 0.000001f) {  // dot < .9999f  non-linear P157
+			om = Math.acos(dot); // alpha half? (0, pi/2)
+			sinom = Math.sin(om);// (0, 1)
 			s1 = Math.sin((1.0 - alpha) * om) / sinom;
 			s2 = Math.sin(alpha * om) / sinom;
-		} else {
+		} else { // linear 
 			s1 = 1.0 - alpha;
 			s2 = alpha;
 		}

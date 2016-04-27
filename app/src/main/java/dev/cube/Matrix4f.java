@@ -9,116 +9,97 @@ public class Matrix4f {
 	public float m20, m21, m22, m23;
 	public float m30, m31, m32, m33;
 
-	public Matrix4f() { this.setIdentity(); 	}
-
-	public void setIdentity() {
-		this.m00 = 1.0f;
-		this.m01 = 0.0f;
-		this.m02 = 0.0f;
+	public Matrix4f() {
+        this.setIdentity();
+    }
+	public void setIdentity() { // 1 0 0 0
+		this.m00 = 1.0f;        // 0 1 0 0 
+		this.m01 = 0.0f;        // 0 0 1 0 
+		this.m02 = 0.0f;        // 0 0 0 1
 		this.m03 = 0.0f;
-
 		this.m10 = 0.0f;
 		this.m11 = 1.0f;
 		this.m12 = 0.0f;
 		this.m13 = 0.0f;
-
 		this.m20 = 0.0f;
 		this.m21 = 0.0f;
 		this.m22 = 1.0f;
 		this.m23 = 0.0f;
-
 		this.m30 = 0.0f;
 		this.m31 = 0.0f;
 		this.m32 = 0.0f;
 		this.m33 = 1.0f;
 	}
 
-	public final void setTranslation(Vector3f trans) {
+	public final void setTranslation(Vector3f trans) {  // translations
 		m03 = trans.x;
 		m13 = trans.y;
 		m23 = trans.z;
 	}
-
 	public final void setTranslation(float x, float y, float z) {
 		m03 = x;
 		m13 = y;
 		m23 = z;
 	}
 
-	public final void rotX(float angle) {
+	public final void rotX(float angle) { // R_x
 		float sinAngle, cosAngle;
 		sinAngle = (float) Math.sin((double) angle);
 		cosAngle = (float) Math.cos((double) angle);
-
-		this.m00 = 1;
-		this.m01 = 0;
-		this.m02 = 0;
-		this.m03 = 0;
-
+		this.m00 = 1;         // 1  0   0    0
+		this.m01 = 0;         // 0  cos -sin 0
+		this.m02 = 0;         // 0  sin cos  0
+		this.m03 = 0;         // 0  0   0    1
 		this.m10 = 0;
 		this.m11 = cosAngle;
 		this.m12 = -sinAngle;
 		this.m13 = 0;
-
 		this.m20 = 0;
 		this.m21 = sinAngle;
 		this.m22 = cosAngle;
 		this.m23 = 0;
-
 		this.m30 = 0;
 		this.m31 = 0;
 		this.m32 = 0;
 		this.m33 = 1;
 	}
-
-	public final void rotY(float angle) {
+	public final void rotY(float angle) { // R_y
 		float sinAngle, cosAngle;
-
 		sinAngle = (float) Math.sin((double) angle);
 		cosAngle = (float) Math.cos((double) angle);
-
-		this.m00 = cosAngle;
-		this.m01 = 0;
-		this.m02 = sinAngle;
-		this.m03 = 0;
-
+		this.m00 = cosAngle;  // cos  0   sin  0
+		this.m01 = 0;         // 0    1   0    0
+		this.m02 = sinAngle;  // -sin 0  cos   0
+		this.m03 = 0;         // 0    0   0    1
 		this.m10 = 0;
 		this.m11 = 1;
 		this.m12 = 0;
 		this.m13 = 0;
-
 		this.m20 = -sinAngle;
 		this.m21 = 0;
 		this.m22 = cosAngle;
 		this.m23 = 0;
-
 		this.m30 = 0;
 		this.m31 = 0;
 		this.m32 = 0;
 		this.m33 = 1;
 	}
-
-	public final void rotZ(float angle) {
+	public final void rotZ(float angle) { // R_z
 		float sinAngle, cosAngle;
-
 		sinAngle = (float) Math.sin((double) angle);
 		cosAngle = (float) Math.cos((double) angle);
-
-		this.m00 = cosAngle;
-		this.m01 = -sinAngle;
-		this.m02 = 0;
-		this.m03 = 0;
-
+		this.m00 = cosAngle;  // cos -sin 0  0
+		this.m01 = -sinAngle; // sin cos  0  0
+		this.m02 = 0;         // 0   0    1  0
+		this.m03 = 0;         // 0   0    0  1
 		this.m10 = sinAngle;
 		this.m11 = cosAngle;
 		this.m12 = 0;
 		this.m13 = 0;
-
 		this.m20 = 0;
 		this.m21 = 0;
 		this.m22 = 1;
 		this.m23 = 0;
-
 		this.m30 = 0;
 		this.m31 = 0;
 		this.m32 = 0;
@@ -126,21 +107,18 @@ public class Matrix4f {
 	}
 	
 	public final void scale(float x,float y,float z){
-		this.m00 = x;
-		this.m01 = 0;
-		this.m02 = 0;
-		this.m03 = 0;
-
+		this.m00 = x; // x 0 0 0
+		this.m01 = 0; // 0 y 0 0 
+		this.m02 = 0; // 0 0 z 0
+		this.m03 = 0; // 0 0 0 1
 		this.m10 = 0;
 		this.m11 = y;
 		this.m12 = 0;
 		this.m13 = 0;
-
 		this.m20 = 0;
 		this.m21 = 0;
 		this.m22 = z;
 		this.m23 = 0;
-
 		this.m30 = 0;
 		this.m31 = 0;
 		this.m32 = 0;
@@ -162,29 +140,26 @@ public class Matrix4f {
 		this.m20 = (1 - cosAngle) * x * z - sinAngle * y;
 		this.m21 = (1 - cosAngle) * y * z + sinAngle * x;
 		this.m22 = cosAngle + (1 - cosAngle) * z * z;
-		this.m23 = 0;
-		this.m30 = 0;
-		this.m31 = 0;
-		this.m32 = 0;
+		this.m23 = 0; // cos+(1-cos)xx   (1-cos)xy-z*sin (1-cos)xz+y*sin 0 
+		this.m30 = 0; // (1-cos)xy+z*sin cos+(1-cos)yy   (1-cos)yz-x*sin 0
+		this.m31 = 0; // (1-cos)xz-y*sin (1-cos)yz+x*sin cos+(1-cos)zz   0
+		this.m32 = 0; // 0               0               0               1
 		this.m33 = 1;
 	}
 
-	public final void set(Matrix4f m1) {
+	public final void set(Matrix4f m1) { // copy matrix to curr -> this
 		this.m00 = m1.m00;
 		this.m01 = m1.m01;
 		this.m02 = m1.m02;
 		this.m03 = m1.m03;
-
 		this.m10 = m1.m10;
 		this.m11 = m1.m11;
 		this.m12 = m1.m12;
 		this.m13 = m1.m13;
-
 		this.m20 = m1.m20;
 		this.m21 = m1.m21;
 		this.m22 = m1.m22;
 		this.m23 = m1.m23;
-
 		this.m30 = m1.m30;
 		this.m31 = m1.m31;
 		this.m32 = m1.m32;
@@ -192,45 +167,27 @@ public class Matrix4f {
 	}
 
 	public final void mul(Matrix4f m1) {
-		// vars
 		float m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33;
-
-		m00 = this.m00 * m1.m00 + this.m01 * m1.m10 + this.m02 * m1.m20
-				+ this.m03 * m1.m30;
-		m01 = this.m00 * m1.m01 + this.m01 * m1.m11 + this.m02 * m1.m21
-				+ this.m03 * m1.m31;
-		m02 = this.m00 * m1.m02 + this.m01 * m1.m12 + this.m02 * m1.m22
-				+ this.m03 * m1.m32;
-		m03 = this.m00 * m1.m03 + this.m01 * m1.m13 + this.m02 * m1.m23
-				+ this.m03 * m1.m33;
-
-		m10 = this.m10 * m1.m00 + this.m11 * m1.m10 + this.m12 * m1.m20
-				+ this.m13 * m1.m30;
-		m11 = this.m10 * m1.m01 + this.m11 * m1.m11 + this.m12 * m1.m21
-				+ this.m13 * m1.m31;
-		m12 = this.m10 * m1.m02 + this.m11 * m1.m12 + this.m12 * m1.m22
-				+ this.m13 * m1.m32;
-		m13 = this.m10 * m1.m03 + this.m11 * m1.m13 + this.m12 * m1.m23
-				+ this.m13 * m1.m33;
-
-		m20 = this.m20 * m1.m00 + this.m21 * m1.m10 + this.m22 * m1.m20
-				+ this.m23 * m1.m30;
-		m21 = this.m20 * m1.m01 + this.m21 * m1.m11 + this.m22 * m1.m21
-				+ this.m23 * m1.m31;
-		m22 = this.m20 * m1.m02 + this.m21 * m1.m12 + this.m22 * m1.m22
-				+ this.m23 * m1.m32;
-		m23 = this.m20 * m1.m03 + this.m21 * m1.m13 + this.m22 * m1.m23
-				+ this.m23 * m1.m33;
-
-		m30 = this.m30 * m1.m00 + this.m31 * m1.m10 + this.m32 * m1.m20
-				+ this.m33 * m1.m30;
-		m31 = this.m30 * m1.m01 + this.m31 * m1.m11 + this.m32 * m1.m21
-				+ this.m33 * m1.m31;
-		m32 = this.m30 * m1.m02 + this.m31 * m1.m12 + this.m32 * m1.m22
-				+ this.m33 * m1.m32;
-		m33 = this.m30 * m1.m03 + this.m31 * m1.m13 + this.m32 * m1.m23
-				+ this.m33 * m1.m33;
-
+        // [ 00 01 02 03 ]  [ 00 01 02 03 ]
+        // [ 10 11 12 13 ]  [ 10 11 12 13 ]
+        // [ 20 21 22 23 ]  [ 20 21 22 23 ]
+        // [ 30 31 32 33 ]  [ 30 31 32 33 ]
+		m00 = this.m00 * m1.m00 + this.m01 * m1.m10 + this.m02 * m1.m20 + this.m03 * m1.m30;
+		m01 = this.m00 * m1.m01 + this.m01 * m1.m11 + this.m02 * m1.m21 + this.m03 * m1.m31;
+		m02 = this.m00 * m1.m02 + this.m01 * m1.m12 + this.m02 * m1.m22 + this.m03 * m1.m32;
+		m03 = this.m00 * m1.m03 + this.m01 * m1.m13 + this.m02 * m1.m23 + this.m03 * m1.m33;
+		m10 = this.m10 * m1.m00 + this.m11 * m1.m10 + this.m12 * m1.m20 + this.m13 * m1.m30;
+		m11 = this.m10 * m1.m01 + this.m11 * m1.m11 + this.m12 * m1.m21 + this.m13 * m1.m31;
+		m12 = this.m10 * m1.m02 + this.m11 * m1.m12 + this.m12 * m1.m22 + this.m13 * m1.m32;
+		m13 = this.m10 * m1.m03 + this.m11 * m1.m13 + this.m12 * m1.m23 + this.m13 * m1.m33;
+		m20 = this.m20 * m1.m00 + this.m21 * m1.m10 + this.m22 * m1.m20 + this.m23 * m1.m30;
+		m21 = this.m20 * m1.m01 + this.m21 * m1.m11 + this.m22 * m1.m21 + this.m23 * m1.m31;
+		m22 = this.m20 * m1.m02 + this.m21 * m1.m12 + this.m22 * m1.m22 + this.m23 * m1.m32;
+		m23 = this.m20 * m1.m03 + this.m21 * m1.m13 + this.m22 * m1.m23 + this.m23 * m1.m33;
+		m30 = this.m30 * m1.m00 + this.m31 * m1.m10 + this.m32 * m1.m20 + this.m33 * m1.m30;
+		m31 = this.m30 * m1.m01 + this.m31 * m1.m11 + this.m32 * m1.m21 + this.m33 * m1.m31;
+		m32 = this.m30 * m1.m02 + this.m31 * m1.m12 + this.m32 * m1.m22 + this.m33 * m1.m32;
+		m33 = this.m30 * m1.m03 + this.m31 * m1.m13 + this.m32 * m1.m23 + this.m33 * m1.m33;
 		this.m00 = m00;
 		this.m01 = m01;
 		this.m02 = m02;
@@ -251,82 +208,40 @@ public class Matrix4f {
 
 	public final void mul(Matrix4f m1, Matrix4f m2) {
 		if (this != m1 && this != m2) {
-
-			this.m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10 + m1.m02 * m2.m20
-					+ m1.m03 * m2.m30;
-			this.m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11 + m1.m02 * m2.m21
-					+ m1.m03 * m2.m31;
-			this.m02 = m1.m00 * m2.m02 + m1.m01 * m2.m12 + m1.m02 * m2.m22
-					+ m1.m03 * m2.m32;
-			this.m03 = m1.m00 * m2.m03 + m1.m01 * m2.m13 + m1.m02 * m2.m23
-					+ m1.m03 * m2.m33;
-
-			this.m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10 + m1.m12 * m2.m20
-					+ m1.m13 * m2.m30;
-			this.m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11 + m1.m12 * m2.m21
-					+ m1.m13 * m2.m31;
-			this.m12 = m1.m10 * m2.m02 + m1.m11 * m2.m12 + m1.m12 * m2.m22
-					+ m1.m13 * m2.m32;
-			this.m13 = m1.m10 * m2.m03 + m1.m11 * m2.m13 + m1.m12 * m2.m23
-					+ m1.m13 * m2.m33;
-
-			this.m20 = m1.m20 * m2.m00 + m1.m21 * m2.m10 + m1.m22 * m2.m20
-					+ m1.m23 * m2.m30;
-			this.m21 = m1.m20 * m2.m01 + m1.m21 * m2.m11 + m1.m22 * m2.m21
-					+ m1.m23 * m2.m31;
-			this.m22 = m1.m20 * m2.m02 + m1.m21 * m2.m12 + m1.m22 * m2.m22
-					+ m1.m23 * m2.m32;
-			this.m23 = m1.m20 * m2.m03 + m1.m21 * m2.m13 + m1.m22 * m2.m23
-					+ m1.m23 * m2.m33;
-
-			this.m30 = m1.m30 * m2.m00 + m1.m31 * m2.m10 + m1.m32 * m2.m20
-					+ m1.m33 * m2.m30;
-			this.m31 = m1.m30 * m2.m01 + m1.m31 * m2.m11 + m1.m32 * m2.m21
-					+ m1.m33 * m2.m31;
-			this.m32 = m1.m30 * m2.m02 + m1.m31 * m2.m12 + m1.m32 * m2.m22
-					+ m1.m33 * m2.m32;
-			this.m33 = m1.m30 * m2.m03 + m1.m31 * m2.m13 + m1.m32 * m2.m23
-					+ m1.m33 * m2.m33;
+			this.m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10 + m1.m02 * m2.m20 + m1.m03 * m2.m30;
+			this.m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11 + m1.m02 * m2.m21 + m1.m03 * m2.m31;
+			this.m02 = m1.m00 * m2.m02 + m1.m01 * m2.m12 + m1.m02 * m2.m22 + m1.m03 * m2.m32;
+			this.m03 = m1.m00 * m2.m03 + m1.m01 * m2.m13 + m1.m02 * m2.m23 + m1.m03 * m2.m33;
+			this.m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10 + m1.m12 * m2.m20 + m1.m13 * m2.m30;
+			this.m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11 + m1.m12 * m2.m21 + m1.m13 * m2.m31;
+			this.m12 = m1.m10 * m2.m02 + m1.m11 * m2.m12 + m1.m12 * m2.m22 + m1.m13 * m2.m32;
+			this.m13 = m1.m10 * m2.m03 + m1.m11 * m2.m13 + m1.m12 * m2.m23 + m1.m13 * m2.m33;
+			this.m20 = m1.m20 * m2.m00 + m1.m21 * m2.m10 + m1.m22 * m2.m20 + m1.m23 * m2.m30;
+			this.m21 = m1.m20 * m2.m01 + m1.m21 * m2.m11 + m1.m22 * m2.m21 + m1.m23 * m2.m31;
+			this.m22 = m1.m20 * m2.m02 + m1.m21 * m2.m12 + m1.m22 * m2.m22 + m1.m23 * m2.m32;
+			this.m23 = m1.m20 * m2.m03 + m1.m21 * m2.m13 + m1.m22 * m2.m23 + m1.m23 * m2.m33;
+			this.m30 = m1.m30 * m2.m00 + m1.m31 * m2.m10 + m1.m32 * m2.m20 + m1.m33 * m2.m30;
+			this.m31 = m1.m30 * m2.m01 + m1.m31 * m2.m11 + m1.m32 * m2.m21 + m1.m33 * m2.m31;
+			this.m32 = m1.m30 * m2.m02 + m1.m31 * m2.m12 + m1.m32 * m2.m22 + m1.m33 * m2.m32;
+			this.m33 = m1.m30 * m2.m03 + m1.m31 * m2.m13 + m1.m32 * m2.m23 + m1.m33 * m2.m33;
 		} else {
-			// vars result matrix
 			float m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33;
-
-			m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10 + m1.m02 * m2.m20 + m1.m03
-					* m2.m30;
-			m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11 + m1.m02 * m2.m21 + m1.m03
-					* m2.m31;
-			m02 = m1.m00 * m2.m02 + m1.m01 * m2.m12 + m1.m02 * m2.m22 + m1.m03
-					* m2.m32;
-			m03 = m1.m00 * m2.m03 + m1.m01 * m2.m13 + m1.m02 * m2.m23 + m1.m03
-					* m2.m33;
-
-			m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10 + m1.m12 * m2.m20 + m1.m13
-					* m2.m30;
-			m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11 + m1.m12 * m2.m21 + m1.m13
-					* m2.m31;
-			m12 = m1.m10 * m2.m02 + m1.m11 * m2.m12 + m1.m12 * m2.m22 + m1.m13
-					* m2.m32;
-			m13 = m1.m10 * m2.m03 + m1.m11 * m2.m13 + m1.m12 * m2.m23 + m1.m13
-					* m2.m33;
-
-			m20 = m1.m20 * m2.m00 + m1.m21 * m2.m10 + m1.m22 * m2.m20 + m1.m23
-					* m2.m30;
-			m21 = m1.m20 * m2.m01 + m1.m21 * m2.m11 + m1.m22 * m2.m21 + m1.m23
-					* m2.m31;
-			m22 = m1.m20 * m2.m02 + m1.m21 * m2.m12 + m1.m22 * m2.m22 + m1.m23
-					* m2.m32;
-			m23 = m1.m20 * m2.m03 + m1.m21 * m2.m13 + m1.m22 * m2.m23 + m1.m23
-					* m2.m33;
-
-			m30 = m1.m30 * m2.m00 + m1.m31 * m2.m10 + m1.m32 * m2.m20 + m1.m33
-					* m2.m30;
-			m31 = m1.m30 * m2.m01 + m1.m31 * m2.m11 + m1.m32 * m2.m21 + m1.m33
-					* m2.m31;
-			m32 = m1.m30 * m2.m02 + m1.m31 * m2.m12 + m1.m32 * m2.m22 + m1.m33
-					* m2.m32;
-			m33 = m1.m30 * m2.m03 + m1.m31 * m2.m13 + m1.m32 * m2.m23 + m1.m33
-					* m2.m33;
-
+			m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10 + m1.m02 * m2.m20 + m1.m03 * m2.m30;
+			m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11 + m1.m02 * m2.m21 + m1.m03 * m2.m31;
+			m02 = m1.m00 * m2.m02 + m1.m01 * m2.m12 + m1.m02 * m2.m22 + m1.m03 * m2.m32;
+			m03 = m1.m00 * m2.m03 + m1.m01 * m2.m13 + m1.m02 * m2.m23 + m1.m03 * m2.m33;
+			m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10 + m1.m12 * m2.m20 + m1.m13 * m2.m30;
+			m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11 + m1.m12 * m2.m21 + m1.m13 * m2.m31;
+			m12 = m1.m10 * m2.m02 + m1.m11 * m2.m12 + m1.m12 * m2.m22 + m1.m13 * m2.m32;
+			m13 = m1.m10 * m2.m03 + m1.m11 * m2.m13 + m1.m12 * m2.m23 + m1.m13 * m2.m33;
+			m20 = m1.m20 * m2.m00 + m1.m21 * m2.m10 + m1.m22 * m2.m20 + m1.m23 * m2.m30;
+			m21 = m1.m20 * m2.m01 + m1.m21 * m2.m11 + m1.m22 * m2.m21 + m1.m23 * m2.m31;
+			m22 = m1.m20 * m2.m02 + m1.m21 * m2.m12 + m1.m22 * m2.m22 + m1.m23 * m2.m32;
+			m23 = m1.m20 * m2.m03 + m1.m21 * m2.m13 + m1.m22 * m2.m23 + m1.m23 * m2.m33;
+			m30 = m1.m30 * m2.m00 + m1.m31 * m2.m10 + m1.m32 * m2.m20 + m1.m33 * m2.m30;
+			m31 = m1.m30 * m2.m01 + m1.m31 * m2.m11 + m1.m32 * m2.m21 + m1.m33 * m2.m31;
+			m32 = m1.m30 * m2.m02 + m1.m31 * m2.m12 + m1.m32 * m2.m22 + m1.m33 * m2.m32;
+			m33 = m1.m30 * m2.m03 + m1.m31 * m2.m13 + m1.m32 * m2.m23 + m1.m33 * m2.m33;
 			this.m00 = m00;
 			this.m01 = m01;
 			this.m02 = m02;
@@ -347,47 +262,64 @@ public class Matrix4f {
 	}
 
 	public final void set(Quat4f q1) {
+        // 1-2yy-2zz 2(xy-wz)  2(xz+wy)  0
+        // 2(xy+wz)  1-2xx-2zz 2(yz-wx)  0
+        // 2(xz-wy)  2(yz+wx)  1-2xx-2yy 0
+        // 0         0         0         1
 		this.m00 = (1.0f - 2.0f * q1.y * q1.y - 2.0f * q1.z * q1.z);
 		this.m10 = (2.0f * (q1.x * q1.y + q1.w * q1.z));
 		this.m20 = (2.0f * (q1.x * q1.z - q1.w * q1.y));
-
 		this.m01 = (2.0f * (q1.x * q1.y - q1.w * q1.z));
 		this.m11 = (1.0f - 2.0f * q1.x * q1.x - 2.0f * q1.z * q1.z);
 		this.m21 = (2.0f * (q1.y * q1.z + q1.w * q1.x));
-
 		this.m02 = (2.0f * (q1.x * q1.z + q1.w * q1.y));
 		this.m12 = (2.0f * (q1.y * q1.z - q1.w * q1.x));
 		this.m22 = (1.0f - 2.0f * q1.x * q1.x - 2.0f * q1.y * q1.y);
-
 		this.m03 = (float) 0.0;
 		this.m13 = (float) 0.0;
 		this.m23 = (float) 0.0;
-
 		this.m30 = (float) 0.0;
 		this.m31 = (float) 0.0;
 		this.m32 = (float) 0.0;
 		this.m33 = (float) 1.0;
 	}
 
-	public final void invTransform(Vector3f point, Vector3f pointOut) {
-		Vector3f tmp = new Vector3f();
-		tmp.x = point.x - m03;
-		tmp.y = point.y - m13;
-		tmp.z = point.z - m23;
-
-		// transform normal
-		invTransformRotate(tmp, pointOut);
-	}
-
-	public final void invTransformRotate(Vector3f normal, Vector3f normalOut) {
+    public final void invTransformRotate(Vector3f normal, Vector3f normalOut) {
 		float x, y;
 		x = m00 * normal.x + m10 * normal.y + m20 * normal.z;
 		y = m01 * normal.x + m11 * normal.y + m21 * normal.z;
 		normalOut.z = m02 * normal.x + m12 * normal.y + m22 * normal.z;
 		normalOut.x = x;
 		normalOut.y = y;
+    }
+	/*public final void invTransformRotate(Vector3f normal, Vector3f normalOut) {
+        // [ 00| 01| 02| 03 ]  [normal.x]
+        // [ 10| 11| 12| 13 ]  [normal.y]
+        // [ 20| 21| 22| 23 ]  [normal.z]
+        // [ 30  31  32  33 ]  [        ]
+		normalOut.x = m00 * normal.x + m10 * normal.y + m20 * normal.z;
+		normalOut.y = m01 * normal.x + m11 * normal.y + m21 * normal.z;
+		normalOut.z = m02 * normal.x + m12 * normal.y + m22 * normal.z;  
+        
+        }*/
+
+	public final void invTransform(Vector3f point, Vector3f pointOut) {
+		Vector3f tmp = new Vector3f();
+		tmp.x = point.x - m03; // translation goes first
+		tmp.y = point.y - m13;
+		tmp.z = point.z - m23;
+		invTransformRotate(tmp, pointOut); // 
 	}
 
+	/*public final void transform(Vector3f point, Vector3f pointOut) {
+        // [ 00 01 02 03 ] [point.x]
+        // [ 10 11 12 13 ] [point.y]
+        // [ 20 21 22 23 ] [point.z]
+        // [ 30 31 32 33 ] [    1  ]
+		pointOut.x = m00 * point.x + m01 * point.y + m02 * point.z + m03;
+		pointOut.y = m10 * point.x + m11 * point.y + m12 * point.z + m13;
+		pointOut.z = m20 * point.x + m21 * point.y + m22 * point.z + m23;
+        }*/
 	public final void transform(Vector3f point, Vector3f pointOut) {
 		float x, y;
 		x = m00 * point.x + m01 * point.y + m02 * point.z + m03;
@@ -395,120 +327,32 @@ public class Matrix4f {
 		pointOut.z = m20 * point.x + m21 * point.y + m22 * point.z + m23;
 		pointOut.x = x;
 		pointOut.y = y;
-	}
+    }
 
-	/**
-	 * Sets the value of this matrix to its transpose in place.
-	 */
-	public final void transpose() {
+	public final void transpose() { // Sets the value of this matrix to its transpose in place.
+        // [ 00 01 02 03 ]  [ 00 10 20 30 ]
+        // [ 10 11 12 13 ]  [ 01 11 21 31 ]
+        // [ 20 21 22 23 ]  [ 02 12 22 32 ]
+        // [ 30 31 32 33 ]  [ 03 13 23 33 ]
 		float temp;
-
 		temp = this.m10;
 		this.m10 = this.m01;
 		this.m01 = temp;
-
 		temp = this.m20;
 		this.m20 = this.m02;
 		this.m02 = temp;
-
 		temp = this.m30;
 		this.m30 = this.m03;
 		this.m03 = temp;
-
 		temp = this.m21;
 		this.m21 = this.m12;
 		this.m12 = temp;
-
 		temp = this.m31;
 		this.m31 = this.m13;
 		this.m13 = temp;
-
 		temp = this.m32;
 		this.m32 = this.m23;
 		this.m23 = temp;
-	}
-
-	/**
-	 * Inverts this matrix in place.
-	 */
-	public final void invert() {
-		invertGeneral(this);
-	}
-
-	/**
-	 * General invert routine. Inverts m1 and places the result in "this". Note
-	 * that this routine handles both the "this" version and the non-"this"
-	 * version.
-	 * 
-	 * Also note that since this routine is slow anyway, we won't worry about
-	 * allocating a little bit of garbage.
-	 */
-	@SuppressWarnings("unused")
-	final void invertGeneral(Matrix4f m1) {
-		double temp[] = new double[16];
-		double result[] = new double[16];
-		int row_perm[] = new int[4];
-		int i, r, c;
-
-		// Use LU decomposition and backsubstitution code specifically
-		// for floating-point 4x4 matrices.
-
-		// Copy source matrix to t1tmp
-		temp[0] = m1.m00;
-		temp[1] = m1.m01;
-		temp[2] = m1.m02;
-		temp[3] = m1.m03;
-
-		temp[4] = m1.m10;
-		temp[5] = m1.m11;
-		temp[6] = m1.m12;
-		temp[7] = m1.m13;
-
-		temp[8] = m1.m20;
-		temp[9] = m1.m21;
-		temp[10] = m1.m22;
-		temp[11] = m1.m23;
-
-		temp[12] = m1.m30;
-		temp[13] = m1.m31;
-		temp[14] = m1.m32;
-		temp[15] = m1.m33;
-
-		// Calculate LU decomposition: Is the matrix singular?
-		if (!luDecomposition(temp, row_perm)) {
-			// Matrix has no inverse
-			throw new RuntimeException("Matrix4f12");
-		}
-
-		// Perform back substitution on the identity matrix
-		for (i = 0; i < 16; i++) {
-			result[i] = 0.0;
-		}
-		result[0] = 1.0;
-		result[5] = 1.0;
-		result[10] = 1.0;
-		result[15] = 1.0;
-		luBacksubstitution(temp, row_perm, result);
-
-		this.m00 = (float) result[0];
-		this.m01 = (float) result[1];
-		this.m02 = (float) result[2];
-		this.m03 = (float) result[3];
-
-		this.m10 = (float) result[4];
-		this.m11 = (float) result[5];
-		this.m12 = (float) result[6];
-		this.m13 = (float) result[7];
-
-		this.m20 = (float) result[8];
-		this.m21 = (float) result[9];
-		this.m22 = (float) result[10];
-		this.m23 = (float) result[11];
-
-		this.m30 = (float) result[12];
-		this.m31 = (float) result[13];
-		this.m32 = (float) result[14];
-		this.m33 = (float) result[15];
 	}
 
 	/**
@@ -525,15 +369,11 @@ public class Matrix4f {
 	 * 
 	 * @return true if the matrix is nonsingular, or false otherwise.
 	 */
-	//
 	// Reference: Press, Flannery, Teukolsky, Vetterling,
 	// _Numerical_Recipes_in_C_, Cambridge University Press,
 	// 1988, pp 40-45.
-	//
 	static boolean luDecomposition(double[] matrix0, int[] row_perm) {
-
 		double row_scale[] = new double[4];
-
 		// Determine implicit scaling information by looping over rows
 		{
 			int i, j;
@@ -553,23 +393,19 @@ public class Matrix4f {
 				while (j-- != 0) {
 					temp = matrix0[ptr++];
 					temp = Math.abs(temp);
-					if (temp > big) {
+					if (temp > big) 
 						big = temp;
-					}
 				}
 
 				// Is the matrix singular?
-				if (big == 0.0) {
+				if (big == 0.0) 
 					return false;
-				}
 				row_scale[rs++] = 1.0 / big;
 			}
 		}
-
 		{
 			int j;
 			int mtx;
-
 			mtx = 0;
 
 			// For all columns, execute Crout's method
@@ -617,9 +453,8 @@ public class Matrix4f {
 					}
 				}
 
-				if (imax < 0) {
+				if (imax < 0) 
 					throw new RuntimeException("Matrix4f13");
-				}
 
 				// Is a row exchange necessary?
 				if (j != imax) {
@@ -632,7 +467,6 @@ public class Matrix4f {
 						matrix0[p1++] = matrix0[p2];
 						matrix0[p2++] = temp;
 					}
-
 					// Record change in scale factor
 					row_scale[imax] = row_scale[j];
 				}
@@ -641,9 +475,8 @@ public class Matrix4f {
 				row_perm[j] = imax;
 
 				// Is the matrix singular
-				if (matrix0[(mtx + (4 * j) + j)] == 0.0) {
+				if (matrix0[(mtx + (4 * j) + j)] == 0.0) 
 					return false;
-				}
 
 				// Divide elements of lower diagonal matrix L by pivot
 				if (j != (4 - 1)) {
@@ -657,7 +490,6 @@ public class Matrix4f {
 				}
 			}
 		}
-
 		return true;
 	}
 
@@ -674,18 +506,13 @@ public class Matrix4f {
 	 * with the inverse of the matrix from which "matrix1" was originally
 	 * derived.
 	 */
-	//
 	// Reference: Press, Flannery, Teukolsky, Vetterling,
 	// _Numerical_Recipes_in_C_, Cambridge University Press,
 	// 1988, pp 44-45.
-	//
-	static void luBacksubstitution(double[] matrix1, int[] row_perm,
-			double[] matrix2) {
-
+	static void luBacksubstitution(double[] matrix1, int[] row_perm, double[] matrix2) {
 		int i, ii, ip, j, k;
 		int rp;
 		int cv, rv;
-
 		// rp = row_perm;
 		rp = 0;
 
@@ -698,19 +525,16 @@ public class Matrix4f {
 			// Forward substitution
 			for (i = 0; i < 4; i++) {
 				double sum;
-
 				ip = row_perm[rp + i];
 				sum = matrix2[cv + 4 * ip];
 				matrix2[cv + 4 * ip] = matrix2[cv + 4 * i];
 				if (ii >= 0) {
 					// rv = &(matrix1[i][0]);
 					rv = i * 4;
-					for (j = ii; j <= i - 1; j++) {
+					for (j = ii; j <= i - 1; j++) 
 						sum -= matrix1[rv + j] * matrix2[cv + 4 * j];
-					}
-				} else if (sum != 0.0) {
+				} else if (sum != 0.0) 
 					ii = i;
-				}
 				matrix2[cv + 4 * i] = sum;
 			}
 
@@ -721,84 +545,103 @@ public class Matrix4f {
 
 			rv -= 4;
 			matrix2[cv + 4 * 2] = (matrix2[cv + 4 * 2] - matrix1[rv + 3]
-					* matrix2[cv + 4 * 3])
-					/ matrix1[rv + 2];
+                                   * matrix2[cv + 4 * 3])
+                / matrix1[rv + 2];
 
 			rv -= 4;
 			matrix2[cv + 4 * 1] = (matrix2[cv + 4 * 1] - matrix1[rv + 2]
-					* matrix2[cv + 4 * 2] - matrix1[rv + 3]
-					* matrix2[cv + 4 * 3])
-					/ matrix1[rv + 1];
+                                   * matrix2[cv + 4 * 2] - matrix1[rv + 3]
+                                   * matrix2[cv + 4 * 3])
+                / matrix1[rv + 1];
 
 			rv -= 4;
 			matrix2[cv + 4 * 0] = (matrix2[cv + 4 * 0] - matrix1[rv + 1]
-					* matrix2[cv + 4 * 1] - matrix1[rv + 2]
-					* matrix2[cv + 4 * 2] - matrix1[rv + 3]
-					* matrix2[cv + 4 * 3])
-					/ matrix1[rv + 0];
+                                   * matrix2[cv + 4 * 1] - matrix1[rv + 2]
+                                   * matrix2[cv + 4 * 2] - matrix1[rv + 3]
+                                   * matrix2[cv + 4 * 3])
+                / matrix1[rv + 0];
 		}
 	}
 
-	public FloatBuffer asFloatBuffer() {
-		gFBMatrix.position(0);
-		fillFloatBuffer(gFBMatrix);
-		return gFBMatrix;
-	}
-
 	/**
-	 * get float buffer coloum major
-	 * 
-	 * @param buffer
+	 * General invert routine. Inverts m1 and places the result in "this". 
+	 * Note that this routine handles both the "this" version and the non-"this" version.
+	 * Also note that since this routine is slow anyway, we won't worry about allocating a little bit of garbage.
 	 */
-	public final void fillFloatBuffer(FloatBuffer buffer) {
-		buffer.position(0);
-		buffer.put(m00);
-		buffer.put(m10);
-		buffer.put(m20);
-		buffer.put(m30);
-
-		buffer.put(m01);
-		buffer.put(m11);
-		buffer.put(m21);
-		buffer.put(m31);
-
-		buffer.put(m02);
-		buffer.put(m12);
-		buffer.put(m22);
-		buffer.put(m32);
-
-		buffer.put(m03);
-		buffer.put(m13);
-		buffer.put(m23);
-		buffer.put(m33);
-
-		buffer.position(0);
+	@SuppressWarnings("unused")
+	final void invertGeneral(Matrix4f m1) {
+		double temp[] = new double[16];
+		double result[] = new double[16];
+		int row_perm[] = new int[4];
+		int i, r, c;
+		// Use LU decomposition and backsubstitution code specifically for floating-point 4x4 matrices.
+		// Copy source matrix to t1tmp
+		temp[0] = m1.m00;
+		temp[1] = m1.m01;
+		temp[2] = m1.m02;
+		temp[3] = m1.m03;
+		temp[4] = m1.m10;
+		temp[5] = m1.m11;
+		temp[6] = m1.m12;
+		temp[7] = m1.m13;
+		temp[8] = m1.m20;
+		temp[9] = m1.m21;
+		temp[10] = m1.m22;
+		temp[11] = m1.m23;
+		temp[12] = m1.m30;
+		temp[13] = m1.m31;
+		temp[14] = m1.m32;
+		temp[15] = m1.m33;
+		// Calculate LU decomposition: Is the matrix singular?
+		if (!luDecomposition(temp, row_perm)) {
+			// Matrix has no inverse
+			throw new RuntimeException("Matrix4f12");
+		}
+		// Perform back substitution on the identity matrix
+		for (i = 0; i < 16; i++) 
+			result[i] = 0.0;
+		result[0] = 1.0;
+		result[5] = 1.0;
+		result[10] = 1.0;
+		result[15] = 1.0;
+		luBacksubstitution(temp, row_perm, result);  // the part that do NOT understand yet
+		this.m00 = (float) result[0];
+		this.m01 = (float) result[1];
+		this.m02 = (float) result[2];
+		this.m03 = (float) result[3];
+		this.m10 = (float) result[4];
+		this.m11 = (float) result[5];
+		this.m12 = (float) result[6];
+		this.m13 = (float) result[7];
+		this.m20 = (float) result[8];
+		this.m21 = (float) result[9];
+		this.m22 = (float) result[10];
+		this.m23 = (float) result[11];
+		this.m30 = (float) result[12];
+		this.m31 = (float) result[13];
+		this.m32 = (float) result[14];
+		this.m33 = (float) result[15];
 	}
 
-	public void fillFloatArray(float[] array) {
-		FloatBuffer buf = asFloatBuffer();
-		buf.get(array);
-		buf.position(0);
-	}
-
-	private static Vector3f tmpF = new Vector3f(), tmpUp = new Vector3f(),
-			tmpS = new Vector3f(), tmpT = new Vector3f();
+	private static Vector3f
+        tmpF = new Vector3f(), // N
+        tmpUp = new Vector3f(),// 
+        tmpS = new Vector3f(),
+        tmpT = new Vector3f();
 	private static Matrix4f tmpMat = new Matrix4f();
-
-	public static void gluLookAt(Vector3f eye, Vector3f center, Vector3f up,
-			Matrix4f out) {
-		tmpF.x = center.x - eye.x;
+	public static void gluLookAt(Vector3f eye, Vector3f center, Vector3f up, Matrix4f out) { // think once more
+		tmpF.x = center.x - eye.x; 
 		tmpF.y = center.y - eye.y;
 		tmpF.z = center.z - eye.z;
 
-		tmpF.normalize();
-		tmpUp.set(up);
-		tmpUp.normalize();
+		tmpF.normalize(); // N    (float) Math.sqrt(x * x + y * y + z * z); // ^(-1)
+		tmpUp.set(up);    
+		tmpUp.normalize(); // normalize here ?????
 
-		tmpS.cross(tmpF, tmpUp);
-		tmpT.cross(tmpS, tmpF);
+		tmpS.cross(tmpF, tmpUp); // tmpS U = V_up cross N
+		tmpT.cross(tmpS, tmpF);  // tmpT V = U cross N
 
-		out.m00 = tmpS.x;
+		out.m00 = tmpS.x;  
 		out.m10 = tmpT.x;
 		out.m20 = -tmpF.x;
 		out.m30 = 0;
@@ -813,34 +656,26 @@ public class Matrix4f {
 		out.m22 = -tmpF.z;
 		out.m32 = 0;
 
-		out.m03 = 0;
-		out.m13 = 0;
-		out.m23 = 0;
-		out.m33 = 1;
-
+		out.m03 = 0;  // [ u0  u1  u2  0 ]
+		out.m13 = 0;  // [ v0  v1  v2  0 ]
+		out.m23 = 0;  // [ -n0 -n1 -n2 0 ]
+		out.m33 = 1;  // [ 0   0   0   1 ]
 		tmpMat.setIdentity();
 		tmpMat.setTranslation(-eye.x, -eye.y, -eye.z);
-
-		out.mul(tmpMat);
+		out.mul(tmpMat); // slightly different than I thought here, double check
 	}
 
-	public static void gluPersective(float fovy, float aspect, float zNear,
-			float zFar, Matrix4f out) {
+	public static void gluPersective(float fovy, float aspect, float zNear, float zFar, Matrix4f out) {
 		float sine, cotangent, deltaZ;
-		float radians = (float) (fovy / 2 * Math.PI / 180);
-
-		deltaZ = zFar - zNear;
+		float radians = (float) (fovy / 2 * Math.PI / 180); // fovy * Math.PI
+		deltaZ = zFar - zNear;  // dZ                       //    2 * 180     ??? coufused on this r degree
 		sine = (float) Math.sin(radians);
-
 		if ((deltaZ == 0) || (sine == 0) || (aspect == 0)) {
 			return;
 		}
-
 		cotangent = (float) Math.cos(radians) / sine;
-
 		out.setIdentity();
-
-		out.m00 = cotangent / aspect;
+		out.m00 = cotangent / aspect;          
 		out.m11 = cotangent;
 		out.m22 = -(zFar + zNear) / deltaZ;
 		out.m32 = -1;
@@ -848,4 +683,47 @@ public class Matrix4f {
 		out.m33 = 0;
 	}
 
+	/**
+	 * Inverts this matrix in place.
+	 */
+	public final void invert() {
+		invertGeneral(this);
+	}
+
+	public FloatBuffer asFloatBuffer() {
+		gFBMatrix.position(0);
+		fillFloatBuffer(gFBMatrix);
+		return gFBMatrix;
+	}
+
+	/**
+	 * get float buffer coloum major
+	 * @param buffer
+	 */
+	public final void fillFloatBuffer(FloatBuffer buffer) { // openGL column oriented |||
+		buffer.position(0);
+		buffer.put(m00);
+		buffer.put(m10);
+		buffer.put(m20);
+		buffer.put(m30);
+		buffer.put(m01);
+		buffer.put(m11);
+		buffer.put(m21);
+		buffer.put(m31);
+		buffer.put(m02);
+		buffer.put(m12);
+		buffer.put(m22);
+		buffer.put(m32);
+		buffer.put(m03);
+		buffer.put(m13);
+		buffer.put(m23);
+		buffer.put(m33);
+		buffer.position(0);
+	}
+
+	public void fillFloatArray(float[] array) {
+		FloatBuffer buf = asFloatBuffer();
+		buf.get(array);
+		buf.position(0);
+	}
 }

@@ -1,8 +1,5 @@
 package dev.cube;
 
-//import org.join.ogles.lib.Projector;
-//import org.join.ogles.lib.Ray;
-
 public class PickFactory {
 	private static Ray gPickRay = new Ray();
 

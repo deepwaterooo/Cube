@@ -28,30 +28,25 @@ public class IBufferFactory {
 		v.z = fb.get();
 	}
 
+	public static void fillBuffer(FloatBuffer fb, Vector3f v, int limit) {
+		fb.put(v.x);
+		fb.put(1.0f - v.y); // don't understand
+		if (limit == 2) {
+		} else {
+			fb.put(v.z);
+		}
+	}
 	public static void fillBuffer(FloatBuffer fb, Vector3f v) {
 		fb.put(v.x);
 		fb.put(v.y);
 		fb.put(v.z);
 	}
-
-	public static void fillBuffer(FloatBuffer fb, Vector3f v, int limit) {
-		fb.put(v.x);
-		fb.put(1.0f - v.y);
-
-		if (limit == 2) {
-
-		} else {
-			fb.put(v.z);
-		}
-	}
-
 	public static void fillBuffer(FloatBuffer fb, Vector4f v) {
 		fb.put(v.x);
 		fb.put(v.y);
 		fb.put(v.z);
 		fb.put(v.w);
 	}
-
 	public static void fillBuffer(ShortBuffer sb, int[] data) {
 		for (int i = 0; i < data.length; i++) {
 			sb.put((short) data[i]);
@@ -59,31 +54,22 @@ public class IBufferFactory {
 	}
 
 	public static ShortBuffer newShortBuffer(short[] s) {
-		// TODO Auto-generated method stub
 		ByteBuffer bb = ByteBuffer.allocateDirect(s.length * 2);
 		bb.order(ByteOrder.nativeOrder());
 		ShortBuffer sb = bb.asShortBuffer();
-		
-		for (int i = 0; i < s.length; i++) {
+		for (int i = 0; i < s.length; i++) 
 			sb.put(s[i]);
-		}
-		
 		sb.position(0);
 		return sb;
 	}
 
 	public static FloatBuffer newFloatBuffer(float[] fs) {
-		// TODO Auto-generated method stub
 		ByteBuffer bb = ByteBuffer.allocateDirect(fs.length * 4);
 		bb.order(ByteOrder.nativeOrder());
 		FloatBuffer fb = bb.asFloatBuffer();
-		
-		for (int i = 0; i < fs.length; i++) {
+		for (int i = 0; i < fs.length; i++) 
 			fb.put(fs[i]);
-		}
-		
 		fb.position(0);
 		return fb;
 	}
-
 }

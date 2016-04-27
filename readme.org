@@ -2,30 +2,25 @@
 - for Java programming course project. 
 - compiled, and works, just the readering is NOT what I expected. will modify texture rendering, and picked triangle color to be yellow. 
 - As the starting point for the course project (to integrate gestures, music etc), & starting point for android opengl es. will need to fully understand the code. 
-- Current starting point turnning cube video was put at search *youtube deepwaterooo wang*
-- Will update "Undertable" repository first, then come back to fully understand the base codes for this project. 
+- Current starting point turnning cube video was put at https://www.youtube.com/watch?v=EuILt6B0YS0 
+- commit for compare codes, somewhere got the app NOT running as efficiently. 
 
 * References
 - c++: http://blog.sina.com.cn/s/blog_b932048b0101fglx.html
 - gl10: http://blog.csdn.net/wangkuifeng0118/article/details/7425029
 - ideas: http://www.boyunjian.com/do/article/snapshot.do?uid=4560684719895433921
 - gl10 with threads http://www.cnblogs.com/carmanloneliness/archive/2012/01/06/2314909.html
-- http://vaero.blog.51cto.com/4350852/790620
-- http://vaero.blog.51cto.com/4350852/790637
+- read: http://vaero.blog.51cto.com/4350852/790620
+- read: http://vaero.blog.51cto.com/4350852/790637
+- youtube videoes: https://www.youtube.com/watch?v=hpnd11doMgc
+- youtube videoes:https://www.youtube.com/watch?v=3yLL9ADo-ko
 - raypick: https://github.com/76260865/OpenGLSETest
 - trial: http://www.j2megame.com/html/xwzx/ty/1416.html
 - trial: https://github.com/MediaMonks/tilt-game-android/blob/master/sensorlib/src/main/java/org/hitlabnz/sensor_fusion_demo/representation/Vector3f.java
 - push pop matrix: http://www.cnblogs.com/bhlsheji/p/4058745.html
+- glPerspective http://blog.csdn.net/popy007/article/details/1797121
 - 
 - 
 - 
 - 
 - 
-- 
-- 
-- 
-
-
-
-
-
