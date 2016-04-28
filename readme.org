@@ -3,7 +3,8 @@
 - compiled, and works, just the readering is NOT what I expected. will modify texture rendering, and picked triangle color to be yellow. 
 - As the starting point for the course project (to integrate gestures, music etc), & starting point for android opengl es. will need to fully understand the code. 
 - Current starting point turnning cube video was put at https://www.youtube.com/watch?v=EuILt6B0YS0 
-- commit for compare codes, somewhere got the app NOT running as efficiently. 
+- The codes run just as before, I didn't do anything wrong with the code before when I tried to understand and organize the code, but my phone had too many apps open was the reason the cube was rotating slow before.
+- It is annoying gedit in Mac can NOT display chinese correctly though TextEdit could, will try find a solution to fix it later on. 
 
 * References
 - c++: http://blog.sina.com.cn/s/blog_b932048b0101fglx.html

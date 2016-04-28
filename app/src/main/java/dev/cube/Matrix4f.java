@@ -125,6 +125,7 @@ public class Matrix4f {
 		this.m33 = 1;		
 	}
 
+    // 绕任意单位轴旋转任意角度的矩阵
 	public final void glRotatef(float angle, float x, float y, float z) {
 		float sinAngle, cosAngle;
 		sinAngle = (float) Math.sin((double) angle);
@@ -629,6 +630,14 @@ public class Matrix4f {
         tmpS = new Vector3f(),
         tmpT = new Vector3f();
 	private static Matrix4f tmpMat = new Matrix4f();
+
+	/**
+	 * 模拟实现GLU.gluLookAt()函数，参数相同，将计算结果矩阵返回
+	 * @param eye
+	 * @param center
+	 * @param up
+	 * @param out - 返回的计算结果矩阵
+	 */
 	public static void gluLookAt(Vector3f eye, Vector3f center, Vector3f up, Matrix4f out) { // think once more
 		tmpF.x = center.x - eye.x; 
 		tmpF.y = center.y - eye.y;
@@ -665,6 +674,14 @@ public class Matrix4f {
 		out.mul(tmpMat); // slightly different than I thought here, double check
 	}
 
+    /**
+	 * 模拟实现GLU.gluPersective()函数，参数相同，将计算结果填入返回矩阵中
+	 * @param fovy
+	 * @param aspect
+	 * @param zNear
+	 * @param zFar
+	 * @param out - 计算结果返回
+	 */    
 	public static void gluPersective(float fovy, float aspect, float zNear, float zFar, Matrix4f out) {
 		float sine, cotangent, deltaZ;
 		float radians = (float) (fovy / 2 * Math.PI / 180); // fovy * Math.PI

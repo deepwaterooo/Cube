@@ -17,14 +17,14 @@ import android.graphics.BitmapFactory;
 public class MyGLSurfaceView extends GLSurfaceView { 
     // private final float TOUCH_SCALE_FACTOR = 180.0f / 480; 
     private RayPickRenderer mRenderer; 
-    private float mPreviousX, mPreviousY; 
+    private float mPreviousX, mPreviousY; // 记录上次触屏位置的坐标 
  
     public MyGLSurfaceView(Context context, OnSurfacePickedListener onSurfacePickedListener) { 
         super(context); 
         mRenderer = new RayPickRenderer(context); 
-        setZOrderOnTop(true); 
+        setZOrderOnTop(true); // 透视上一个View
         setEGLConfigChooser(8, 8, 8, 8, 16, 0); 
-        getHolder().setFormat(PixelFormat.TRANSLUCENT); 
+        getHolder().setFormat(PixelFormat.TRANSLUCENT); // 透视上一个Activity
         setRenderer(mRenderer); 
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY); 
         mRenderer.setOnSurfacePickedListener(onSurfacePickedListener); 
@@ -39,11 +39,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
         float y = e.getY(); 
         AppConfig.setTouchPosition(x, y); 
         switch (e.getAction()) { 
-        case MotionEvent.ACTION_MOVE: 
+        case MotionEvent.ACTION_MOVE:
+            // 经过中心点的手势方向逆时针旋转90°后的坐标 
             float dx = y - mPreviousY; 
             float dy = x - mPreviousX; 
-            float d = (float) (Math.sqrt(dx * dx + dy * dy)); 
-            mRenderer.mfAngleX = dx; 
+            float d = (float) (Math.sqrt(dx * dx + dy * dy)); // 手势距离 
+            mRenderer.mfAngleX = dx; // 旋转轴单位向量的x,y值（z=0）
             mRenderer.mfAngleY = dy; 
             mRenderer.gesDistance = d; 
 

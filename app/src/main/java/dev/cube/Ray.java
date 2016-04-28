@@ -5,9 +5,14 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class Ray {
 	private static FloatBuffer gBufPosition = IBufferFactory.newFloatBuffer(2 * 3);
-	public Vector3f mvOrigin = new Vector3f();
-	public Vector3f mvDirection = new Vector3f();
+	public Vector3f mvOrigin = new Vector3f();    // 射线原点
+	public Vector3f mvDirection = new Vector3f(); // 射线方向
 
+    /**
+	 * 变换射线，将结果存储到out中
+	 * @param matrix - 变换矩阵
+	 * @param out - 变换后的射线
+	 */
 	public void transform(Matrix4f matrix, Ray out) {
 		Vector3f v0 = Vector3f.TEMP;
 		Vector3f v1 = Vector3f.TEMP1;
@@ -24,7 +29,7 @@ public class Ray {
 		out.mvDirection.set(v1);
 	}
 
-	public void draw(GL10 gl) {
+	public void draw(GL10 gl) { // 渲染射线
 		gBufPosition.position(0);
 		IBufferFactory.fillBuffer(gBufPosition, mvOrigin);
 		Vector3f.TEMP.set(mvDirection);
@@ -55,6 +60,18 @@ public class Ray {
 		gl.glLineWidth(1.0f);
 	}
 
+	/**
+	 * 检测射线是否与三角形相交
+	 * @param v0
+	 *            三角形顶点0
+	 * @param v1
+	 *            三角形顶点1
+	 * @param v2
+	 *            三角形顶点2
+	 * @param location
+	 *            - 相交点位置，以Vector4f的形式存储。其中(x,y,z)表示相交点的具体位置，w表示相交点离射线原点的距离
+	 * @return 如果相交返回true
+	 */
 	public boolean intersectTriangle(Vector3f v0, Vector3f v1, Vector3f v2, Vector4f location) {
 		return intersect(v0, v1, v2, location);
 	}
@@ -67,6 +84,15 @@ public class Ray {
         tmp3 = new Vector3f(),
         tmp4 = new Vector3f();
 
+    /**
+	 * 射线与三角形相交检测函数
+	 * @param v0: 三角形顶点0
+	 * @param v1: 三角形顶点1
+	 * @param v2: 三角形顶点2
+	 * @param loc: 相交点位置，以Vector4f的形式存储。其中(x,y,z)表示相交点的具体位置，w表示相交点离射线原点的距离;
+	 *            如果为null则不计算相交点
+	 * @return 如果相交返回true
+	 */    
 	private boolean intersect(Vector3f v0, Vector3f v1, Vector3f v2, Vector4f loc) { // got lost here
 		Vector3f diff = tmp0;
 		Vector3f edge1 = tmp1;
@@ -86,7 +112,7 @@ public class Ray {
 		} else if (dirDotNorm < -MAX_ABSOLUTE_ERROR) {
 			sign = -1;
 			dirDotNorm = -dirDotNorm;
-		} else {
+		} else { // 射线和三角形平行，不可能相交
 			return false;
 		}
 
@@ -99,6 +125,8 @@ public class Ray {
 				if (dirDotDiffxEdge2 + dirDotEdge1xDiff <= dirDotNorm) {
 					float diffDotNorm = -sign * diff.dot(norm);
 					if (diffDotNorm >= 0.0f) {
+                        // 检测到相交事件
+						// 如果不需要计算精确相交点，则直接返回
 						if (loc == null) {
 							return true;
 						}
@@ -115,14 +143,30 @@ public class Ray {
 		return false;
 	}
 
+    /**
+	 * 检测射线是否与包围球相交
+	 * @param center: 圆心
+	 * @param radius: 半径
+	 * @return 如果相交返回true
+	 */
 	public boolean intersectSphere(Vector3f center, float radius) {
 		Vector3f diff = tmp0;
+
+        // 射线原点到圆点中心点的矢量
 		diff.sub(mvOrigin, center);
 		float r2 = radius * radius;
+
+        //两点间距离的平方和半径的平方比较
 		float a = diff.dot(diff) - r2;
-		if (a <= 0.0f) { return true; 	}
+		if (a <= 0.0f) { return true; 	} // 在包围球内
+
+        //P*Q = |P|*|Q|*cos(P, Q)
 		float b = mvDirection.dot(diff);
+
+        // 射线原点到圆点中心点的矢量与射线方向夹角>=90
 		if (b >= 0.0f) { return false; 	}
-		return b * b >= a;
+
+		// 除非射线段的长度小于射线原点到球的距离
+        return b * b >= a;
 	}
 }

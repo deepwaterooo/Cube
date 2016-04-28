@@ -9,7 +9,7 @@ public class Quat4f {
 	 */
 	public final void set(Vector3f euler) {
 		float angle = 0.0f;
-        float sx, sy, sz, cx, cy, cz;     
+        float sx, sy, sz, cx, cy, cz;     *
 		// rescale the inputs to 1/2 angle
 		angle = euler.z * 0.5f;
 		sz = (float) Math.sin(angle);

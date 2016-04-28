@@ -37,7 +37,7 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
     private Handler myHandler = new Handler() { 
             @Override 
             public void handleMessage(Message msg) { 
-                Toast.makeText(RayPickActivity.this, "selected" + msg.what + "surface", Toast.LENGTH_SHORT).show(); 
+                Toast.makeText(RayPickActivity.this, "selected " + msg.what + " surface", Toast.LENGTH_SHORT).show(); 
             } 
         }; 
  
