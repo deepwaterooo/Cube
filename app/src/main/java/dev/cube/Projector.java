@@ -138,20 +138,20 @@ public class Projector {
 	}
 	/**
 	 * Method gluUnproject
-	 * @param winx
-	 * @param winy
-	 * @param winz
+	 * @param winx - ScreenX
+	 * @param winy - OpenGLY
+	 * @param winz - 0-(p0), 1-(p1)
 	 * @param modelMatrix
 	 * @param projMatrix
 	 * @param viewport
 	 * @param obj_pos
-	 * @return
-	 */
-	public boolean gluUnProject(float winx, float winy, float winz,
-                                float[] modelMatrix, int modelMatrix_offset,
-                                float[] projMatrix, int projMatrix_offset,
+	 * @return 
+	 */ // 将2D视口坐标转换为3D空间坐标 
+	public boolean gluUnProject(float winx, float winy, float winz,          // 视口坐标 
+                                float[] modelMatrix, int modelMatrix_offset, // 视图矩阵model
+                                float[] projMatrix, int projMatrix_offset,   // 投影矩阵project
                                 int[] viewport, int viewport_offset,
-                                float[] obj_pos, int obj_pos_offset) {
+                                float[] obj_pos, int obj_pos_offset) {       // 将结果存储到 obj_pos[] 返回 
 		float[] in = this.in;
 		float[] out = this.out;
 		__gluMultMatricesd(modelMatrix, modelMatrix_offset, projMatrix, projMatrix_offset, matrix);

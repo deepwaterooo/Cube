@@ -11,6 +11,10 @@ public class Vector4f {
 		this.w = w;
 	}
 
+    public void printV() {
+        System.out.println("xyzw:  " + this.x + "  " + this.y + "  " + this.z + "  " + this.w + "\n");
+    }
+    
 	public void set(float x, float y, float z, float w) {
 		this.x = x;
 		this.y = y;

@@ -1,18 +1,21 @@
 * Cube
-- for Java programming course project. 
-- compiled, and works, just the readering is NOT what I expected. will modify texture rendering, and picked triangle color to be yellow. 
-- As the starting point for the course project (to integrate gestures, music etc), & starting point for android opengl es. will need to fully understand the code. 
+- 90% understand the code now for the base project by printing transformation matrix values out as well as basic ray picking theories, though there are still a few functions that I don't know why they are coded the way they are now (like the algorithms to speedy & GC considerations), like gluPerspective m00 m11, __gluInvertMatrixd(...), gluUnProject(...). 
+- Try to understand the other appoach of 3d tetris rotation by moving gluLookAt eye positions by googling and read some websites. 
+- This project serves as an opengl starting point, trials to get familiar with opengl like textures, shadowing, lights? maybe. And also builds as a bridge to later on implement the unfinished yet tetris 3D after this course project is done. 
+- todos:
+  - To understand and implement loading textures for opengl.
+  - Would think and implement some basic trials of moving towards 3d tetris, implement the rotatable 3d game frame.
+  - according to ray picking, how can i flag/cuboid, and rotate separately for a cube/block only (as an individual Current active cube/block), and rotate everything on surface (if I need to wrap game frame & inside into a cuboid like this cube using a sphere to reduce detection work) according to gestures when necessary for tetris game.
+- Don't understand deeper layer theories how OpenGL shaders and android hardware interacts, and why some reasonable function changes would result in dramatical app rotation speed delay, but I won't worry about this fundamental part too much till later on when I get more familiar with OpenGL. 
 - Current starting point turnning cube video was put at https://www.youtube.com/watch?v=EuILt6B0YS0 
-- The codes run just as before, I didn't do anything wrong with the code before when I tried to understand and organize the code, but my phone had too many apps open was the reason the cube was rotating slow before.
-- It is annoying gedit in Mac can NOT display chinese correctly though TextEdit could, will try find a solution to fix it later on. 
 
 * References
 - c++: http://blog.sina.com.cn/s/blog_b932048b0101fglx.html
 - gl10: http://blog.csdn.net/wangkuifeng0118/article/details/7425029
 - ideas: http://www.boyunjian.com/do/article/snapshot.do?uid=4560684719895433921
 - gl10 with threads http://www.cnblogs.com/carmanloneliness/archive/2012/01/06/2314909.html
-- read: http://vaero.blog.51cto.com/4350852/790620
-- read: http://vaero.blog.51cto.com/4350852/790637
+- src: http://vaero.blog.51cto.com/4350852/790620
+- src: http://vaero.blog.51cto.com/4350852/790637
 - youtube videoes: https://www.youtube.com/watch?v=hpnd11doMgc
 - youtube videoes:https://www.youtube.com/watch?v=3yLL9ADo-ko
 - raypick: https://github.com/76260865/OpenGLSETest
@@ -20,6 +23,28 @@
 - trial: https://github.com/MediaMonks/tilt-game-android/blob/master/sensorlib/src/main/java/org/hitlabnz/sensor_fusion_demo/representation/Vector3f.java
 - push pop matrix: http://www.cnblogs.com/bhlsheji/p/4058745.html
 - glPerspective http://blog.csdn.net/popy007/article/details/1797121
+- 拾取 http://www.docin.com.cn/p-231068818.html
+- 拾取精确 http://www.docin.com.cn/p-223688481.html
+- 豆丁： glPickMatrix http://www.docin.com.cn/p-219126610.html
+- glOrtho() Matrix http://www.docin.com.cn/p-1541079192.html
+- http://www.docin.com.cn/p-1449786833.html
+- 齐次坐标系： http://www.docin.com.cn/p-200902035.html
+- 可逆矩阵和求逆矩阵的方法 http://www.docin.com.cn/p-102655207.html
+- Direct3D中实现图无的鼠标拾取 http://www.docin.com.cn/p-25415158.html
+- 一个简单的OpenGL拾取例子 http://itdocument.com/228389737/
+- video Android 3D游戏开发(高级篇)--Opengl ES游戏引擎实现 http://www.hztraining.com/bbs/showtopic-120.aspx
+- 豆丁http://116.213.76.141/search.do?nkey=android+3d+%E6%B8%B8%E6%88%8F+%E5%BC%80%E5%8F%91+%E5%9F%BA%E7%A1%80+%E7%AC%AC27%E8%AF%BE-%E5%B0%84%E7%BA%BF%E6%8B%BE%E5%8F%96&searchcat=1002&from=end&mode=4
+- examples http://www.docin.com/p-390492547.html
+- MVPW http://www.docin.com/p-909145095.html
+- gluLookAt http://blog.csdn.net/wangdingqiaoit/article/details/39433141 与实现方法相同
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
 - 
 - 
 - 

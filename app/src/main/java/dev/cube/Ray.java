@@ -12,7 +12,7 @@ public class Ray {
 	 * 变换射线，将结果存储到out中
 	 * @param matrix - 变换矩阵
 	 * @param out - 变换后的射线
-	 */
+	 */ // 首先得到模型矩阵的逆矩阵，用这个矩阵去变换射线，变换结果就是射线在模型坐标系中的表示
 	public void transform(Matrix4f matrix, Ray out) {
 		Vector3f v0 = Vector3f.TEMP;
 		Vector3f v1 = Vector3f.TEMP1;
@@ -62,14 +62,10 @@ public class Ray {
 
 	/**
 	 * 检测射线是否与三角形相交
-	 * @param v0
-	 *            三角形顶点0
-	 * @param v1
-	 *            三角形顶点1
-	 * @param v2
-	 *            三角形顶点2
-	 * @param location
-	 *            - 相交点位置，以Vector4f的形式存储。其中(x,y,z)表示相交点的具体位置，w表示相交点离射线原点的距离
+	 * @param v0: 三角形顶点0
+	 * @param v1: 三角形顶点1
+	 * @param v2: 三角形顶点2
+	 * @param location - 相交点位置，以Vector4f的形式存储。其中(x,y,z)表示相交点的具体位置，w表示相交点离射线原点的距离
 	 * @return 如果相交返回true
 	 */
 	public boolean intersectTriangle(Vector3f v0, Vector3f v1, Vector3f v2, Vector4f location) {
@@ -93,7 +89,7 @@ public class Ray {
 	 *            如果为null则不计算相交点
 	 * @return 如果相交返回true
 	 */    
-	private boolean intersect(Vector3f v0, Vector3f v1, Vector3f v2, Vector4f loc) { // got lost here
+	private boolean intersect(Vector3f v0, Vector3f v1, Vector3f v2, Vector4f loc) { 
 		Vector3f diff = tmp0;
 		Vector3f edge1 = tmp1;
 		Vector3f edge2 = tmp2;
@@ -143,6 +139,9 @@ public class Ray {
 		return false;
 	}
 
+    // 若一个模型有上百个面，精确检测对于CPU来说是一项繁重的工作，因此要尽量少调用这个方法
+    // 排除策略，将大部分无效的拾取过滤掉
+    // 引入包围体的概念，就是将一组物体完全包容起来的封闭空间。可大大提高几何运算的效率
     /**
 	 * 检测射线是否与包围球相交
 	 * @param center: 圆心
@@ -169,4 +168,6 @@ public class Ray {
 		// 除非射线段的长度小于射线原点到球的距离
         return b * b >= a;
 	}
+    // 
+    
 }

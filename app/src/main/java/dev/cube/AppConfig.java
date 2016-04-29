@@ -7,9 +7,11 @@ public class AppConfig {
 
     // 当前系统的投影矩阵，列序填充
 	public static float[] gpMatrixProjectArray = new float[16];
+
     // 当前系统的视图矩阵，列序填充
 	public static float[] gpMatrixViewArray = new float[16];
-	public static int[] gpViewport = new int[4];
+
+    public static int[] gpViewport = new int[4];
 
 	public static float gScreenX, gScreenY;
 	public static boolean Turning = false;

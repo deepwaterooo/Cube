@@ -17,6 +17,10 @@ public class Vector3f {
 		this.z = z;
 	}
 
+    public void printV() {
+        System.out.println(this.x + "  " + this.y + "  " + this.z + "\n");
+    }
+    
 	public final void interpolate(Vector3f t1, Vector3f t2, float alpha) {
 		this.x = (1 - alpha) * t1.x + alpha * t2.x;
 		this.y = (1 - alpha) * t1.y + alpha * t2.y;

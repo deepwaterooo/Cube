@@ -286,6 +286,10 @@ public class Matrix4f {
 	}
 
     public final void invTransformRotate(Vector3f normal, Vector3f normalOut) {
+        // [ 00| 01| 02| 03 ]  [normal.x]
+        // [ 10| 11| 12| 13 ]  [normal.y]
+        // [ 20| 21| 22| 23 ]  [normal.z]
+        // [ 30  31  32  33 ]  [        ]
 		float x, y;
 		x = m00 * normal.x + m10 * normal.y + m20 * normal.z;
 		y = m01 * normal.x + m11 * normal.y + m21 * normal.z;
@@ -293,16 +297,11 @@ public class Matrix4f {
 		normalOut.x = x;
 		normalOut.y = y;
     }
-	/*public final void invTransformRotate(Vector3f normal, Vector3f normalOut) {
-        // [ 00| 01| 02| 03 ]  [normal.x]
-        // [ 10| 11| 12| 13 ]  [normal.y]
-        // [ 20| 21| 22| 23 ]  [normal.z]
-        // [ 30  31  32  33 ]  [        ]
-		normalOut.x = m00 * normal.x + m10 * normal.y + m20 * normal.z;
-		normalOut.y = m01 * normal.x + m11 * normal.y + m21 * normal.z;
-		normalOut.z = m02 * normal.x + m12 * normal.y + m22 * normal.z;  
-        
-        }*/
+    /*public final void invTransformRotate(Vector3f normal, Vector3f normalOut) { // don't understand why these two methods dramatically changed app speed ???
+      normalOut.x = m00 * normal.x + m10 * normal.y + m20 * normal.z;
+      normalOut.y = m01 * normal.x + m11 * normal.y + m21 * normal.z;
+      normalOut.z = m02 * normal.x + m12 * normal.y + m22 * normal.z;  
+      }*/
 
 	public final void invTransform(Vector3f point, Vector3f pointOut) {
 		Vector3f tmp = new Vector3f();
@@ -312,16 +311,11 @@ public class Matrix4f {
 		invTransformRotate(tmp, pointOut); // 
 	}
 
-	/*public final void transform(Vector3f point, Vector3f pointOut) {
+	public final void transform(Vector3f point, Vector3f pointOut) {
         // [ 00 01 02 03 ] [point.x]
         // [ 10 11 12 13 ] [point.y]
         // [ 20 21 22 23 ] [point.z]
         // [ 30 31 32 33 ] [    1  ]
-		pointOut.x = m00 * point.x + m01 * point.y + m02 * point.z + m03;
-		pointOut.y = m10 * point.x + m11 * point.y + m12 * point.z + m13;
-		pointOut.z = m20 * point.x + m21 * point.y + m22 * point.z + m23;
-        }*/
-	public final void transform(Vector3f point, Vector3f pointOut) {
 		float x, y;
 		x = m00 * point.x + m01 * point.y + m02 * point.z + m03;
 		y = m10 * point.x + m11 * point.y + m12 * point.z + m13;
@@ -329,6 +323,11 @@ public class Matrix4f {
 		pointOut.x = x;
 		pointOut.y = y;
     }
+	/*public final void transform(Vector3f point, Vector3f pointOut) {  // don't understand why these two methods dramatically changed app speed ???
+      pointOut.x = m00 * point.x + m01 * point.y + m02 * point.z + m03;
+      pointOut.y = m10 * point.x + m11 * point.y + m12 * point.z + m13;
+      pointOut.z = m20 * point.x + m21 * point.y + m22 * point.z + m23;
+      }*/
 
 	public final void transpose() { // Sets the value of this matrix to its transpose in place.
         // [ 00 01 02 03 ]  [ 00 10 20 30 ]
@@ -637,65 +636,84 @@ public class Matrix4f {
 	 * @param center
 	 * @param up
 	 * @param out - 返回的计算结果矩阵
-	 */
+	 */  // (0, 0, 7,  0, 0, 0,  0, 1, 0)
 	public static void gluLookAt(Vector3f eye, Vector3f center, Vector3f up, Matrix4f out) { // think once more
-		tmpF.x = center.x - eye.x; 
-		tmpF.y = center.y - eye.y;
-		tmpF.z = center.z - eye.z;
-
-		tmpF.normalize(); // N    (float) Math.sqrt(x * x + y * y + z * z); // ^(-1)
-		tmpUp.set(up);    
-		tmpUp.normalize(); // normalize here ?????
-
-		tmpS.cross(tmpF, tmpUp); // tmpS U = V_up cross N
-		tmpT.cross(tmpS, tmpF);  // tmpT V = U cross N
-
+		tmpF.x = center.x - eye.x; // 0 
+		tmpF.y = center.y - eye.y; // 0
+		tmpF.z = center.z - eye.z; // -7
+		tmpF.normalize(); // Vz --> Vc (0, 0, -1)
+		tmpUp.set(up);    // Vx --> Va (0, 1, 0)
+		tmpUp.normalize();          // (0, 1, 0)
+		tmpS.cross(tmpF, tmpUp); // tmpS U = V_up cross N  // (1, 0, 0)
+		tmpT.cross(tmpS, tmpF);  // tmpT V = U cross N     // (0, 1, 0)
 		out.m00 = tmpS.x;  
 		out.m10 = tmpT.x;
 		out.m20 = -tmpF.x;
 		out.m30 = 0;
-
 		out.m01 = tmpS.y;
 		out.m11 = tmpT.y;
 		out.m21 = -tmpF.y;
 		out.m31 = 0;
-
 		out.m02 = tmpS.z;
 		out.m12 = tmpT.z;
 		out.m22 = -tmpF.z;
 		out.m32 = 0;
-
-		out.m03 = 0;  // [ u0  u1  u2  0 ]
-		out.m13 = 0;  // [ v0  v1  v2  0 ]
-		out.m23 = 0;  // [ -n0 -n1 -n2 0 ]
-		out.m33 = 1;  // [ 0   0   0   1 ]
+		out.m03 = 0;  // [ u0  u1  u2  0 ]  [ 1 0 0 0 ] //out [ 1 0 0 -0  ] // temMat = out final, correct
+		out.m13 = 0;  // [ v0  v1  v2  0 ]  [ 0 1 0 0 ]       [ 0 1 0 -0  ]     
+		out.m23 = 0;  // [ -n0 -n1 -n2 0 ]  [ 0 0 1 0 ]       [ 0 0 1 -7 ]     
+		out.m33 = 1;  // [ 0   0   0   1 ]  [ 0 0 0 1 ]       [ 0 0 0 1  ]     
 		tmpMat.setIdentity();
 		tmpMat.setTranslation(-eye.x, -eye.y, -eye.z);
-		out.mul(tmpMat); // slightly different than I thought here, double check
+        //System.out.println("tmpMat in Matrix4f: ");
+        //tmpMat.printMatrix44();
+        out.mul(tmpMat); // different approaches to get here, but result is the same & fixed!
+        //System.out.println("out in Matrix4f: ");
+        //out.printMatrix44();
 	}
 
+    public void printMatrix44() {
+        System.out.print(this.m00 + "  ");
+        System.out.print(this.m01 + "  ");
+        System.out.print(this.m02 + "  ");
+        System.out.print(this.m03 + "  \n");
+        System.out.print(this.m10 + "  ");
+        System.out.print(this.m11 + "  ");
+        System.out.print(this.m12 + "  ");
+        System.out.print(this.m13 + "  \n");
+        System.out.print(this.m20 + "  ");
+        System.out.print(this.m21 + "  ");
+        System.out.print(this.m22 + "  ");
+        System.out.print(this.m23 + "  \n");
+        System.out.print(this.m30 + "  ");
+        System.out.print(this.m31 + "  ");
+        System.out.print(this.m32 + "  ");
+        System.out.print(this.m33 + "  \n");
+    }
+    
     /**
 	 * 模拟实现GLU.gluPersective()函数，参数相同，将计算结果填入返回矩阵中
-	 * @param fovy
-	 * @param aspect
-	 * @param zNear
-	 * @param zFar
+	 * @param fovy - 眼睛睁开的角度，即，视角的大小。与焦距对应，视角小焦距大为长焦，视角大焦距小为广角, 45.0f
+	 * @param aspect - 实际窗口的纵横比，x/y
+	 * @param zNear - 近处的截面
+	 * @param zFar - 远处的截面
 	 * @param out - 计算结果返回
-	 */    
+	 */
+    // 投影变换的效果是建立一个裁剪用的视景体（锥台体或者长方体），投影位于其中的物体
+    // (45.0f, aspect, 1, 10, AppConfig.gMatProject)
 	public static void gluPersective(float fovy, float aspect, float zNear, float zFar, Matrix4f out) {
-		float sine, cotangent, deltaZ;
-		float radians = (float) (fovy / 2 * Math.PI / 180); // fovy * Math.PI
-		deltaZ = zFar - zNear;  // dZ                       //    2 * 180     ??? coufused on this r degree
+		float sine, cotangent, deltaZ;    // Math.PI / 180,  degree to radians
+		float radians = (float) (fovy / 2 * Math.PI / 180); 
+		deltaZ = zFar - zNear;  // dZ = 9                     
 		sine = (float) Math.sin(radians);
 		if ((deltaZ == 0) || (sine == 0) || (aspect == 0)) {
 			return;
 		}
 		cotangent = (float) Math.cos(radians) / sine;
 		out.setIdentity();
-		out.m00 = cotangent / aspect;          
-		out.m11 = cotangent;
+		out.m00 = cotangent / aspect;    //       
+		out.m11 = cotangent;             // 
 		out.m22 = -(zFar + zNear) / deltaZ;
-		out.m32 = -1;
+		out.m32 = -1;  // change z direction
 		out.m23 = -2 * zNear * zFar / deltaZ;
 		out.m33 = 0;
 	}
