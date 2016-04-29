@@ -4,8 +4,9 @@
 - This project serves as an opengl starting point, trials to get familiar with opengl like textures, shadowing, lights? maybe. And also builds as a bridge to later on implement the unfinished yet tetris 3D after this course project is done. 
 - todos:
   - To understand and implement loading textures for opengl.
-  - Would think and implement some basic trials of moving towards 3d tetris, implement the rotatable 3d game frame.
-  - according to ray picking, how can i flag/cuboid, and rotate separately for a cube/block only (as an individual Current active cube/block), and rotate everything on surface (if I need to wrap game frame & inside into a cuboid like this cube using a sphere to reduce detection work) according to gestures when necessary for tetris game.
+  - By separating game x y z axis and grids out of render, I could later on potentially implement separated rotation for Current active block, or for all objects in surface, but how would I maintain two transformation matrix in order to rotation separately and apply the correct one when needed? another gMatModel matrix for (frame + Grid) in AppConfig? would any simple flag work? or another layer of gl.glPushMatrix() gl.glPopMatrix() pair? I still need to think about it. 
+  - When rotation is NOT any problem, how should I design the 3d game board for tetris, the cube chains/matrixes?
+  - according to ray picking, how can i flag/cuboid, and rotate separately for a cube/block only (as an individual Current active cube/block), and rotate everything on surface (if I need to wrap game frame & inside into a cuboid like this cube using a sphere to reduce detection work) according to gestures when necessary for tetris game. sphere is way easier. Cuboid, how?
 - Don't understand deeper layer theories how OpenGL shaders and android hardware interacts, and why some reasonable function changes would result in dramatical app rotation speed delay, but I won't worry about this fundamental part too much till later on when I get more familiar with OpenGL. 
 - Current starting point turnning cube video was put at https://www.youtube.com/watch?v=EuILt6B0YS0 
 
@@ -37,7 +38,7 @@
 - examples http://www.docin.com/p-390492547.html
 - MVPW http://www.docin.com/p-909145095.html
 - gluLookAt http://blog.csdn.net/wangdingqiaoit/article/details/39433141 与实现方法相同
-- 
+- work on camera http://blog.csdn.net/wangdingqiaoit/article/details/39937019
 - 
 - 
 - 

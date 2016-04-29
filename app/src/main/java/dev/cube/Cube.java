@@ -7,8 +7,7 @@ import java.nio.ByteOrder;
 public class Cube { 
     public static final int VERTEX_BUFFER = 0; 
     public static final int TEXTURE_BUFFER = 1; 
-    private float one = 1.0f; 
- 
+    private float one = 0.5f; //0.25f; //0.11428f; // 0.25f; 
     private float[] vertices = new float[] { -one, -one, one,   one, -one, one,   one, one, one,   -one, one, one, // 前 面
                                              -one, -one, -one,  -one, one, -one,  one, one, -one,  one, -one, -one,// 后
                                              -one, one, -one,   -one, one, one,   one, one, one,   one, one, -one, // 上

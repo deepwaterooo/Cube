@@ -19,19 +19,27 @@ import android.opengl.GLUtils;
 public class RayPickRenderer implements Renderer { 
     private OnSurfacePickedListener onSurfacePickedListener; 
     private Context mContext; 
-    private Cube cube; 
+    private Cube cube;
+    private Frame frame;
+    private Grid grid;
+    
     int texture = -1; 
     public float mfAngleX = 0.0f; 
     public float mfAngleY = 0.0f; 
     public float gesDistance = 0.0f;
     
-    private Vector3f mvEye = new Vector3f(0, 0, 7f);
+    //private Vector3f mvEye = new Vector3f(0, 0, 7f);
+    //private Vector3f mvEye = new Vector3f(5.0f, 10.0f, -5.0f);
+    private Vector3f mvEye = new Vector3f(15.0f, -4.0f, 8.0f);
     private Vector3f mvCenter = new Vector3f(0, 0, 0);
-    private Vector3f mvUp = new Vector3f(0, 1, 0); 
+    //private Vector3f mvUp = new Vector3f(0, 1, 0);
+    private Vector3f mvUp = new Vector3f(0, 0f, 1.0f); 
 
     public RayPickRenderer(Context context) { 
         mContext = context; 
-        cube = new Cube(); 
+        cube = new Cube();
+        frame = new Frame(6, 10);
+        grid = new Grid(5);
     } 
  
     @Override 
@@ -39,15 +47,18 @@ public class RayPickRenderer implements Renderer {
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT); // 清除屏幕和深度缓存
         gl.glLoadIdentity(); // 重置当前的模型观察矩阵
         setUpCamera(gl);     // 紧接着设置模型视图矩阵
- 
+        /*
+        gl.glPushMatrix();
+        gl.glTranslatef(-2.5f, -4.0f, 0f);
+        drawCoordinateSystem(gl);         
+        gl.glPopMatrix(); 
+        */
         gl.glPushMatrix();
         drawModel(gl); // 渲染物体
         gl.glPopMatrix(); 
- 
         // gl.glPushMatrix(); 
         // PickFactory.getPickRay().draw(gl); // 渲染射线 
         // gl.glPopMatrix(); 
- 
         gl.glPushMatrix();
         drawPickedTriangle(gl); // 渲染选中的三角形
         gl.glPopMatrix(); 
@@ -58,17 +69,12 @@ public class RayPickRenderer implements Renderer {
     private void setUpCamera(GL10 gl) { 
         gl.glMatrixMode(GL10.GL_MODELVIEW); // 设置模型视图矩阵
         gl.glLoadIdentity(); 
-        // GLU.gluLookAt(gl, mfEyeX, mfEyeY, mfEyeZ, mfCenterX, mfCenterY, mfCenterZ, 0, 1, 0); //系统提供
         Matrix4f.gluLookAt(mvEye, mvCenter, mvUp, AppConfig.gMatView); // static [4][4]
-        gl.glLoadMatrixf(AppConfig.gMatView.asFloatBuffer());  // FloatBuffer [16]
+        gl.glLoadMatrixf(AppConfig.gMatView.asFloatBuffer());          // FloatBuffer [16]
     } 
  
-    // private Matrix4f matRotX = new Matrix4f(); 
-    // private Matrix4f matRotY = new Matrix4f(); 
     private Matrix4f matRot = new Matrix4f(); 
-
     private Vector3f point; 
- 
     private Vector3f transformedSphereCenter = new Vector3f(); 
     private Ray transformedRay = new Ray(); 
     private Matrix4f matInvertModel = new Matrix4f(); 
@@ -80,39 +86,23 @@ public class RayPickRenderer implements Renderer {
     private FloatBuffer mBufPickedTriangle = IBufferFactory.newFloatBuffer(3 * 3); 
  
     private void drawModel(GL10 gl) { // 渲染模型
-        // 首先对模型进行变换 
-        // -------使用系统函数进行变换 
-        // gl.glRotatef(mfAngleX, 1, 0, 0);//绕X轴旋转 
-        // gl.glRotatef(mfAngleY, 0, 1, 0);//绕Y轴旋转 
-        // -------托管方式进行变换 
-        // matRotX.setIdentity(); 
-        // matRotY.setIdentity(); 
-        // matRotX.rotX((float) (mfAngleX * Math.PI / 180)); 
-        // matRotY.rotY((float) (mfAngleY * Math.PI / 180)); 
-        // AppConfig.gMatModel.set(matRotX); 
-        // AppConfig.gMatModel.mul(matRotY); 
- 
         /* 以下方式完全按照手势方向旋转 */
         matRot.setIdentity(); 
-
         point = new Vector3f(mfAngleX, mfAngleY, 0); 
  
         try { // confusing for this part
             // 转换到模型内部的点，先要求逆             
             matInvertModel.set(AppConfig.gMatModel); 
             matInvertModel.invert();
-            //System.out.println("matInvertModel in Renderer: ");
-            //matInvertModel.printMatrix44(); // I
+            //matInvertModel.printMatrix44(); // happen to be I
             matInvertModel.transform(point, point); // point still changes sometimes
 
             float d = Vector3f.distance(new Vector3f(), point); // (0, 0, 0) ==> Point 
-            //System.out.println("d: " + d);
 
             // 再减少误差
             if (Math.abs(d - gesDistance) <= 1E-4) {
                 // 绕这个单位向量旋转（由于误差可能会产生缩放而使得模型消失不见）
                 matRot.glRotatef((float) (gesDistance * Math.PI / 180), point.x / d, point.y / d, point.z / d);
-                //System.out.println("matRot in Renderer: ");
                 //matRot.printMatrix44(); 
 
                 // 旋转后在原基础上再转
@@ -137,10 +127,88 @@ public class RayPickRenderer implements Renderer {
         gl.glDisable(GL10.GL_TEXTURE_2D); 
         gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY); 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY); 
-        // 渲染坐标系
+
         drawCoordinateSystem(gl); 
     } 
 
+    private void drawCoordinateSystem(GL10 gl) { 
+        gl.glDisable(GL10.GL_DEPTH_TEST); // 暂时禁用深度测试 
+        gl.glLineWidth(2.0f);             // 设置点和线的宽度 
+        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY); // 仅仅启用顶点数据 
+
+        gl.glPushMatrix();
+        gl.glTranslatef(-2.5f, -2.5f, -0.5f);
+        frame.draw(gl);
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        gl.glTranslatef(-2.5f, -2.5f, -0.5f);
+        grid.draw(gl);
+        gl.glPopMatrix();
+        
+        // 重置 
+        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY); 
+        gl.glLineWidth(1.0f); 
+        gl.glEnable(GL10.GL_DEPTH_TEST); 
+    } 
+
+    /** 
+     * 渲染选中的三角形 
+     */ 
+    private void drawPickedTriangle(GL10 gl) { 
+        if (!AppConfig.gbTrianglePicked) return; 
+        // 由于返回的拾取三角形数据是出于模型坐标系中 
+        // 因此需要经过模型变换，将它们变换到世界坐标系中进行渲染 
+        gl.glMultMatrixf(AppConfig.gMatModel.asFloatBuffer());  // 设置模型变换矩阵 
+        gl.glColor4f(1.0f, 1.0f, 0.0f, 0.7f);  // set to be yellow
+        
+        // 开启Blend混合模式 
+        gl.glEnable(GL10.GL_BLEND); 
+        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA); 
+
+        // 禁用无关属性，仅仅使用纯色填充 
+        gl.glDisable(GL10.GL_DEPTH_TEST); 
+        gl.glDisable(GL10.GL_TEXTURE_2D); 
+
+        // 开始绑定渲染顶点数据 
+        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY); 
+        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, mBufPickedTriangle); // 选中三角形物体坐标系顶点坐标
+        gl.glDrawArrays(GL10.GL_TRIANGLES, 0, 3); 
+
+        // 重置相关属性 
+        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY); 
+        gl.glEnable(GL10.GL_DEPTH_TEST); 
+        gl.glDisable(GL10.GL_BLEND); 
+    } 
+ 
+    /** 
+     * 创建绘图表面时调用 
+     */ 
+    @Override 
+    public void onSurfaceCreated(GL10 gl, EGLConfig config) { 
+        // 全局性设置 
+        gl.glEnable(GL10.GL_DITHER); 
+ 
+        gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST); 
+        // 设置清屏背景颜色 
+        gl.glClearColor(0.5f, 0.5f, 0.5f, 1); 
+        // 设置着色模型为平滑着色 
+        gl.glShadeModel(GL10.GL_SMOOTH); 
+ 
+        // 启用背面剪裁 
+        gl.glEnable(GL10.GL_CULL_FACE); 
+        gl.glCullFace(GL10.GL_BACK); 
+        // 启用深度测试 
+        gl.glEnable(GL10.GL_DEPTH_TEST); 
+        // 禁用光照和混合 
+        gl.glDisable(GL10.GL_LIGHTING); 
+        gl.glDisable(GL10.GL_BLEND); 
+ 
+        loadTexture(gl); 
+ 
+        AppConfig.gMatModel.setIdentity(); 
+    } 
+ 
     // 更新拾取事件
     private void updatePick() {
         // 若拾取射线与模型的包围体不相交，就无须进行下一步最为耗时的射线与模型的精确三角形相交检测 
@@ -196,108 +264,6 @@ public class RayPickRenderer implements Renderer {
     } 
 
     /** 
-     * 渲染选中的三角形 
-     */ 
-    private void drawPickedTriangle(GL10 gl) { 
-        if (!AppConfig.gbTrianglePicked) return; 
-
-        // 由于返回的拾取三角形数据是出于模型坐标系中 
-        // 因此需要经过模型变换，将它们变换到世界坐标系中进行渲染 
-        // 设置模型变换矩阵 
-        gl.glMultMatrixf(AppConfig.gMatModel.asFloatBuffer()); 
-        gl.glColor4f(1.0f, 1.0f, 0.0f, 0.7f);  // set to be yellow
-        
-        // 开启Blend混合模式 
-        gl.glEnable(GL10.GL_BLEND); 
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA); 
-
-        // 禁用无关属性，仅仅使用纯色填充 
-        gl.glDisable(GL10.GL_DEPTH_TEST); 
-        gl.glDisable(GL10.GL_TEXTURE_2D); 
-
-        // 开始绑定渲染顶点数据 
-        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY); 
-        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, mBufPickedTriangle); // 选中三角形物体坐标系顶点坐标
-        // 提交渲染 
-        gl.glDrawArrays(GL10.GL_TRIANGLES, 0, 3); 
-
-        // 重置相关属性 
-        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY); 
-        gl.glEnable(GL10.GL_DEPTH_TEST); 
-        gl.glDisable(GL10.GL_BLEND); 
-    } 
- 
-    /** 
-     * 渲染坐标系 
-     */ 
-    private void drawCoordinateSystem(GL10 gl) { 
-        // 暂时禁用深度测试 
-        gl.glDisable(GL10.GL_DEPTH_TEST); 
-        // 设置点和线的宽度 
-        gl.glLineWidth(2.0f); 
-        // 仅仅启用顶点数据 
-        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY); 
- 
-        FloatBuffer fb = IBufferFactory.newFloatBuffer(3 * 2); 
-        fb.put(new float[] { 0, 0, 0, 1.4f, 0, 0 }); 
-        fb.position(0); 
- 
-        // 渲染X轴 
-        gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);// 设置红色 
-        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, fb); 
-        gl.glDrawArrays(GL10.GL_LINES, 0, 2); 
- 
-        fb.clear(); 
-        fb.put(new float[] { 0, 0, 0, 0, 1.4f, 0 }); 
-        fb.position(0); 
-        // 渲染Y轴 
-        gl.glColor4f(1.0f, 1.0f, 0.0f, 1.0f);// 设置黄色 
-        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, fb); 
-        gl.glDrawArrays(GL10.GL_LINES, 0, 2); 
- 
-        fb.clear(); 
-        fb.put(new float[] { 0, 0, 0, 0, 0, 1.4f }); 
-        fb.position(0); 
-        // 渲染Z轴 
-        gl.glColor4f(0.0f, 0.0f, 1.0f, 1.0f);// 设置蓝色 
-        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, fb); 
-        gl.glDrawArrays(GL10.GL_LINES, 0, 2); 
- 
-        // 重置 
-        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY); 
-        gl.glLineWidth(1.0f); 
-        gl.glEnable(GL10.GL_DEPTH_TEST); 
-    } 
- 
-    /** 
-     * 创建绘图表面时调用 
-     */ 
-    @Override 
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) { 
-        // 全局性设置 
-        gl.glEnable(GL10.GL_DITHER); 
- 
-        gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST); 
-        // 设置清屏背景颜色 
-        gl.glClearColor(0.5f, 0.5f, 0.5f, 1); 
-        // 设置着色模型为平滑着色 
-        gl.glShadeModel(GL10.GL_SMOOTH); 
- 
-        // 启用背面剪裁 
-        gl.glEnable(GL10.GL_CULL_FACE); 
-        gl.glCullFace(GL10.GL_BACK); 
-        // 启用深度测试 
-        gl.glEnable(GL10.GL_DEPTH_TEST); 
-        // 禁用光照和混合 
-        gl.glDisable(GL10.GL_LIGHTING); 
-        gl.glDisable(GL10.GL_BLEND); 
- 
-        loadTexture(gl); 
- 
-        AppConfig.gMatModel.setIdentity(); 
-    } 
- 
-    /** 
      * 当绘图表面尺寸发生改变时调用 
      */ 
     @Override 
@@ -310,20 +276,13 @@ public class RayPickRenderer implements Renderer {
         AppConfig.gpViewport[3] = height; 
  
         // 设置投影矩阵 
-        float ratio = (float) width / height;// 屏幕宽高比 
+        float ratio = (float) width / height;// 屏幕宽高比 renderer ratio: 0.62827224
+
         gl.glMatrixMode(GL10.GL_PROJECTION); 
         gl.glLoadIdentity(); 
 
         // GLU.gluPerspective(gl, 45.0f, ratio, 1, 5000);系统提供 
-        Matrix4f.gluPersective(45.0f, ratio, 1, 10, AppConfig.gMatProject);
-        //System.out.println("Renderer AppConfig.gMatProject matrix: ");
-        //AppConfig.gMatProject.printMatrix44();
-        //I/System.out: Renderer AppConfig.gMatProject matrix: 
-        //I/System.out: 3.8426232  0.0  0.0  0.0  
-        //I/System.out: 0.0  2.4142134  0.0  0.0  
-        //I/System.out: 0.0  0.0  -1.2222222  -2.2222223  
-        //I/System.out: 0.0  0.0  -1.0  0.0  
-        
+        Matrix4f.gluPersective(45.0f, ratio, 0.1f, 100.0f, AppConfig.gMatProject);
         gl.glLoadMatrixf(AppConfig.gMatProject.asFloatBuffer()); 
         AppConfig.gMatProject.fillFloatArray(AppConfig.gpMatrixProjectArray); 
         // 每次修改完GL_PROJECTION后，最好将当前矩阵模型设置回GL_MODELVIEW 
