@@ -1,13 +1,18 @@
 * Cube
 - 90% understand the code now for the base project by printing transformation matrix values out as well as basic ray picking theories, though there are still a few functions that I don't know why they are coded the way they are now (like the algorithms to speedy & GC considerations), like gluPerspective m00 m11, __gluInvertMatrixd(...), gluUnProject(...). 
 - Try to understand the other appoach of 3d tetris rotation by moving gluLookAt eye positions by googling and read some websites. 
-- This project serves as an opengl starting point, trials to get familiar with opengl like textures, shadowing, lights? maybe. And also builds as a bridge to later on implement the unfinished yet tetris 3D after this course project is done. 
+- This project serves as an opengl starting point, trials to get familiar with opengl like textures, shadowing, lights? maybe. And also builds as a bridge to later on implement the unfinished yet tetris 3D after this course project is done.
+- Tetris and plants vs Zombie's should be my personal interested project, so do want to make this course project the same or to some extent tetris, will add music to the cube then. A commit for later on check out if any tetris version eeds it. 
 - todos:
-  - To understand and implement loading textures for opengl.
+  - Fix the rendered sheep to be the way I like - one animal on one surface, with different music when touched on the surface.
   - By separating game x y z axis and grids out of render, I could later on potentially implement separated rotation for Current active block, or for all objects in surface, but how would I maintain two transformation matrix in order to rotation separately and apply the correct one when needed? another gMatModel matrix for (frame + Grid) in AppConfig? would any simple flag work? or another layer of gl.glPushMatrix() gl.glPopMatrix() pair? I still need to think about it. 
   - When rotation is NOT any problem, how should I design the 3d game board for tetris, the cube chains/matrixes?
   - according to ray picking, how can i flag/cuboid, and rotate separately for a cube/block only (as an individual Current active cube/block), and rotate everything on surface (if I need to wrap game frame & inside into a cuboid like this cube using a sphere to reduce detection work) according to gestures when necessary for tetris game. sphere is way easier. Cuboid, how?
-- Don't understand deeper layer theories how OpenGL shaders and android hardware interacts, and why some reasonable function changes would result in dramatical app rotation speed delay, but I won't worry about this fundamental part too much till later on when I get more familiar with OpenGL. 
+- Current look: 
+
+[[./Screenshot_2016-04-30-10-32-08.png]]
+[[./Screenshot_2016-04-30-10-39-54.png]]
+
 - Current starting point turnning cube video was put at https://www.youtube.com/watch?v=EuILt6B0YS0 
 
 * References
@@ -39,9 +44,9 @@
 - MVPW http://www.docin.com/p-909145095.html
 - gluLookAt http://blog.csdn.net/wangdingqiaoit/article/details/39433141 与实现方法相同
 - work on camera http://blog.csdn.net/wangdingqiaoit/article/details/39937019
-- 
-- 
-- 
+- 纹理贴图： http://wenku.baidu.com/view/b7d4c2dc5022aaea998f0f61.html
+- 颜色材质与纹理映射 http://202.114.108.237/Download/8a712530-bc61-4990-a86f-9ddd3300bf9d.pdf
+- 视差贴图(Parallax Mapping) 难 http://learnopengl-cn.readthedocs.io/zh/latest/05%20Advanced%20Lighting/05%20Parallax%20Mapping/
 - 
 - 
 - 

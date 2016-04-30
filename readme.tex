@@ -1,0 +1,114 @@
+% Created 2016-04-30 Sat 10:42
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{CJK}
+\usepackage{indentfirst}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[CJKbookmarks=true]{hyperref}
+%% Define a museincludegraphics command, which is
+%%   able to handle escaped special characters in image filenames.
+\def\museincludegraphics{%
+  \begingroup
+  \catcode`\|=0
+  \catcode`\\=12
+  \catcode`\#=12
+  \includegraphics[width=0.75\textwidth]
+}
+\author{qunyan}
+\date{\today}
+\title{readme}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 24.5.1 (Org mode 8.2.7c)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Cube}
+\label{sec-1}
+\begin{itemize}
+\item 90\% understand the code now for the base project by printing transformation matrix values out as well as basic ray picking theories, though there are still a few functions that I don't know why they are coded the way they are now (like the algorithms to speedy \& GC considerations), like gluPerspective m00 m11, \_$_{\text{gluInvertMatrixd}}$(\ldots{}), gluUnProject(\ldots{}).
+\item Try to understand the other appoach of 3d tetris rotation by moving gluLookAt eye positions by googling and read some websites.
+\item This project serves as an opengl starting point, trials to get familiar with opengl like textures, shadowing, lights? maybe. And also builds as a bridge to later on implement the unfinished yet tetris 3D after this course project is done.
+\item Tetris and plants vs Zombie's should be my personal interested project, so do want to make this course project the same or to some extent tetris, will add music to the cube then. A commit for later on check out if any tetris version eeds it.
+\item todos:
+\begin{itemize}
+\item Fix the rendered sheep to be the way I like - one animal on one surface, with different music when touched on the surface.
+\item By separating game x y z axis and grids out of render, I could later on potentially implement separated rotation for Current active block, or for all objects in surface, but how would I maintain two transformation matrix in order to rotation separately and apply the correct one when needed? another gMatModel matrix for (frame + Grid) in AppConfig? would any simple flag work? or another layer of gl.glPushMatrix() gl.glPopMatrix() pair? I still need to think about it.
+\item When rotation is NOT any problem, how should I design the 3d game board for tetris, the cube chains/matrixes?
+\item according to ray picking, how can i flag/cuboid, and rotate separately for a cube/block only (as an individual Current active cube/block), and rotate everything on surface (if I need to wrap game frame \& inside into a cuboid like this cube using a sphere to reduce detection work) according to gestures when necessary for tetris game. sphere is way easier. Cuboid, how?
+\end{itemize}
+\item Current look:
+\end{itemize}
+
+\includegraphics[width=.9\linewidth]{./Screenshot_2016-04-30-10-32-08.png}
+\includegraphics[width=.9\linewidth]{./Screenshot_2016-04-30-10-39-54.png}
+
+\begin{itemize}
+\item Current starting point turnning cube video was put at \url{https://www.youtube.com/watch?v=EuILt6B0YS0}
+\end{itemize}
+
+\section{References}
+\label{sec-2}
+\begin{itemize}
+\item c++: \url{http://blog.sina.com.cn/s/blog_b932048b0101fglx.html}
+\item gl10: \url{http://blog.csdn.net/wangkuifeng0118/article/details/7425029}
+\item ideas: \url{http://www.boyunjian.com/do/article/snapshot.do?uid=4560684719895433921}
+\item gl10 with threads \url{http://www.cnblogs.com/carmanloneliness/archive/2012/01/06/2314909.html}
+\item src: \url{http://vaero.blog.51cto.com/4350852/790620}
+\item src: \url{http://vaero.blog.51cto.com/4350852/790637}
+\item youtube videoes: \url{https://www.youtube.com/watch?v=hpnd11doMgc}
+\item youtube videoes:\url{https://www.youtube.com/watch?v=3yLL9ADo-ko}
+\item raypick: \url{https://github.com/76260865/OpenGLSETest}
+\item trial: \url{http://www.j2megame.com/html/xwzx/ty/1416.html}
+\item trial: \url{https://github.com/MediaMonks/tilt-game-android/blob/master/sensorlib/src/main/java/org/hitlabnz/sensor_fusion_demo/representation/Vector3f.java}
+\item push pop matrix: \url{http://www.cnblogs.com/bhlsheji/p/4058745.html}
+\item glPerspective \url{http://blog.csdn.net/popy007/article/details/1797121}
+\item 拾取 \url{http://www.docin.com.cn/p-231068818.html}
+\item 拾取精确 \url{http://www.docin.com.cn/p-223688481.html}
+\item 豆丁： glPickMatrix \url{http://www.docin.com.cn/p-219126610.html}
+\item glOrtho() Matrix \url{http://www.docin.com.cn/p-1541079192.html}
+\item \url{http://www.docin.com.cn/p-1449786833.html}
+\item 齐次坐标系： \url{http://www.docin.com.cn/p-200902035.html}
+\item 可逆矩阵和求逆矩阵的方法 \url{http://www.docin.com.cn/p-102655207.html}
+\item Direct3D中实现图无的鼠标拾取 \url{http://www.docin.com.cn/p-25415158.html}
+\item 一个简单的OpenGL拾取例子 \url{http://itdocument.com/228389737/}
+\item video Android 3D游戏开发(高级篇)--Opengl ES游戏引擎实现 \url{http://www.hztraining.com/bbs/showtopic-120.aspx}
+\item 豆丁\url{http://116.213.76.141/search.do?nkey=android+3d+\%E6\%B8\%B8\%E6\%88\%8F+\%E5\%BC\%80\%E5\%8F\%91+\%E5\%9F\%BA\%E7\%A1\%80+\%E7\%AC\%AC27\%E8\%AF\%BE-\%E5\%B0\%84\%E7\%BA\%BF\%E6\%8B\%BE\%E5\%8F\%96&searchcat=1002&from=end&mode=4}
+\item examples \url{http://www.docin.com/p-390492547.html}
+\item MVPW \url{http://www.docin.com/p-909145095.html}
+\item gluLookAt \url{http://blog.csdn.net/wangdingqiaoit/article/details/39433141} 与实现方法相同
+\item work on camera \url{http://blog.csdn.net/wangdingqiaoit/article/details/39937019}
+\item 纹理贴图： \url{http://wenku.baidu.com/view/b7d4c2dc5022aaea998f0f61.html}
+\item 颜色材质与纹理映射 \url{http://202.114.108.237/Download/8a712530-bc61-4990-a86f-9ddd3300bf9d.pdf}
+\item 视差贴图(Parallax Mapping) 难 \url{http://learnopengl-cn.readthedocs.io/zh/latest/05\%20Advanced\%20Lighting/05\%20Parallax\%20Mapping/}
+\item 
+\item 
+\item 
+\item 
+\item 
+\item 
+\item 
+\item 
+\item 
+\end{itemize}
+% Emacs 24.5.1 (Org mode 8.2.7c)
+\end{document}

@@ -7,14 +7,14 @@ import java.nio.ShortBuffer;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Grid {
-	private FloatBuffer vertexBuffer;
-	private float vertices[];
-	private ShortBuffer[] indexBuffer;
+	private float [] vertices;
 	private short[][] indices;
+	private FloatBuffer vertexBuffer;
+	private ShortBuffer[] indexBuffer;
 	int N;
 	
 	public Grid(int n) {
-		N = n+1;
+		N = n + 1;
 		vertices = new float[3 * N * N];
 		indices = new short[N][N];
 		indexBuffer = new ShortBuffer[2 * N];
@@ -32,16 +32,13 @@ public class Grid {
 				vertices[x++] = 0;
 				indices[i][j] = y++;
 			}
-			addIndexToBuffer(i, i);
+			addIndexToBuffer(i, i);     // added the first half
 		}
-
 		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
+			for (int j = 0; j < N; j++) 
 				indices[i][j] = (short) (i + N * j);
-			}
-			addIndexToBuffer(i + N, i);
+			addIndexToBuffer(i + N, i); // added the second half
 		}
-
 		vertexBuffer.put(vertices);
 		vertexBuffer.position(0);
 	}
@@ -57,13 +54,8 @@ public class Grid {
 	public void draw(GL10 gl) {
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
-
-		//gl.glPushMatrix();
-		//gl.glTranslatef(-2.5f, -4f, 0f);
 		for (int i = 0; i < 2 * N; i++) 
 			gl.glDrawElements(GL10.GL_LINE_STRIP, N, GL10.GL_UNSIGNED_SHORT, indexBuffer[i]);
-        //gl.popMatrix();
-        
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 	}
 }

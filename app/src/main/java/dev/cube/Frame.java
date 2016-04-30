@@ -19,7 +19,7 @@ public class Frame {
 	private short[] indices = { 0, 1, 0, 2, 0, 3 };
 	float colors[] = { 0.5f, 0.5f, 0.5f, 0.5f,
                        1f, 0f, 0f, 1f, // red   x
-                       0f, 1f, 0f, 1f, // green y
+                       1f, 1f, 0f, 1f, // yellow y
                        0f, 0f, 1f, 1f  // blue  z
     };
 
@@ -37,14 +37,6 @@ public class Frame {
 	}
 	
 	public void draw(GL10 gl) {
-		//gl.glPushMatrix();
-		//gl.glTranslatef(-2.5f, -2.5f, -5.0f);
-		drawLines(gl, vertexBuffer, indexBuffer, indices, colorBuffer);
-		//gl.glPopMatrix();
-	}
-
-	public void drawLines(GL10 gl, FloatBuffer vertexBuffer,
-			ShortBuffer indexBuffer, short[] indices, FloatBuffer colorBuffer) {
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
 
