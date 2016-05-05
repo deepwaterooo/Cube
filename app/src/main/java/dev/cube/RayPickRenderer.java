@@ -41,45 +41,61 @@ public class RayPickRenderer implements Renderer {
         grid = new Grid(5);
     } 
  
-    @Override 
-    public void onDrawFrame(GL10 gl) { // 逐帧渲染 
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT); // 清除屏幕和深度缓存
-        gl.glLoadIdentity(); // 重置当前的模型观察矩阵
-        setUpCamera(gl);     // 紧接着设置模型视图矩阵
+    private void loadTexture(GL10 gl) { 
+         // 启用纹理映射 
+        gl.glClearDepthf(1.0f); 
+        // 允许2D贴图,纹理 
+        gl.glEnable(GL10.GL_TEXTURE_2D); 
+ 
+        //try { 
+            IntBuffer intBuffer = IntBuffer.allocate(1); 
+            // 创建纹理           一个具有足够空间保存纹理名的数组
+            gl.glGenTextures(1, intBuffer); // GLuint, 纹理名称, 第一个参数指示了要生成几个纹理
+            texture = intBuffer.get(); 
+            // 设置要使用的纹理, 纹理绑定 
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); 
+ 
+            // 打开二进制流 
+            //InputStream is = mContext.getResources().openRawResource(R.drawable.horse); 
+            //Bitmap mBitmap = BitmapFactory.decodeStream(is); 
+            //Log.i("height|width: ", mBitmap.getWidth() + " | " + mBitmap.getHeight()); // 160 | 173
+ 
+            // 生成纹理           制定二维纹理映射,   多极分辩率纹理图像
+            //GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap, 0);
+            GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, GLImage.iBitmap, 0); 
 
-        gl.glPushMatrix();
-        drawModel(gl); // 渲染物体
-        gl.glPopMatrix();
+            // 纹理控制： 缩小与放大滤波、纹理重复和缩限
+            // 当纹理放大得比原始纹理大GL_TEXTURE_MAG_FILTER, 或
+            // 当纹理缩小得比原始纹理小GL_TEXTURE_MIN_FILTER 时， 采用线性滤波方式
+            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST); 
+            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_NEAREST);
+            // 默认状态下OpenGL设置了使用所谓mipmap
+            // Mipmap是一个图像不同尺寸的组合，
+            //       它允许OpenGL选择最为接近的尺寸版本以避免过多的插值计算
+            //       并且在物体远离观察者时通过使用更小的纹理来更好地管理内存
+            
+            // GL_NEAREST: 采用坐标最靠近象素中心的纹素，这有可能使图像走样，计算少执行速度快
+            // GL_LINEAR:  采用最靠近象素中心的四个象素的加权平均值, 提供了比较光滑的效果
 
-        gl.glPushMatrix();
-        drawPickedTriangle(gl); // 渲染选中的三角形
-        gl.glPopMatrix(); 
- 
-        updatePick(); 
+            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            // glTexParameterfv(..., GL_REPEAT) [0f, 1.0f]
+            // GL_REPEAT: 重复, 重复映射纹理可以在自己的坐标s、t方向上重复
+
+            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            // GL_CLAMP:  约减，所有大于1的纹素值重设为1,所有小于0的值重设为0
+
+            // glTexEnv*() 控制纹理映射方式的函数
+            // glTexCoord*(), 定义纹理坐标的函数
+            
+            //is.close(); 
+            /*} catch (IOException e) { 
+            e.printStackTrace(); 
+            } */
     } 
- 
-    private void setUpCamera(GL10 gl) { 
-        gl.glMatrixMode(GL10.GL_MODELVIEW); // 设置模型视图矩阵
-        gl.glLoadIdentity();
-        //gl.glTranslatef(0, 0, -4.5f); // look weird, frame supposed to move down to feel better
-        Matrix4f.gluLookAt(mvEye, mvCenter, mvUp, AppConfig.gMatView); // static [4][4]
-        gl.glLoadMatrixf(AppConfig.gMatView.asFloatBuffer());          // FloatBuffer [16]
-    } 
- 
-    private Matrix4f matRot = new Matrix4f(); 
-    private Vector3f point; 
-    private Vector3f transformedSphereCenter = new Vector3f(); 
-    private Ray transformedRay = new Ray(); 
-    private Matrix4f matInvertModel = new Matrix4f(); 
-    private Vector3f[] mpTriangle = {
-        new Vector3f(),
-        new Vector3f(), 
-        new Vector3f()
-    }; 
-    private FloatBuffer mBufPickedTriangle = IBufferFactory.newFloatBuffer(3 * 3); 
- 
+  
     private void drawModel(GL10 gl) { // 渲染模型
-        /* 以下方式完全按照手势方向旋转 */
+        // 以下方式完全按照手势方向旋转 
         matRot.setIdentity(); 
         point = new Vector3f(mfAngleX, mfAngleY, 0); 
  
@@ -145,6 +161,43 @@ public class RayPickRenderer implements Renderer {
         gl.glEnable(GL10.GL_DEPTH_TEST); 
     } 
 
+    @Override 
+    public void onDrawFrame(GL10 gl) { // 逐帧渲染 
+        gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT); // 清除屏幕和深度缓存
+        gl.glLoadIdentity(); // 重置当前的模型观察矩阵
+        setUpCamera(gl);     // 紧接着设置模型视图矩阵
+
+        gl.glPushMatrix();
+        drawModel(gl); // 渲染物体
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        drawPickedTriangle(gl); // 渲染选中的三角形
+        gl.glPopMatrix(); 
+ 
+        updatePick(); 
+    } 
+ 
+    private void setUpCamera(GL10 gl) { 
+        gl.glMatrixMode(GL10.GL_MODELVIEW); // 设置模型视图矩阵
+        gl.glLoadIdentity();
+        //gl.glTranslatef(0, 0, -4.5f); // look weird, frame supposed to move down to feel better
+        Matrix4f.gluLookAt(mvEye, mvCenter, mvUp, AppConfig.gMatView); // static [4][4]
+        gl.glLoadMatrixf(AppConfig.gMatView.asFloatBuffer());          // FloatBuffer [16]
+    } 
+ 
+    private Matrix4f matRot = new Matrix4f(); 
+    private Vector3f point; 
+    private Vector3f transformedSphereCenter = new Vector3f(); 
+    private Ray transformedRay = new Ray(); 
+    private Matrix4f matInvertModel = new Matrix4f(); 
+    private Vector3f[] mpTriangle = {
+        new Vector3f(),
+        new Vector3f(), 
+        new Vector3f()
+    }; 
+    private FloatBuffer mBufPickedTriangle = IBufferFactory.newFloatBuffer(3 * 3); 
+ 
     /** 
      * 渲染选中的三角形 
      */ 
@@ -184,7 +237,8 @@ public class RayPickRenderer implements Renderer {
  
         gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST); 
         // 设置清屏背景颜色 
-        gl.glClearColor(0.5f, 0.5f, 0.5f, 1); 
+        //gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+        gl.glClearColor(0f, 0f, 0f, 1); 
         // 设置着色模型为平滑着色 
         gl.glShadeModel(GL10.GL_SMOOTH); 
  
@@ -279,59 +333,6 @@ public class RayPickRenderer implements Renderer {
         gl.glMatrixMode(GL10.GL_MODELVIEW); 
     } 
 
-    private void loadTexture(GL10 gl) { 
-         // 启用纹理映射 
-        gl.glClearDepthf(1.0f); 
-        // 允许2D贴图,纹理 
-        gl.glEnable(GL10.GL_TEXTURE_2D); 
- 
-        try { 
-            IntBuffer intBuffer = IntBuffer.allocate(1); 
-            // 创建纹理           一个具有足够空间保存纹理名的数组
-            gl.glGenTextures(1, intBuffer); // GLuint, 纹理名称, 第一个参数指示了要生成几个纹理
-            texture = intBuffer.get(); 
-            // 设置要使用的纹理, 纹理绑定 
-            gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); 
- 
-            // 打开二进制流 
-            //InputStream is = mContext.getResources().openRawResource(R.drawable.snow_leopard);
-            InputStream is = mContext.getResources().openRawResource(R.drawable.horse); 
-            Bitmap mBitmap = BitmapFactory.decodeStream(is); 
-            //Log.i("height|width: ", mBitmap.getWidth() + " | " + mBitmap.getHeight()); // 160 | 173
- 
-            // 生成纹理           制定二维纹理映射,   多极分辩率纹理图像
-            GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap, 0); 
-
-            // 纹理控制： 缩小与放大滤波、纹理重复和缩限
-            // 当纹理放大得比原始纹理大GL_TEXTURE_MAG_FILTER, 或
-            // 当纹理缩小得比原始纹理小GL_TEXTURE_MIN_FILTER 时， 采用线性滤波方式
-            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR); 
-            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-            // 默认状态下OpenGL设置了使用所谓mipmap
-            // Mipmap是一个图像不同尺寸的组合，
-            //       它允许OpenGL选择最为接近的尺寸版本以避免过多的插值计算
-            //       并且在物体远离观察者时通过使用更小的纹理来更好地管理内存
-            
-            // GL_NEAREST: 采用坐标最靠近象素中心的纹素，这有可能使图像走样，计算少执行速度快
-            // GL_LINEAR:  采用最靠近象素中心的四个象素的加权平均值, 提供了比较光滑的效果
-
-            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            // glTexParameterfv(..., GL_REPEAT) [0f, 1.0f]
-            // GL_REPEAT: 重复, 重复映射纹理可以在自己的坐标s、t方向上重复
-
-            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            // GL_CLAMP:  约减，所有大于1的纹素值重设为1,所有小于0的值重设为0
-
-            // glTexEnv*() 控制纹理映射方式的函数
-            // glTexCoord*(), 定义纹理坐标的函数
-            
-            is.close(); 
-        } catch (IOException e) { 
-            e.printStackTrace(); 
-        } 
-    } 
-  
     public void setOnSurfacePickedListener(OnSurfacePickedListener onSurfacePickedListener) { 
         this.onSurfacePickedListener = onSurfacePickedListener; 
     } 

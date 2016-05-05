@@ -1,38 +1,31 @@
-% Created 2016-04-30 Sat 10:42
-\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{fixltx2e}
+% Created 2016-05-04 Wed 17:45
+\documentclass[9pt,b5paper]{article}
+\usepackage[utf8]{inputenc}   
+\usepackage{fontspec}
+\setmainfont{STSong} 
 \usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{xeCJK}
+\setCJKmainfont{STSong}
 \usepackage{longtable}
 \usepackage{float}
-\usepackage{wrapfig}
-\usepackage{rotating}
-\usepackage[normalem]{ulem}
-\usepackage{amsmath}
 \usepackage{textcomp}
-\usepackage{marvosym}
-\usepackage{wasysym}
-\usepackage{amssymb}
-\usepackage{hyperref}
-\tolerance=1000
-\usepackage{CJK}
-\usepackage{indentfirst}
-\usepackage[pdftex]{graphicx}
-\usepackage{fancyhdr}
-\usepackage[CJKbookmarks=true]{hyperref}
-%% Define a museincludegraphics command, which is
-%%   able to handle escaped special characters in image filenames.
-\def\museincludegraphics{%
-  \begingroup
-  \catcode`\|=0
-  \catcode`\\=12
-  \catcode`\#=12
-  \includegraphics[width=0.75\textwidth]
-}
-\author{qunyan}
+\usepackage{geometry}
+\geometry{left=0cm,right=0cm,top=0cm,bottom=0cm}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{latexsym}
+\usepackage{natbib}
+\usepackage[xetex,colorlinks=true,CJKbookmarks=true,linkcolor=blue,urlcolor=blue,menucolor=blue]{hyperref}
+
+
+\lstset{language=c++,numbers=left,numberstyle=\tiny,basicstyle=\ttfamily\small,tabsize=4,frame=none,escapeinside=``,extendedchars=false,keywordstyle=\color{blue!70},commentstyle=\color{red!55!green!55!blue!55!},rulesepcolor=\color{red!20!green!20!blue!20!}}
+\author{deepwaterooo}
 \date{\today}
-\title{readme}
+\title{Java Programming Course Project Spring 2016}
 \hypersetup{
   pdfkeywords={},
   pdfsubject={},
@@ -42,20 +35,13 @@
 \maketitle
 \tableofcontents
 
+
 \section{Cube}
 \label{sec-1}
 \begin{itemize}
-\item 90\% understand the code now for the base project by printing transformation matrix values out as well as basic ray picking theories, though there are still a few functions that I don't know why they are coded the way they are now (like the algorithms to speedy \& GC considerations), like gluPerspective m00 m11, \_$_{\text{gluInvertMatrixd}}$(\ldots{}), gluUnProject(\ldots{}).
-\item Try to understand the other appoach of 3d tetris rotation by moving gluLookAt eye positions by googling and read some websites.
-\item This project serves as an opengl starting point, trials to get familiar with opengl like textures, shadowing, lights? maybe. And also builds as a bridge to later on implement the unfinished yet tetris 3D after this course project is done.
-\item Tetris and plants vs Zombie's should be my personal interested project, so do want to make this course project the same or to some extent tetris, will add music to the cube then. A commit for later on check out if any tetris version eeds it.
-\item todos:
-\begin{itemize}
-\item Fix the rendered sheep to be the way I like - one animal on one surface, with different music when touched on the surface.
-\item By separating game x y z axis and grids out of render, I could later on potentially implement separated rotation for Current active block, or for all objects in surface, but how would I maintain two transformation matrix in order to rotation separately and apply the correct one when needed? another gMatModel matrix for (frame + Grid) in AppConfig? would any simple flag work? or another layer of gl.glPushMatrix() gl.glPopMatrix() pair? I still need to think about it.
-\item When rotation is NOT any problem, how should I design the 3d game board for tetris, the cube chains/matrixes?
-\item according to ray picking, how can i flag/cuboid, and rotate separately for a cube/block only (as an individual Current active cube/block), and rotate everything on surface (if I need to wrap game frame \& inside into a cuboid like this cube using a sphere to reduce detection work) according to gestures when necessary for tetris game. sphere is way easier. Cuboid, how?
-\end{itemize}
+\item Tetris theme music played by MediaPlayer can only function as the background music now.
+\item Emacs + Auctex + org-mode can only export english correct with source codes, but can NOT export Chinese correctly from tex file yet. Need to find out the correct way to enable various kinds of latex engines from Auctex emacs mode.
+\item 
 \item Current look:
 \end{itemize}
 
@@ -99,10 +85,11 @@
 \item work on camera \url{http://blog.csdn.net/wangdingqiaoit/article/details/39937019}
 \item 纹理贴图： \url{http://wenku.baidu.com/view/b7d4c2dc5022aaea998f0f61.html}
 \item 颜色材质与纹理映射 \url{http://202.114.108.237/Download/8a712530-bc61-4990-a86f-9ddd3300bf9d.pdf}
-\item 视差贴图(Parallax Mapping) 难 \url{http://learnopengl-cn.readthedocs.io/zh/latest/05\%20Advanced\%20Lighting/05\%20Parallax\%20Mapping/}
-\item 
-\item 
-\item 
+\item 视差贴图(Parallax Mapping) 难 
+\url{http://learnopengl-cn.readthedocs.io/zh/latest/05\%20Advanced\%20Lighting/05\%20Parallax\%20Mapping/}
+\item textures: \url{http://blog.csdn.net/ypist/article/details/8603077}
+\item music cube: \url{https://www.youtube.com/watch?v=FJUq_gWHTbI}
+\item mediaplayer: \url{http://stackoverflow.com/questions/30881722/media-player-error-19-0}
 \item 
 \item 
 \item 
