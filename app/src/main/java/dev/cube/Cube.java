@@ -3,6 +3,7 @@ package dev.cube;
 import java.nio.FloatBuffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.*;
 
 public class Cube { 
     public static final int VERTEX_BUFFER = 0; 
@@ -10,7 +11,7 @@ public class Cube {
     private float one = 2.0f; 
     private float two = 1.0f; 
     
-    private float[] vertices = new float[] { -one, -one, one,   one, -one, one,   one, one, one,   -one, one, one, // 前 面
+    private float[] vertices = new float[] { -one, -one, one,   one, -one, one,   one, one, one,   -one, one, one, // 前 面 12
                                              -one, -one, -one,  -one, one, -one,  one, one, -one,  one, -one, -one,// 后
                                              -one, one, -one,   -one, one, one,   one, one, one,   one, one, -one, // 上
                                              -one, -one, -one,  one, -one, -one,  one, -one, one,  -one, -one, one,// 下
@@ -18,18 +19,59 @@ public class Cube {
                                              -one, -one, -one,  -one, -one, one,  -one, one, one,  -one, one, -one // 左
     }; 
     // 立方体纹理坐标
-    private float[] texCoords = new float[] { two, 0, 0, 0, 0, two, two, two, 0, 0, 0, two,
-                                              two, two, two, 0, two, two, two, 0, 0, 0, 0, two,
-                                              0, two, two, two, two, 0, 0, 0, 0, 0, 0, two,
-                                              two, two, two, 0, two, 0, 0, 0, 0, two, two, two
-    }; 
+    private float[] texCoords = new float[] { two, 0, 0, 0, 0, two, two, two, // 8 each surface
+                                              0, 0, 0, two, two, two, two, 0,
+                                              two, two, two, 0, 0, 0, 0, two,
+                                              0, two, two, two, two, 0, 0, 0,
+                                              0, 0, 0, two, two, two, two, 0,
+                                              two, 0, 0, 0, 0, two, two, two
+    };
                                               
     // 三角形描述顺序 
     private byte[] indices = new byte[] { 0, 1, 3, 2, 4, 5, 7, 6, 8, 9, 11, 10, 12, 13, 15, 14, 16, 17, 19, 18, 20, 21, 23, 22 }; 
     public int surface = -1; // 0-5
 
+    // modify this function so that I could separate data into 6 faces
+    public FloatBuffer getCoordinate(int coord_id, int idx) { 
+        switch (coord_id) { 
+        case VERTEX_BUFFER: 
+            return getDirectBuffer(vertices, idx); 
+        case TEXTURE_BUFFER: 
+            return getDirectBuffer(texCoords, idx); 
+        default: 
+            throw new IllegalArgumentException(); 
+        } 
+    } 
+    public FloatBuffer getDirectBuffer(float[] buffer, int idx) {
+        int n = buffer.length / 6;
+        ByteBuffer bb = ByteBuffer.allocateDirect(n * 4); 
+        bb.order(ByteOrder.nativeOrder()); 
+        FloatBuffer directBuffer = bb.asFloatBuffer();
+        float [] tmpBuffer = new float[n];
+        System.arraycopy(buffer, idx * n, tmpBuffer, 0, n);
+        directBuffer.put(tmpBuffer); 
+        directBuffer.position(0); 
+        return directBuffer; 
+    } 
+    public ByteBuffer getIndices(int idx) {
+        int n = indices.length / 6;
+        //byte [] tmpBuffer = new byte[n];
+        //System.arraycopy(indices, n * idx, tmpBuffer, 0, n);
+        //return ByteBuffer.wrap(tmpBuffer);
+
+        ByteBuffer buffer = ByteBuffer.allocate(n);  
+        // 缓冲区中的数据0-9  
+        for (int i = 0; i < buffer.capacity(); ++i) {  
+            buffer.put( indices[idx * n + i]);  
+        }
+        // 创建子缓冲区  
+        //indices.position( idx * n );  
+        //indices.limit( n );  
+        //ByteBuffer slice = indices.slice();
+        return buffer;
+    }
     
-    public FloatBuffer getCoordinate(int coord_id) { 
+    /*public FloatBuffer getCoordinate(int coord_id) { 
         switch (coord_id) { 
         case VERTEX_BUFFER: 
             return getDirectBuffer(vertices); 
@@ -46,10 +88,11 @@ public class Cube {
         directBuffer.put(buffer); 
         directBuffer.position(0); 
         return directBuffer; 
-    } 
+        }*/ 
+    //public ByteBuffer getIndices() { return ByteBuffer.wrap(indices); } 
+
     public Vector3f getSphereCenter() { return new Vector3f(0, 0, 0);  } // 返回立方体外切圆的中心点
     public float getSphereRadius() { return 1.732051f;  }                // 返回立方体外切圆的半径（√3） 
-    public ByteBuffer getIndices() { return ByteBuffer.wrap(indices); } 
 
     
     private static Vector4f location = new Vector4f(); 

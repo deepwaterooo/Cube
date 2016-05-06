@@ -93,18 +93,19 @@ public class RayPickRenderer implements Renderer {
 
         gesDistance = 0; 
         gl.glMultMatrixf(AppConfig.gMatModel.asFloatBuffer()); // 物体坐标系到世界坐标系的变换矩阵
-        //gl.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glColor4f(0.5f, 0.5f, 0.5f, 0.5f);    // show the textures
-        //gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); // 绑定纹理在下面绘制的物体上
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, texture[2]); 
-        gl.glEnable(GL10.GL_TEXTURE_2D);               // 启用纹理映射 
+
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY); 
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY); 
- 
-        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, cube.getCoordinate(Cube.VERTEX_BUFFER)); 
-        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, cube.getCoordinate(Cube.TEXTURE_BUFFER)); 
-        gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 24, GL10.GL_UNSIGNED_BYTE, cube.getIndices()); 
- 
+        //gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); // 绑定纹理在下面绘制的物体上
+        gl.glEnable(GL10.GL_TEXTURE_2D);               // 启用纹理映射 
+        for (int i = 0; i < 6; i++) {
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, texture[i]); 
+            gl.glVertexPointer(3, GL10.GL_FLOAT, 0, cube.getCoordinate(Cube.VERTEX_BUFFER, i)); 
+            gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, cube.getCoordinate(Cube.TEXTURE_BUFFER, i)); 
+            gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 4, GL10.GL_UNSIGNED_BYTE, cube.getIndices(i)); 
+        }
+
         gl.glDisable(GL10.GL_TEXTURE_2D); 
         gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY); 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY); 

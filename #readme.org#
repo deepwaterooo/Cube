@@ -21,7 +21,7 @@
 - GLES20 http://blog.csdn.net/liyuanjinglyj/article/details/46670819
 - http://www.zwqxin.com/archives/opengl/learn-texture-array.html
 - https://www.youtube.com/watch?v=jK6sfbw5oYQ
-- 立方体纹理(cube map) http://www.bagualu.net/wordpress/archives/2405#d纹理-1 
+- 立方体纹理(cube map）概念 http://www.bagualu.net/wordpress/archives/2405#d纹理-1 
   有两种自动生成模式GL_REFLECTION_MAP 和 GL_NORMAL_MAP．
 - OpenGL原理介绍 http://www.twinklingstar.cn/2015/1532/introduce-to-opengl/
 - Multitexturing http://www.clockworkcoders.com/oglsl/tutorial8.htm
