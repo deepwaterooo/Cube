@@ -5,21 +5,21 @@ import android.graphics.BitmapFactory;
 import android.content.res.Resources;
 
 public class GLImage {
-    public static Bitmap iBitmap;  
-    public static Bitmap jBitmap;  
-    public static Bitmap kBitmap;  
-    /*public static Bitmap lBitmap;  
-    public static Bitmap mBitmap;  
-    public static Bitmap nBitmap;  
-    public static Bitmap close_Bitmap;   */
-      
-    public static void load(Resources resources)   {  
-        iBitmap = BitmapFactory.decodeResource(resources, R.drawable.horse);  
-        jBitmap = BitmapFactory.decodeResource(resources, R.drawable.sheep);  
-        kBitmap = BitmapFactory.decodeResource(resources, R.drawable.rabbit);  
-        //lBitmap = BitmapFactory.decodeResource(resources, R.drawable.lmg);  
-        //mBitmap = BitmapFactory.decodeResource(resources, R.drawable.mmg);  
-        //nBitmap = BitmapFactory.decodeResource(resources, R.drawable.nmg);  
-        //close_Bitmap = BitmapFactory.decodeResource(resources, R.drawable.close);  
+    /*
+    public static Bitmap horseBitmap;  
+    public static Bitmap sheepBitmap;  
+    public static Bitmap dogBitmap;  
+    public static Bitmap pigBitmap;  
+    public static Bitmap rabbitBitmap;  
+    public static Bitmap butterflyBitmap;  
+    */
+    public static Bitmap[] bitmap;
+    public static void load(Resources resources)   {
+        bitmap[0] = BitmapFactory.decodeResource(resources, R.drawable.horse);  
+        bitmap[1] = BitmapFactory.decodeResource(resources, R.drawable.sheep);  
+        bitmap[2] = BitmapFactory.decodeResource(resources, R.drawable.dog);  
+        bitmap[3] = BitmapFactory.decodeResource(resources, R.drawable.pig);  
+        bitmap[4] = BitmapFactory.decodeResource(resources, R.drawable.rabbit);  
+        bitmap[5] = BitmapFactory.decodeResource(resources, R.drawable.butterfly);  
     }  
 }  

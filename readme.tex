@@ -1,6 +1,5 @@
-% Created 2016-05-04 Wed 17:45
+% Created 2016-05-06 Fri 12:17
 \documentclass[9pt,b5paper]{article}
-\usepackage[utf8]{inputenc}   
 \usepackage{fontspec}
 \setmainfont{STSong} 
 \usepackage{graphicx}
@@ -39,6 +38,7 @@
 \section{Cube}
 \label{sec-1}
 \begin{itemize}
+\item textures basically done
 \item Tetris theme music played by MediaPlayer can only function as the background music now.
 \item Emacs + Auctex + org-mode can only export english correct with source codes, but can NOT export Chinese correctly from tex file yet. Need to find out the correct way to enable various kinds of latex engines from Auctex emacs mode.
 \item 
@@ -47,7 +47,6 @@
 
 \includegraphics[width=.9\linewidth]{./Screenshot_2016-04-30-10-32-08.png}
 \includegraphics[width=.9\linewidth]{./Screenshot_2016-04-30-10-39-54.png}
-
 \begin{itemize}
 \item Current starting point turnning cube video was put at \url{https://www.youtube.com/watch?v=EuILt6B0YS0}
 \end{itemize}
@@ -55,6 +54,15 @@
 \section{References}
 \label{sec-2}
 \begin{itemize}
+\item cube map: \url{http://www.guidebee.info/wordpress/archives/3012}
+\item cubemaps: \url{http://learnopengl.com/#!Advanced-OpenGL/Cubemaps}
+\item compressed textures \url{http://www.guidebee.info/wordpress/archives/2988}
+\item GLES20 \url{http://blog.csdn.net/liyuanjinglyj/article/details/46670819}
+\item 
+\item 
+\item 
+\item 
+\item 
 \item c++: \url{http://blog.sina.com.cn/s/blog_b932048b0101fglx.html}
 \item gl10: \url{http://blog.csdn.net/wangkuifeng0118/article/details/7425029}
 \item ideas: \url{http://www.boyunjian.com/do/article/snapshot.do?uid=4560684719895433921}
@@ -68,34 +76,33 @@
 \item trial: \url{https://github.com/MediaMonks/tilt-game-android/blob/master/sensorlib/src/main/java/org/hitlabnz/sensor_fusion_demo/representation/Vector3f.java}
 \item push pop matrix: \url{http://www.cnblogs.com/bhlsheji/p/4058745.html}
 \item glPerspective \url{http://blog.csdn.net/popy007/article/details/1797121}
-\item Ê°È¡ \url{http://www.docin.com.cn/p-231068818.html}
-\item Ê°È¡¾«È· \url{http://www.docin.com.cn/p-223688481.html}
-\item ¶¹¶¡£º glPickMatrix \url{http://www.docin.com.cn/p-219126610.html}
+\item æ‹¾å– \url{http://www.docin.com.cn/p-231068818.html}
+\item æ‹¾å–ç²¾ç¡® \url{http://www.docin.com.cn/p-223688481.html}
+\item è±†ä¸ï¼š glPickMatrix \url{http://www.docin.com.cn/p-219126610.html}
 \item glOrtho() Matrix \url{http://www.docin.com.cn/p-1541079192.html}
 \item \url{http://www.docin.com.cn/p-1449786833.html}
-\item Æë´Î×ø±êÏµ£º \url{http://www.docin.com.cn/p-200902035.html}
-\item ¿ÉÄæ¾ØÕóºÍÇóÄæ¾ØÕóµÄ·½·¨ \url{http://www.docin.com.cn/p-102655207.html}
-\item Direct3DÖĞÊµÏÖÍ¼ÎŞµÄÊó±êÊ°È¡ \url{http://www.docin.com.cn/p-25415158.html}
-\item Ò»¸ö¼òµ¥µÄOpenGLÊ°È¡Àı×Ó \url{http://itdocument.com/228389737/}
-\item video Android 3DÓÎÏ·¿ª·¢(¸ß¼¶Æª)--Opengl ESÓÎÏ·ÒıÇæÊµÏÖ \url{http://www.hztraining.com/bbs/showtopic-120.aspx}
-\item ¶¹¶¡\url{http://116.213.76.141/search.do?nkey=android+3d+\%E6\%B8\%B8\%E6\%88\%8F+\%E5\%BC\%80\%E5\%8F\%91+\%E5\%9F\%BA\%E7\%A1\%80+\%E7\%AC\%AC27\%E8\%AF\%BE-\%E5\%B0\%84\%E7\%BA\%BF\%E6\%8B\%BE\%E5\%8F\%96&searchcat=1002&from=end&mode=4}
+\item é½æ¬¡åæ ‡ç³»ï¼š \url{http://www.docin.com.cn/p-200902035.html}
+\item å¯é€†çŸ©é˜µå’Œæ±‚é€†çŸ©é˜µçš„æ–¹æ³• \url{http://www.docin.com.cn/p-102655207.html}
+\item Direct3Dä¸­å®ç°å›¾æ— çš„é¼ æ ‡æ‹¾å– \url{http://www.docin.com.cn/p-25415158.html}
+\item ä¸€ä¸ªç®€å•çš„OpenGLæ‹¾å–ä¾‹å­ \url{http://itdocument.com/228389737/}
+\item video Android 3Dæ¸¸æˆå¼€å‘(é«˜çº§ç¯‡)--Opengl ESæ¸¸æˆå¼•æ“å®ç° \url{http://www.hztraining.com/bbs/showtopic-120.aspx}
+\item è±†ä¸\url{http://116.213.76.141/search.do?nkey=android+3d+\%E6\%B8\%B8\%E6\%88\%8F+\%E5\%BC\%80\%E5\%8F\%91+\%E5\%9F\%BA\%E7\%A1\%80+\%E7\%AC\%AC27\%E8\%AF\%BE-\%E5\%B0\%84\%E7\%BA\%BF\%E6\%8B\%BE\%E5\%8F\%96&searchcat=1002&from=end&mode=4}
 \item examples \url{http://www.docin.com/p-390492547.html}
 \item MVPW \url{http://www.docin.com/p-909145095.html}
-\item gluLookAt \url{http://blog.csdn.net/wangdingqiaoit/article/details/39433141} ÓëÊµÏÖ·½·¨ÏàÍ¬
+\item gluLookAt \url{http://blog.csdn.net/wangdingqiaoit/article/details/39433141} ä¸å®ç°æ–¹æ³•ç›¸åŒ
 \item work on camera \url{http://blog.csdn.net/wangdingqiaoit/article/details/39937019}
-\item ÎÆÀíÌùÍ¼£º \url{http://wenku.baidu.com/view/b7d4c2dc5022aaea998f0f61.html}
-\item ÑÕÉ«²ÄÖÊÓëÎÆÀíÓ³Éä \url{http://202.114.108.237/Download/8a712530-bc61-4990-a86f-9ddd3300bf9d.pdf}
-\item ÊÓ²îÌùÍ¼(Parallax Mapping) ÄÑ 
-\url{http://learnopengl-cn.readthedocs.io/zh/latest/05\%20Advanced\%20Lighting/05\%20Parallax\%20Mapping/}
+\item çº¹ç†è´´å›¾ï¼š \url{http://wenku.baidu.com/view/b7d4c2dc5022aaea998f0f61.html}
+\item é¢œè‰²æè´¨ä¸çº¹ç†æ˜ å°„ \url{http://202.114.108.237/Download/8a712530-bc61-4990-a86f-9ddd3300bf9d.pdf}
+\item è§†å·®è´´å›¾(Parallax Mapping) éš¾ \url{http://learnopengl-cn.readthedocs.io/zh/latest/05\%20Advanced\%20Lighting/05\%20Parallax\%20Mapping/}
 \item textures: \url{http://blog.csdn.net/ypist/article/details/8603077}
 \item music cube: \url{https://www.youtube.com/watch?v=FJUq_gWHTbI}
 \item mediaplayer: \url{http://stackoverflow.com/questions/30881722/media-player-error-19-0}
-\item 
-\item 
-\item 
-\item 
-\item 
-\item 
+\item fundamental: perspective othorgonal \url{https://www.youtube.com/watch?v=BgIsTZiyvvU}
+\item music: \url{https://www.youtube.com/watch?v=N_Lpe_9VD2A&index=7&list=PLbmEQyKwSKqKX8R0vyRkZxgsZskw6SKcS}
+\item three together: \url{https://www.youtube.com/watch?v=YqiArMjtXyE}
+\item primitive textures: \url{https://www.youtube.com/watch?v=jgzTLXwsXP0}
+\item marching cubes: \url{https://www.youtube.com/watch?v=ObmHOxeoIdw}
+\item ç¨‹åºçŒ¿ android apiApp?
 \end{itemize}
 % Emacs 24.5.1 (Org mode 8.2.7c)
 \end{document}

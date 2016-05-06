@@ -20,8 +20,6 @@ public class RayPickRenderer implements Renderer {
     private OnSurfacePickedListener onSurfacePickedListener; 
     private Context mContext; 
     private Cube cube;
-    private Frame frame; // thought about pack into one object, but since the vertex & index using differently, 
-    private Grid grid;   // leave it this way then. 
     
     int texture = -1; 
     public float mfAngleX = 0.0f; 
@@ -37,8 +35,6 @@ public class RayPickRenderer implements Renderer {
     public RayPickRenderer(Context context) { 
         mContext = context; 
         cube = new Cube();
-        frame = new Frame(6, 10);
-        grid = new Grid(5);
     } 
  
     private void loadTexture(GL10 gl) { 
@@ -48,72 +44,45 @@ public class RayPickRenderer implements Renderer {
         gl.glEnable(GL10.GL_TEXTURE_2D); 
  
         //try { 
-            IntBuffer intBuffer = IntBuffer.allocate(1); 
+        IntBuffer intBuffer = IntBuffer.allocate(6); // 1 change to use an array
             // 创建纹理           一个具有足够空间保存纹理名的数组
-            gl.glGenTextures(1, intBuffer); // GLuint, 纹理名称, 第一个参数指示了要生成几个纹理
-            texture = intBuffer.get(); 
-            // 设置要使用的纹理, 纹理绑定 
-            gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); 
+            gl.glGenTextures(6, intBuffer); // GLuint, 纹理名称, 第一个参数指示了要生成几个纹理
+
+            for (int i = 0; i < 6; i++) {
+                texture = intBuffer.get(i); 
+                // 设置要使用的纹理, 纹理绑定 
+                gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); 
  
-            // 打开二进制流 
-            //InputStream is = mContext.getResources().openRawResource(R.drawable.horse); 
-            //Bitmap mBitmap = BitmapFactory.decodeStream(is); 
-            //Log.i("height|width: ", mBitmap.getWidth() + " | " + mBitmap.getHeight()); // 160 | 173
- 
-            // 生成纹理           制定二维纹理映射,   多极分辩率纹理图像
-            //GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap, 0);
-            GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, GLImage.iBitmap, 0); 
+                //horseBitmap, sheepBitmap, dogBitmap, pigBitmap, rabbitBitmap, butterflyBitmap, 
+                // 生成纹理           制定二维纹理映射,   多极分辩率纹理图像
+                GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, GLImage.bitmap[i], 0); 
 
-            // 纹理控制： 缩小与放大滤波、纹理重复和缩限
-            // 当纹理放大得比原始纹理大GL_TEXTURE_MAG_FILTER, 或
-            // 当纹理缩小得比原始纹理小GL_TEXTURE_MIN_FILTER 时， 采用线性滤波方式
-            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST); 
-            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_NEAREST);
-            // 默认状态下OpenGL设置了使用所谓mipmap
-            // Mipmap是一个图像不同尺寸的组合，
-            //       它允许OpenGL选择最为接近的尺寸版本以避免过多的插值计算
-            //       并且在物体远离观察者时通过使用更小的纹理来更好地管理内存
-            
-            // GL_NEAREST: 采用坐标最靠近象素中心的纹素，这有可能使图像走样，计算少执行速度快
-            // GL_LINEAR:  采用最靠近象素中心的四个象素的加权平均值, 提供了比较光滑的效果
+                // 纹理控制： 缩小与放大滤波、纹理重复和缩限
+                // 当纹理放大得比原始纹理大GL_TEXTURE_MAG_FILTER, 或
+                // 当纹理缩小得比原始纹理小GL_TEXTURE_MIN_FILTER 时， 采用线性滤波方式
+                gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR); 
+                gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
 
-            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            // glTexParameterfv(..., GL_REPEAT) [0f, 1.0f]
-            // GL_REPEAT: 重复, 重复映射纹理可以在自己的坐标s、t方向上重复
-
-            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            // GL_CLAMP:  约减，所有大于1的纹素值重设为1,所有小于0的值重设为0
-
-            // glTexEnv*() 控制纹理映射方式的函数
-            // glTexCoord*(), 定义纹理坐标的函数
-            
-            //is.close(); 
-            /*} catch (IOException e) { 
-            e.printStackTrace(); 
-            } */
-    } 
+                GLImage.bitmap[i].recycle();
+            }
+} 
   
     private void drawModel(GL10 gl) { // 渲染模型
         // 以下方式完全按照手势方向旋转 
         matRot.setIdentity(); 
         point = new Vector3f(mfAngleX, mfAngleY, 0); 
- 
         try { // confusing for this part
             // 转换到模型内部的点，先要求逆             
             matInvertModel.set(AppConfig.gMatModel); 
             matInvertModel.invert();
             //matInvertModel.printMatrix44(); // happen to be I
             matInvertModel.transform(point, point); // point still changes sometimes
-
             float d = Vector3f.distance(new Vector3f(), point); // (0, 0, 0) ==> Point 
-
             // 再减少误差
             if (Math.abs(d - gesDistance) <= 1E-4) {
                 // 绕这个单位向量旋转（由于误差可能会产生缩放而使得模型消失不见）
                 matRot.glRotatef((float) (gesDistance * Math.PI / 180), point.x / d, point.y / d, point.z / d);
                 //matRot.printMatrix44(); 
-
                 // 旋转后在原基础上再转
                 if (0 != gesDistance) 
                     AppConfig.gMatModel.mul(matRot); 
@@ -123,7 +92,8 @@ public class RayPickRenderer implements Renderer {
 
         gesDistance = 0; 
         gl.glMultMatrixf(AppConfig.gMatModel.asFloatBuffer()); // 物体坐标系到世界坐标系的变换矩阵
-        gl.glColor4f(1.0f, 1.0f, 1.0f, 0.0f); 
+        //gl.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
+        gl.glColor4f(0.5f, 0.5f, 0.5f, 0.5f);    // show the textures
         gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); // 绑定纹理在下面绘制的物体上 
         gl.glEnable(GL10.GL_TEXTURE_2D);               // 启用纹理映射 
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY); 
@@ -144,22 +114,29 @@ public class RayPickRenderer implements Renderer {
         gl.glDisable(GL10.GL_DEPTH_TEST); // 暂时禁用深度测试 
         gl.glLineWidth(2.0f);             // 设置点和线的宽度 
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY); // 仅仅启用顶点数据 
+        FloatBuffer fb = IBufferFactory.newFloatBuffer(3 * 2); 
+        fb.put(new float[] { 0, 0, 0, 2.5f, 0, 0 }); 
+        fb.position(0); 
+        gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, fb); 
+        gl.glDrawArrays(GL10.GL_LINES, 0, 2); 
+        fb.clear(); 
+        fb.put(new float[] { 0, 0, 0, 0, 2.5f, 0 }); 
+        fb.position(0); 
+        gl.glColor4f(1.0f, 1.0f, 0.0f, 1.0f); // yellow
+        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, fb); 
+        gl.glDrawArrays(GL10.GL_LINES, 0, 2); 
+        fb.clear(); 
+        fb.put(new float[] { 0, 0, 0, 0, 0, 2.5f }); 
+        fb.position(0); 
+        gl.glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, fb); 
+        gl.glDrawArrays(GL10.GL_LINES, 0, 2); 
 
-        gl.glPushMatrix();
-        gl.glTranslatef(-2.5f, -2.5f, -5f);
-        frame.draw(gl);
-        gl.glPopMatrix();
-
-        gl.glPushMatrix();
-        gl.glTranslatef(-2.5f, -2.5f, -5f);
-        grid.draw(gl);
-        gl.glPopMatrix();
-        
-        // 重置 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY); 
         gl.glLineWidth(1.0f); 
         gl.glEnable(GL10.GL_DEPTH_TEST); 
-    } 
+    }
 
     @Override 
     public void onDrawFrame(GL10 gl) { // 逐帧渲染 
@@ -168,13 +145,13 @@ public class RayPickRenderer implements Renderer {
         setUpCamera(gl);     // 紧接着设置模型视图矩阵
 
         gl.glPushMatrix();
-        drawModel(gl); // 渲染物体
+        drawModel(gl);      // 渲染物体
         gl.glPopMatrix();
-
+        /*
         gl.glPushMatrix();
         drawPickedTriangle(gl); // 渲染选中的三角形
         gl.glPopMatrix(); 
- 
+        */
         updatePick(); 
     } 
  
@@ -237,8 +214,8 @@ public class RayPickRenderer implements Renderer {
  
         gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST); 
         // 设置清屏背景颜色 
-        //gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
-        gl.glClearColor(0f, 0f, 0f, 1); 
+        gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+        //gl.glClearColor(0f, 0f, 0f, 1); 
         // 设置着色模型为平滑着色 
         gl.glShadeModel(GL10.GL_SMOOTH); 
  

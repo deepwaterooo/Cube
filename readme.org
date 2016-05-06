@@ -4,6 +4,7 @@
 #+author: deepwaterooo
 
 * Cube
+- textures basically done
 - Tetris theme music played by MediaPlayer can only function as the background music now. 
 - Emacs + Auctex + org-mode can only export english correct with source codes, but can NOT export Chinese correctly from tex file yet. Need to find out the correct way to enable various kinds of latex engines from Auctex emacs mode. 
 - 
@@ -11,10 +12,18 @@
 
 [[./Screenshot_2016-04-30-10-32-08.png]]
 [[./Screenshot_2016-04-30-10-39-54.png]]
-
 - Current starting point turnning cube video was put at https://www.youtube.com/watch?v=EuILt6B0YS0 
 
 * References
+- cube map: http://www.guidebee.info/wordpress/archives/3012
+- cubemaps: http://learnopengl.com/#!Advanced-OpenGL/Cubemaps
+- compressed textures http://www.guidebee.info/wordpress/archives/2988
+- GLES20 http://blog.csdn.net/liyuanjinglyj/article/details/46670819
+- 
+- 
+- 
+- 
+- 
 - c++: http://blog.sina.com.cn/s/blog_b932048b0101fglx.html
 - gl10: http://blog.csdn.net/wangkuifeng0118/article/details/7425029
 - ideas: http://www.boyunjian.com/do/article/snapshot.do?uid=4560684719895433921
@@ -28,31 +37,30 @@
 - trial: https://github.com/MediaMonks/tilt-game-android/blob/master/sensorlib/src/main/java/org/hitlabnz/sensor_fusion_demo/representation/Vector3f.java
 - push pop matrix: http://www.cnblogs.com/bhlsheji/p/4058745.html
 - glPerspective http://blog.csdn.net/popy007/article/details/1797121
-- Ê°È¡ http://www.docin.com.cn/p-231068818.html
-- Ê°È¡¾«È· http://www.docin.com.cn/p-223688481.html
-- ¶¹¶¡£º glPickMatrix http://www.docin.com.cn/p-219126610.html
+- æ‹¾å– http://www.docin.com.cn/p-231068818.html
+- æ‹¾å–ç²¾ç¡® http://www.docin.com.cn/p-223688481.html
+- è±†ä¸ï¼š glPickMatrix http://www.docin.com.cn/p-219126610.html
 - glOrtho() Matrix http://www.docin.com.cn/p-1541079192.html
 - http://www.docin.com.cn/p-1449786833.html
-- Æë´Î×ø±êÏµ£º http://www.docin.com.cn/p-200902035.html
-- ¿ÉÄæ¾ØÕóºÍÇóÄæ¾ØÕóµÄ·½·¨ http://www.docin.com.cn/p-102655207.html
-- Direct3DÖĞÊµÏÖÍ¼ÎŞµÄÊó±êÊ°È¡ http://www.docin.com.cn/p-25415158.html
-- Ò»¸ö¼òµ¥µÄOpenGLÊ°È¡Àı×Ó http://itdocument.com/228389737/
-- video Android 3DÓÎÏ·¿ª·¢(¸ß¼¶Æª)--Opengl ESÓÎÏ·ÒıÇæÊµÏÖ http://www.hztraining.com/bbs/showtopic-120.aspx
-- ¶¹¶¡http://116.213.76.141/search.do?nkey=android+3d+%E6%B8%B8%E6%88%8F+%E5%BC%80%E5%8F%91+%E5%9F%BA%E7%A1%80+%E7%AC%AC27%E8%AF%BE-%E5%B0%84%E7%BA%BF%E6%8B%BE%E5%8F%96&searchcat=1002&from=end&mode=4
+- é½æ¬¡åæ ‡ç³»ï¼š http://www.docin.com.cn/p-200902035.html
+- å¯é€†çŸ©é˜µå’Œæ±‚é€†çŸ©é˜µçš„æ–¹æ³• http://www.docin.com.cn/p-102655207.html
+- Direct3Dä¸­å®ç°å›¾æ— çš„é¼ æ ‡æ‹¾å– http://www.docin.com.cn/p-25415158.html
+- ä¸€ä¸ªç®€å•çš„OpenGLæ‹¾å–ä¾‹å­ http://itdocument.com/228389737/
+- video Android 3Dæ¸¸æˆå¼€å‘(é«˜çº§ç¯‡)--Opengl ESæ¸¸æˆå¼•æ“å®ç° http://www.hztraining.com/bbs/showtopic-120.aspx
+- è±†ä¸http://116.213.76.141/search.do?nkey=android+3d+%E6%B8%B8%E6%88%8F+%E5%BC%80%E5%8F%91+%E5%9F%BA%E7%A1%80+%E7%AC%AC27%E8%AF%BE-%E5%B0%84%E7%BA%BF%E6%8B%BE%E5%8F%96&searchcat=1002&from=end&mode=4
 - examples http://www.docin.com/p-390492547.html
 - MVPW http://www.docin.com/p-909145095.html
-- gluLookAt http://blog.csdn.net/wangdingqiaoit/article/details/39433141 ÓëÊµÏÖ·½·¨ÏàÍ¬
+- gluLookAt http://blog.csdn.net/wangdingqiaoit/article/details/39433141 ä¸å®ç°æ–¹æ³•ç›¸åŒ
 - work on camera http://blog.csdn.net/wangdingqiaoit/article/details/39937019
-- ÎÆÀíÌùÍ¼£º http://wenku.baidu.com/view/b7d4c2dc5022aaea998f0f61.html
-- ÑÕÉ«²ÄÖÊÓëÎÆÀíÓ³Éä http://202.114.108.237/Download/8a712530-bc61-4990-a86f-9ddd3300bf9d.pdf
-- ÊÓ²îÌùÍ¼(Parallax Mapping) ÄÑ 
-  http://learnopengl-cn.readthedocs.io/zh/latest/05%20Advanced%20Lighting/05%20Parallax%20Mapping/
+- çº¹ç†è´´å›¾ï¼š http://wenku.baidu.com/view/b7d4c2dc5022aaea998f0f61.html
+- é¢œè‰²æè´¨ä¸çº¹ç†æ˜ å°„ http://202.114.108.237/Download/8a712530-bc61-4990-a86f-9ddd3300bf9d.pdf
+- è§†å·®è´´å›¾(Parallax Mapping) éš¾ http://learnopengl-cn.readthedocs.io/zh/latest/05%20Advanced%20Lighting/05%20Parallax%20Mapping/
 - textures: http://blog.csdn.net/ypist/article/details/8603077
 - music cube: https://www.youtube.com/watch?v=FJUq_gWHTbI
 - mediaplayer: http://stackoverflow.com/questions/30881722/media-player-error-19-0 
-- 
-- 
-- 
-- 
-- 
-- 
+- fundamental: perspective othorgonal https://www.youtube.com/watch?v=BgIsTZiyvvU
+- music: https://www.youtube.com/watch?v=N_Lpe_9VD2A&index=7&list=PLbmEQyKwSKqKX8R0vyRkZxgsZskw6SKcS
+- three together: https://www.youtube.com/watch?v=YqiArMjtXyE
+- primitive textures: https://www.youtube.com/watch?v=jgzTLXwsXP0
+- marching cubes: https://www.youtube.com/watch?v=ObmHOxeoIdw
+- ç¨‹åºçŒ¿ android apiApp? 

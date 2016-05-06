@@ -39,7 +39,6 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
         mGLSurfaceView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    
                     mp.start();
                     //mp.setLooping(true);
                 }

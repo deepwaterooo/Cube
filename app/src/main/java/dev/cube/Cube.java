@@ -18,10 +18,10 @@ public class Cube {
                                              -one, -one, -one,  -one, -one, one,  -one, one, one,  -one, one, -one // 左
     }; 
     // 立方体纹理坐标
-    private float[] texCoords = new float[] { one, 0, 0, 0, 0, one, one, one, 0, 0, 0, one,
-                                              one, one, one, 0, one, one, one, 0, 0, 0, 0, one,
-                                              0, one, one, one, one, 0, 0, 0, 0, 0, 0, one,
-                                              one, one, one, 0, one, 0, 0, 0, 0, one, one, one
+    private float[] texCoords = new float[] { two, 0, 0, 0, 0, two, two, two, 0, 0, 0, two,
+                                              two, two, two, 0, two, two, two, 0, 0, 0, 0, two,
+                                              0, two, two, two, two, 0, 0, 0, 0, 0, 0, two,
+                                              two, two, two, 0, two, 0, 0, 0, 0, two, two, two
     }; 
                                               
     // 三角形描述顺序 
