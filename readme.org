@@ -4,7 +4,7 @@
 #+author: deepwaterooo
 
 * Cube
-- textures basically done
+- textures basically done, trying to render and display six different images for six surfaces, working on it. 
 - Tetris theme music played by MediaPlayer can only function as the background music now. 
 - Emacs + Auctex + org-mode can only export english correct with source codes, but can NOT export Chinese correctly from tex file yet. Need to find out the correct way to enable various kinds of latex engines from Auctex emacs mode. 
 - 
@@ -19,7 +19,7 @@
 - cubemaps: http://learnopengl.com/#!Advanced-OpenGL/Cubemaps
 - compressed textures http://www.guidebee.info/wordpress/archives/2988
 - GLES20 http://blog.csdn.net/liyuanjinglyj/article/details/46670819
-- 
+- http://www.zwqxin.com/archives/opengl/learn-texture-array.html
 - 
 - 
 - 
@@ -63,4 +63,4 @@
 - three together: https://www.youtube.com/watch?v=YqiArMjtXyE
 - primitive textures: https://www.youtube.com/watch?v=jgzTLXwsXP0
 - marching cubes: https://www.youtube.com/watch?v=ObmHOxeoIdw
-- 程序猿 android apiApp? 
+- 程序猿 android apiApp a series of app tutorial examples, google if needed for references

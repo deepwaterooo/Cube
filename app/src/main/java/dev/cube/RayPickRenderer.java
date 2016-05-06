@@ -21,7 +21,8 @@ public class RayPickRenderer implements Renderer {
     private Context mContext; 
     private Cube cube;
     
-    int texture = -1; 
+    //int texture = -1;
+    private int[] texture = new int[6]; 
     public float mfAngleX = 0.0f; 
     public float mfAngleY = 0.0f; 
     public float gesDistance = 0.0f;
@@ -43,29 +44,29 @@ public class RayPickRenderer implements Renderer {
         // 允许2D贴图,纹理 
         gl.glEnable(GL10.GL_TEXTURE_2D); 
  
-        //try { 
         IntBuffer intBuffer = IntBuffer.allocate(6); // 1 change to use an array
-            // 创建纹理           一个具有足够空间保存纹理名的数组
-            gl.glGenTextures(6, intBuffer); // GLuint, 纹理名称, 第一个参数指示了要生成几个纹理
-
-            for (int i = 0; i < 6; i++) {
-                texture = intBuffer.get(i); 
-                // 设置要使用的纹理, 纹理绑定 
-                gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); 
+        int tmp = 0;
+        
+        // 创建纹理          一个具有足够空间保存纹理名的数组
+        gl.glGenTextures(6, intBuffer); // GLuint, 纹理名称, 第一个参数指示了要生成几个纹理
+        for (int i = 0; i < 6; i++) {
+            texture[i] = intBuffer.get(i); // 1 2 3 4 5 6
+            tmp = texture[i];
+            
+            // 设置要使用的纹理, 纹理绑定 
+            //gl.glBindTexture(GL10.GL_TEXTURE_2D, texture[i]);
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, tmp); 
  
-                //horseBitmap, sheepBitmap, dogBitmap, pigBitmap, rabbitBitmap, butterflyBitmap, 
-                // 生成纹理           制定二维纹理映射,   多极分辩率纹理图像
-                GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, GLImage.bitmap[i], 0); 
+            //horseBitmap, sheepBitmap, dogBitmap, pigBitmap, rabbitBitmap, butterflyBitmap, 
+            // 生成纹理           制定二维纹理映射,   多极分辩率纹理图像
+            GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, GLImage.bitmap[i], 0); 
 
-                // 纹理控制： 缩小与放大滤波、纹理重复和缩限
-                // 当纹理放大得比原始纹理大GL_TEXTURE_MAG_FILTER, 或
-                // 当纹理缩小得比原始纹理小GL_TEXTURE_MIN_FILTER 时， 采用线性滤波方式
-                gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR); 
-                gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR); 
+            gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
 
-                GLImage.bitmap[i].recycle();
-            }
-} 
+            GLImage.bitmap[i].recycle();
+        }
+    } 
   
     private void drawModel(GL10 gl) { // 渲染模型
         // 以下方式完全按照手势方向旋转 
@@ -94,7 +95,8 @@ public class RayPickRenderer implements Renderer {
         gl.glMultMatrixf(AppConfig.gMatModel.asFloatBuffer()); // 物体坐标系到世界坐标系的变换矩阵
         //gl.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glColor4f(0.5f, 0.5f, 0.5f, 0.5f);    // show the textures
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); // 绑定纹理在下面绘制的物体上 
+        //gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); // 绑定纹理在下面绘制的物体上
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, texture[2]); 
         gl.glEnable(GL10.GL_TEXTURE_2D);               // 启用纹理映射 
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY); 
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY); 
