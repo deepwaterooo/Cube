@@ -53,7 +53,7 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
 
     private boolean isChanging=false;//互斥变量，防止定时器与SeekBar拖动时进度冲突      
     private SurfaceHolder surfaceHolder;
-    //private AssetFileDescriptor fd = null;  
+    //private AssetFileDescriptor fd = null;   
     private Timer mTimer;  
     private TimerTask mTimerTask;
     
@@ -65,7 +65,7 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
         mGLSurfaceView = (MyGLSurfaceView)findViewById(R.id.myglsurfaceview);
 
         surfaceHolder = mGLSurfaceView.getHolder();  
-        //surfaceHolder.setFixedSize(100, 100);  
+        surfaceHolder.setFixedSize(480, 480);  
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         
         //mGLSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
