@@ -20,15 +20,11 @@ public class RayPickRenderer implements Renderer {
     private OnSurfacePickedListener onSurfacePickedListener; 
     private Context mContext; 
     private Cube cube;
-    
     private int[] texture = new int[6]; 
     public float mfAngleX = 0.0f; 
     public float mfAngleY = 0.0f; 
     public float gesDistance = 0.0f;
-    
     private Vector3f mvEye = new Vector3f(5.0f, 8.0f, -4.0f);
-    //private Vector3f mvEye = new Vector3f(5.0f, 10.0f, -4.0f); 
-    //private Vector3f mvCenter = new Vector3f(-2.5f, -5f, -2.5f); // depends on if frame & cube together
     private Vector3f mvCenter = new Vector3f(0, 0, 0);
     private Vector3f mvUp = new Vector3f(0, 1, 0);
 
@@ -56,7 +52,7 @@ public class RayPickRenderer implements Renderer {
         // 以下方式完全按照手势方向旋转 
         matRot.setIdentity(); 
         point = new Vector3f(mfAngleX, mfAngleY, 0); 
-        try { // confusing for this part
+        try { 
             // 转换到模型内部的点，先要求逆             
             matInvertModel.set(AppConfig.gMatModel); 
             matInvertModel.invert();
@@ -133,11 +129,11 @@ public class RayPickRenderer implements Renderer {
         gl.glPushMatrix();
         drawModel(gl);      // 渲染物体
         gl.glPopMatrix();
-        /*
+
         gl.glPushMatrix();
         drawPickedTriangle(gl); // 渲染选中的三角形
         gl.glPopMatrix(); 
-        */
+
         updatePick(); 
     } 
  

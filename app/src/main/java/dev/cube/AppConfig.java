@@ -5,7 +5,7 @@ public class AppConfig {
 	public static Matrix4f gMatView = new Matrix4f();
 	public static Matrix4f gMatModel = new Matrix4f();
 
-    // 当前系统的投影矩阵，列序填充
+    // +当前系统的投影矩阵，列序填充
 	public static float[] gpMatrixProjectArray = new float[16];
 
     // 当前系统的视图矩阵，列序填充

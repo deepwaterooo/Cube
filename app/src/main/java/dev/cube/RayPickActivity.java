@@ -31,58 +31,55 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class RayPickActivity extends Activity implements OnSurfacePickedListener { 
     private MyGLSurfaceView mGLSurfaceView;
-    private MediaPlayer [] mp;
-    private MediaPlayer mpVideo;
     private int prev;
     private int curr;
+    private MediaPlayer [] mp;
+    private MediaPlayer mpVideo;
+    private SeekBar playSeekBar;  
 
     // 适配器  
     private SimpleAdapter adapter;  
-    // 数据源  
-    private ArrayList<HashMap<String, String>> list;   // don't need this much
-    // MediaPlay对象  
-    private MediaPlayer mediaPlayer;  
+    //private ArrayList<HashMap<String, String>> list;   // don't need this much
     // 当前播放的曲目  
     private int currentPositionMusic = -1;  
     // 刷新SeekBar进度  
     private static final int UPDATE_PROGRESS = 1;  
     // 加载数据  
     private static final int LOADING_DATA = 2;  
-    // 播放进度  
-    private SeekBar playSeekBar;  
 
-    private boolean isChanging=false;//互斥变量，防止定时器与SeekBar拖动时进度冲突      
+    private boolean isChanging = false;       // 互斥变量，防止定时器与SeekBar拖动时进度冲突      
     private SurfaceHolder surfaceHolder;
-    //private AssetFileDescriptor fd = null;   
     private Timer mTimer;  
     private TimerTask mTimerTask;
     
     @Override 
     public void onCreate(Bundle savedInstanceState) { 
         super.onCreate(savedInstanceState); 
-        //mGLSurfaceView = new MyGLSurfaceView(this, this);
         setContentView(R.layout.activity_ray_pick); 
         mGLSurfaceView = (MyGLSurfaceView)findViewById(R.id.myglsurfaceview);
-
         surfaceHolder = mGLSurfaceView.getHolder();  
         surfaceHolder.setFixedSize(480, 480);  
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        
         //mGLSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         surfaceHolder.setFormat(PixelFormat.TRANSLUCENT);
-
-        mp = new MediaPlayer[13];
         mGLSurfaceView.requestFocus(); 
         mGLSurfaceView.setFocusableInTouchMode(true);
+        
         GLImage.load(this.getResources());
 
         prev = -1;
         curr = -1;
-
-        playSeekBar = (SeekBar) findViewById(R.id.seekbar_play);
-
-        System.out.println("(playSeekBar == null): " + (playSeekBar == null));
+        mp = new MediaPlayer[13];    // I guess I need only one
+        mpVideo = new MediaPlayer();
+        mpVideo.setOnCompletionListener(new MediaPlayer.OnCompletionListener(){  
+                @Override  
+                public void onCompletion(MediaPlayer arg0) {  
+                    Toast.makeText(RayPickActivity.this, "ENDED!", 1000).show();  
+                    mpVideo.release();  
+                }  
+            });
         
+        playSeekBar = (SeekBar) findViewById(R.id.seekbar_play);
         playSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                 @Override  
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {  }  
@@ -97,20 +94,16 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
                 } 
             });
 
-        //AssetManager manager = getApplicationContext().getAssets();
-        //fd = manager.getAssets().openFd("/raw/ilovemyfamily.mp4");  
-
         //----------定时器记录播放进度---------//  
         mTimer = new Timer();  
         mTimerTask = new TimerTask() {  
                 @Override  
                 public void run() {   
-                    if(isChanging == true)  
-                        return;  
-                    /*if(m.getVideoHeight() == 0)  
-                        skb_audio.setProgress(m.getCurrentPosition());  
-                        else   */
-                    //playSeekBar.setProgress(mpVideo.getCurrentPosition());      // problem herer
+                    if(isChanging == true) return;
+                    if (curr == 3)
+                        playSeekBar.setProgress(mpVideo.getCurrentPosition()); // audio video, I am using the same
+                    else if (curr != -1 && mp[curr].isPlaying())
+                        playSeekBar.setProgress(mp[curr].getCurrentPosition()); // audio video, I am using the same
                 }  
             };  
         mTimer.schedule(mTimerTask, 0, 10);
@@ -126,9 +119,7 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
     protected void onPause() { 
         super.onPause(); 
         mGLSurfaceView.onPause(); 
-
-        //mp[0].release();
-        if (mp[curr] != null)
+        if (curr != -1 && mp[curr] != null)
             mp[curr].release();
     } 
     private Handler myHandler = new Handler() { 
@@ -141,29 +132,22 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
     @Override 
     public void onSurfacePicked(int which) { 
         myHandler.sendEmptyMessage(which);
+        boolean changeSong = false;
+        boolean stopped = false;
         
         if (curr != -1) {
-            prev = curr;
-            //mp[curr].release();
+            if (prev == curr) changeSong = true;
+            else prev = curr;
             mp[curr].stop();
+            stopped = true;
+            //mp[curr].release();   // added this morning, not sure if I should release here
             curr = -1;
         }
-
         if (which != -1) {
-            mp[curr].reset();//恢复到未初始化的状态  
-            mp[curr] = MediaPlayer.create(RayPickActivity.this, R.raw.theme); // 读取音频  
-            playSeekBar.setMax(mp[curr].getDuration());                 // 设置SeekBar的长度  
-            try {                     
-                mp[curr].prepare();    
-            } catch (IllegalStateException e) {           
-                e.printStackTrace();                  
-            } catch (IOException e) {             
-                e.printStackTrace();                  
-            }         
-            mp[curr].start();  //播放
-            
             curr = which;
-            System.out.println("curr: " + curr);
+            System.out.println("curr: " + curr);   //debugging propose only
+            mp[curr].reset(); // 恢复到未初始化的状态  
+
             switch (which) {
             case 0:
                 mp[curr] = MediaPlayer.create(getApplicationContext(), R.raw.theme);
@@ -183,9 +167,9 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
                 
                 mp[curr].reset();
                 mp[curr] = MediaPlayer.create(RayPickActivity.this, R.raw.ilovemyfamily); // 读取音频  
-                playSeekBar.setMax(mpVideo.getDuration());      //设置SeekBar的长度  
+                playSeekBar.setMax(mpVideo.getDuration());                                // 设置SeekBar的长度  
                 mp[curr].setAudioStreamType(AudioManager.STREAM_MUSIC);  
-                mp[curr].setDisplay(surfaceHolder);       //设置屏幕  
+                mp[curr].setDisplay(surfaceHolder);                                       // 设置屏幕  
                 try {  
                     mp[curr].prepare();  
                 } catch (IllegalArgumentException e) {  
@@ -204,24 +188,16 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
                 mp[curr] = MediaPlayer.create(getApplicationContext(), R.raw.e5);
                 break;
             }
-            mp[curr].start();
+
+            playSeekBar.setMax(mp[curr].getDuration());                       // 设置SeekBar的长度  
+            try {                     
+                mp[curr].prepare();    
+            } catch (IllegalStateException e) {           
+                e.printStackTrace();                  
+            } catch (IOException e) {             
+                e.printStackTrace();                  
+            }         
+            mp[curr].start();  // 播放
         }
     }
-    /*
-    // SeekBar进度改变事件 
-    private class SeekBarChangeEvent implements SeekBar.OnSeekBarChangeListener{  
-        @Override  
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {  }  
-
-        @Override  
-        public void onStartTrackingTouch(SeekBar seekBar) {  
-            isChanging=true;  
-        }  
-
-        @Override  
-        public void onStopTrackingTouch(SeekBar seekBar) {  
-            mpVideo.seekTo(seekBar.getProgress());  
-            isChanging=false;     
-        }  
-        } */     
 } 
