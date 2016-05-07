@@ -21,7 +21,6 @@ public class RayPickRenderer implements Renderer {
     private Context mContext; 
     private Cube cube;
     
-    //int texture = -1;
     private int[] texture = new int[6]; 
     public float mfAngleX = 0.0f; 
     public float mfAngleY = 0.0f; 
@@ -39,28 +38,17 @@ public class RayPickRenderer implements Renderer {
     } 
  
     private void loadTexture(GL10 gl) { 
-         // 启用纹理映射 
-        gl.glClearDepthf(1.0f); 
-        // 允许2D贴图,纹理 
-        IntBuffer intBuffer = IntBuffer.allocate(6); // 1 change to use an array
-        int tmp = 0;
-        
-        // 创建纹理          一个具有足够空间保存纹理名的数组
+        gl.glClearDepthf(1.0f); // 启用纹理映射 
+        IntBuffer intBuffer = IntBuffer.allocate(6); // 1 change to use an array  // 允许2D贴图,纹理 
         gl.glGenTextures(6, intBuffer); // GLuint, 纹理名称, 第一个参数指示了要生成几个纹理
         for (int i = 0; i < 6; i++) {
             texture[i] = intBuffer.get(i); // 1 2 3 4 5 6
-            tmp = texture[i];
-             // 设置要使用的纹理, 纹理绑定 
-            //gl.glBindTexture(GL10.GL_TEXTURE_2D, texture[i]);
-            gl.glBindTexture(GL10.GL_TEXTURE_2D, tmp); 
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, texture[i]);
             gl.glEnable(GL10.GL_TEXTURE_2D); 
-
-            //horseBitmap, sheepBitmap, dogBitmap, pigBitmap, rabbitBitmap, butterflyBitmap, 
-            // 生成纹理           制定二维纹理映射,   多极分辩率纹理图像
             GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, GLImage.bitmap[i], 0); 
             gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR); 
             gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-            GLImage.bitmap[i].recycle();
+            //GLImage.bitmap[i].recycle();
         }
     } 
   
@@ -93,14 +81,12 @@ public class RayPickRenderer implements Renderer {
 
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY); 
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY); 
-        //gl.glBindTexture(GL10.GL_TEXTURE_2D, texture); // 绑定纹理在下面绘制的物体上
         gl.glEnable(GL10.GL_TEXTURE_2D);               // 启用纹理映射 
         for (int i = 0; i < 6; i++) {
             gl.glBindTexture(GL10.GL_TEXTURE_2D, texture[i]); 
             gl.glVertexPointer(3, GL10.GL_FLOAT, 0, cube.getCoordinate(Cube.VERTEX_BUFFER, i)); 
             gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, cube.getCoordinate(Cube.TEXTURE_BUFFER, i)); 
             gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 4, GL10.GL_UNSIGNED_BYTE, cube.getIndices());
-            
         }
 
         gl.glDisable(GL10.GL_TEXTURE_2D); 
@@ -147,11 +133,11 @@ public class RayPickRenderer implements Renderer {
         gl.glPushMatrix();
         drawModel(gl);      // 渲染物体
         gl.glPopMatrix();
-        /*
+
         gl.glPushMatrix();
         drawPickedTriangle(gl); // 渲染选中的三角形
         gl.glPopMatrix(); 
-        */
+
         updatePick(); 
     } 
  

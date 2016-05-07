@@ -27,11 +27,9 @@ public class Cube {
                                               0, 0, 0, two, two, two, two, 0,
                                               two, 0, 0, 0, 0, two, two, two
     };
-                                              
     // 三角形描述顺序 
-    //private byte[] indices = new byte[] { 0, 1, 3, 2, 4, 5, 7, 6, 8, 9, 11, 10, 12, 13, 15, 14, 16, 17, 19, 18, 20, 21, 23, 22 };
-    private byte[] indices = new byte[] { 0, 1, 3, 2};
-    
+    private byte[] indices0 = new byte[] { 0, 1, 3, 2};
+    private byte[] indices = new byte[] { 0, 1, 3, 2, 4, 5, 7, 6, 8, 9, 11, 10, 12, 13, 15, 14, 16, 17, 19, 18, 20, 21, 23, 22 };
         
     // modify this function so that I could separate data into 6 faces
     public FloatBuffer getCoordinate(int coord_id, int idx) { 
@@ -56,9 +54,8 @@ public class Cube {
         return directBuffer; 
     } 
     public ByteBuffer getIndices() {
-        return ByteBuffer.wrap(indices);
+        return ByteBuffer.wrap(indices0);
     }
-
     public Vector3f getSphereCenter() { return new Vector3f(0, 0, 0);  } // 返回立方体外切圆的中心点
     public float getSphereRadius() { return 1.732051f;  }                // 返回立方体外切圆的半径（√3） 
 
@@ -77,7 +74,7 @@ public class Cube {
 
         for (int i = 0; i < 6; i++) { 
             for (int j = 0; j < 2; j++) { 
-                if (0 == j) { 
+                /*if (0 == j) { 
                     v0 = getVector3f(indices[j]);     // 0
                     v1 = getVector3f(indices[j + 1]); // 1
                     v2 = getVector3f(indices[j + 2]); // 2
@@ -85,8 +82,8 @@ public class Cube {
                     v0 = getVector3f(indices[j]);     // 1
                     v1 = getVector3f(indices[j + 2]); // 3
                     v2 = getVector3f(indices[j + 1]); // 2
-                } 
-                /*if (0 == j) { 
+                }*/ 
+                if (0 == j) { 
                     v0 = getVector3f(indices[i * 4 + j]);     // 0
                     v1 = getVector3f(indices[i * 4 + j + 1]); // 1
                     v2 = getVector3f(indices[i * 4 + j + 2]); // 2
@@ -94,7 +91,7 @@ public class Cube {
                     v0 = getVector3f(indices[i * 4 + j]);     // 1
                     v1 = getVector3f(indices[i * 4 + j + 2]); // 3
                     v2 = getVector3f(indices[i * 4 + j + 1]); // 2
-                } */
+                }
                 // 进行射线和三角行的碰撞检测 
                 if (ray.intersectTriangle(v0, v1, v2, location)) {
                     if (!bFound) { // 如果是初次检测到，需要存储射线原点与三角形交点的距离值 

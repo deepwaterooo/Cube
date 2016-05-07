@@ -21,6 +21,17 @@
 - Current starting point turnning cube video was put at https://www.youtube.com/watch?v=EuILt6B0YS0 
 
 * References
+** music
+- Cube DJ for Android: https://www.youtube.com/watch?v=vew7M-IOWHM
+- PK Music Player Bass Bosster (may need as a References) http://m.aptoide.com/app/com.paykerstudio.musicplayer/pk-music-player-bass-bosster?lang=zh
+- 
+- 
+- 
+- 
+- 
+- 
+
+** Textures
 - cube map: http://www.guidebee.info/wordpress/archives/3012
 - cubemaps: http://learnopengl.com/#!Advanced-OpenGL/Cubemaps
 - compressed textures http://www.guidebee.info/wordpress/archives/2988
@@ -33,13 +44,7 @@
 - Multitexturing http://www.clockworkcoders.com/oglsl/tutorial8.htm
 - 6 textures 立方体 https://www.youtube.com/watch?v=rpq8aNKNLxA
 - http://www.zenlife.tk/an-intro-to-modern-opengl-2-3.md
-- 
-- 
-- 
-- 
-- 
-- 
-- 
+** previous
 - c++: http://blog.sina.com.cn/s/blog_b932048b0101fglx.html
 - gl10: http://blog.csdn.net/wangkuifeng0118/article/details/7425029
 - ideas: http://www.boyunjian.com/do/article/snapshot.do?uid=4560684719895433921

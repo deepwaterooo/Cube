@@ -15,7 +15,9 @@ import android.view.View;
 
 public class RayPickActivity extends Activity implements OnSurfacePickedListener { 
     private GLSurfaceView mGLSurfaceView;
-    private MediaPlayer mp;
+    private MediaPlayer [] mp;
+    private int prev;
+    private int curr;
     
     @Override 
     public void onCreate(Bundle savedInstanceState) { 
@@ -24,13 +26,31 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
         mGLSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT); 
         setContentView(mGLSurfaceView);
 
-        mp = MediaPlayer.create(getApplicationContext(), R.raw.theme);
-        mp.start();
-        mp.setOnCompletionListener(new OnCompletionListener() {
-                public void onCompletion(MediaPlayer mp) {
-                    mp.release();
-                }
-            });
+        mp = new MediaPlayer[13];
+        mp[0] = MediaPlayer.create(getApplicationContext(), R.raw.theme);
+        mp[1] = MediaPlayer.create(getApplicationContext(), R.raw.e1);
+        mp[2] = MediaPlayer.create(getApplicationContext(), R.raw.e2);
+        mp[3] = MediaPlayer.create(getApplicationContext(), R.raw.e3);
+        mp[4] = MediaPlayer.create(getApplicationContext(), R.raw.e4);
+        mp[5] = MediaPlayer.create(getApplicationContext(), R.raw.e5);
+        mp[6] = MediaPlayer.create(getApplicationContext(), R.raw.e6);
+        mp[7] = MediaPlayer.create(getApplicationContext(), R.raw.e7);
+        mp[8] = MediaPlayer.create(getApplicationContext(), R.raw.e8);
+        mp[9] = MediaPlayer.create(getApplicationContext(), R.raw.e9);
+        mp[10] = MediaPlayer.create(getApplicationContext(), R.raw.e10);
+        mp[11] = MediaPlayer.create(getApplicationContext(), R.raw.e11);
+        mp[12] = MediaPlayer.create(getApplicationContext(), R.raw.e12);
+
+        //mp.start();
+        //mp.setLooping(true);
+
+        for (int i = 0; i < 13; i++) {
+            mp[i].setOnCompletionListener(new OnCompletionListener() {
+                    public void onCompletion(MediaPlayer mv) {
+                        mv.release();
+                    }
+                });
+        }
 
         mGLSurfaceView.requestFocus(); 
         mGLSurfaceView.setFocusableInTouchMode(true);
@@ -44,6 +64,8 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
                 }
             });   
         */
+        prev = -1;
+        curr = -1;
     } 
  
     @Override 
@@ -56,7 +78,10 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
     protected void onPause() { 
         super.onPause(); 
         mGLSurfaceView.onPause(); 
-        //mp.release();
+
+        //mp[0].release();
+        if (mp[curr] != null)
+            mp[curr].release();
     } 
  
     private Handler myHandler = new Handler() { 
@@ -68,6 +93,17 @@ public class RayPickActivity extends Activity implements OnSurfacePickedListener
  
     @Override 
     public void onSurfacePicked(int which) { 
-        myHandler.sendEmptyMessage(which); 
+        myHandler.sendEmptyMessage(which);
+        if (curr != -1) {
+            prev = curr;
+            mp[curr].release();
+        }
+
+        System.out.println("which: " + which);
+
+        curr = which;
+System.out.println("curr: " + curr);
+
+        mp[curr].start();
     } 
 } 
