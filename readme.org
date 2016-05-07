@@ -4,6 +4,9 @@
 #+author: deepwaterooo
 
 * Cube
+- A lightweighted mediaplayer referenced from online to correct my weired way of coding for Android MediaPlayer. 
+- took all the effort to make MyGLSurfaceView working with an seek bar. But I may still need a couple of hours to fix the rest minor bugs. But it worth trying for such a MediaPlayer for videos, as well as for correcting my MediaPlayer coding style. 
+
 - Textures are PERFECTLY DONE~~!!!
 - I am not proud of implementing multiple textures cause it's nothing original, but I feel happy that I could implement my app the way I originally wanted without cutting any features out. 
 - Todos: for following several hours, 
@@ -27,12 +30,12 @@
 * References
 ** music: online & local
 - http://www.cnblogs.com/xiaoQLu/archive/2011/04/24/2026520.html
-- Seekbar http://blog.csdn.net/hellogv/article/details/5975864
 - 生命周期 http://wangzhaoli.blog.51cto.com/7607113/1290206
 - http://lpqsun-126-com.iteye.com/blog/1095108
 - video https://www.youtube.com/watch?v=LKL-efbiIAM
 - mediaplayer 音频: http://blog.csdn.net/siyehuazhilian/article/details/17111265
 - 视频：http://blog.csdn.net/lonelyroamer/article/details/7484297
+- Seekbar http://blog.csdn.net/hellogv/article/details/5975864
 - 
 - 
 - 
