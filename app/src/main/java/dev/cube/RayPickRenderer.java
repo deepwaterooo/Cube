@@ -93,7 +93,7 @@ public class RayPickRenderer implements Renderer {
         gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY); 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY); 
 
-        drawCoordinateSystem(gl); 
+        //drawCoordinateSystem(gl); 
     } 
 
     private void drawCoordinateSystem(GL10 gl) { 
