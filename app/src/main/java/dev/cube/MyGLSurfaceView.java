@@ -15,7 +15,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class MyGLSurfaceView extends GLSurfaceView { 
-    // private final float TOUCH_SCALE_FACTOR = 180.0f / 480; 
     private RayPickRenderer mRenderer; 
     private float mPreviousX, mPreviousY; // 记录上次触屏位置的坐标 
  
@@ -47,12 +46,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
             mRenderer.mfAngleX = dx; // 旋转轴单位向量的x,y值（z=0）
             mRenderer.mfAngleY = dy; 
             mRenderer.gesDistance = d; 
-
-            // float dx = x - mPreviousX; 
-            // float dy = y - mPreviousY; 
-            // mRenderer.mfAngleY += dx * TOUCH_SCALE_FACTOR; 
-            // mRenderer.mfAngleX += dy * TOUCH_SCALE_FACTOR; 
-            // PickFactory.update(x, y); 
             AppConfig.gbNeedPick = false; 
             break; 
         case MotionEvent.ACTION_DOWN: 

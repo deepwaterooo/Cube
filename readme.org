@@ -21,11 +21,27 @@
 - Please don't get anything wrong, I always love my cousin, and as I can NOT make it any more clearer: *I will be right here in CA waiting for you.*
 
 [[./Screenshot_2016-05-06-18-08-06.png]]
-- updated version of screen record vedio without music was put at (I want to git commit at 6:17pm, but youtube took too long) search *deepwaterooo wang* https://www.youtube.com/results?search_query=deepwaterooo+wang
+- updated version of screen record vedio without music was put at https://www.youtube.com/watch?v=3fxbz2jUFE4 or by search *deepwaterooo wang* https://www.youtube.com/results?search_query=deepwaterooo+wang
 - Current starting point turnning cube video was put at https://www.youtube.com/watch?v=EuILt6B0YS0 
 
 * References
-** music
+** music: online & local
+- http://www.cnblogs.com/xiaoQLu/archive/2011/04/24/2026520.html
+- Seekbar http://blog.csdn.net/hellogv/article/details/5975864
+- 生命周期 http://wangzhaoli.blog.51cto.com/7607113/1290206
+- http://lpqsun-126-com.iteye.com/blog/1095108
+- video https://www.youtube.com/watch?v=LKL-efbiIAM
+- mediaplayer 音频: http://blog.csdn.net/siyehuazhilian/article/details/17111265
+- 视频：http://blog.csdn.net/lonelyroamer/article/details/7484297
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
 - Cube DJ for Android: https://www.youtube.com/watch?v=vew7M-IOWHM
 - PK Music Player Bass Bosster (may need as a References) http://m.aptoide.com/app/com.paykerstudio.musicplayer/pk-music-player-bass-bosster?lang=zh
 ** Textures
