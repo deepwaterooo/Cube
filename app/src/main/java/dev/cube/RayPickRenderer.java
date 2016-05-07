@@ -133,11 +133,11 @@ public class RayPickRenderer implements Renderer {
         gl.glPushMatrix();
         drawModel(gl);      // 渲染物体
         gl.glPopMatrix();
-
+        /*
         gl.glPushMatrix();
         drawPickedTriangle(gl); // 渲染选中的三角形
         gl.glPopMatrix(); 
-
+        */
         updatePick(); 
     } 
  

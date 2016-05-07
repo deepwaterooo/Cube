@@ -5,10 +5,14 @@
 
 * Cube
 - Textures are PERFECTLY DONE~~!!!
+- I am not proud of implementing multiple textures cause it's nothing original, but I feel happy that I could implement my app the way I originally wanted without cutting any features out. 
+- Todos: for following several hours, 
+  - I may work on tune and fine the app to make the music I like, for examples the songs that I loved, "waiting for you", "(Everything I Do) I Do It For You" etc.
+  - The software engineering course instructor only communicate with PM. while our PM just told us yesterday that the material due time was yesterday (we assumed that it was 5/8 by default), and I saw it midnight last night, besides the JSON bug, the one feature I want to try is mobile/pad screen resize through fragment on the source code side, since I have an refurbished android pad could be used for testing. I may want to work on this one for about two hours. If I cannot finish in two hours, I will try on some other app to get practiced once for screen adapting/resizing. 
 - The reason for choosing pictures: 
   - horse: my beloved cousin's birth year;
   - sheep: my birth year;
-  - dog: my cousin has a dog, and I have a dog at home too, they should have fun together. 
+  - dog: my cousin has a dog, and I have a dog at home too, they should hang out sometime, while my cousin and I need to stay together. 
   - rabbit: my cousin and I both love this one a lot. 
   - butterfly: It suffers and eventually it becomes a beautiful butterfly~!
 - Tetris theme music played by MediaPlayer can only function as the background music now. 
@@ -24,13 +28,6 @@
 ** music
 - Cube DJ for Android: https://www.youtube.com/watch?v=vew7M-IOWHM
 - PK Music Player Bass Bosster (may need as a References) http://m.aptoide.com/app/com.paykerstudio.musicplayer/pk-music-player-bass-bosster?lang=zh
-- 
-- 
-- 
-- 
-- 
-- 
-
 ** Textures
 - cube map: http://www.guidebee.info/wordpress/archives/3012
 - cubemaps: http://learnopengl.com/#!Advanced-OpenGL/Cubemaps
