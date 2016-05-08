@@ -4,6 +4,8 @@
 #+author: deepwaterooo
 
 * Cube
+- music is back once Renderer's OnSurfacePickedListener was set properly. 
+- but due to lack of rest, I am so sick of the mediaplayer states now. Will work on 3d tetris implementation in the evening after some rest, and come back to work on this one some other time when my mind is clear. 
 - Game flow through, debugging, onpick listener back now, needs to get my music back. nothing difficult, should be able to finish soon. understands the listener, adapter thing much better than DrawingFun periods. working on it now, Will update when finished. 
 - A lightweighted mediaplayer referenced from online to correct my weired way of coding for Android MediaPlayer. 
 - took all the effort to make MyGLSurfaceView working with an seekbar. But I may still need a couple of hours to fix the rest minor bugs. But it worth trying for such a MediaPlayer for videos, as well as for correcting my MediaPlayer coding style. 
@@ -39,6 +41,14 @@
 - 视频：http://blog.csdn.net/lonelyroamer/article/details/7484297
 - Seekbar http://blog.csdn.net/hellogv/article/details/5975864
 - customize seekbar: http://stackoverflow.com/questions/16163215/android-styling-seek-bar
+- surfaceview mediaplayer详解 http://www.cnblogs.com/plokmju/p/android_SurfaceView.html
+- http://itfish.net/article/56684.html
+- http://blog.csdn.net/flyingfox023/article/details/18826597
+- http://www.voidcn.com/blog/womengmengyan/article/p-4537709.html
+- 三阶魔方 http://wenku.baidu.com/view/6e7b0d22915f804d2b16c1c1.html
+- http://www.yanhao.site/2015/10/29/Android%E4%B8%AD%E4%B8%BA%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E7%9B%91%E5%90%AC%E5%99%A8%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/
+- mp4文件格式解析 http://blog.sina.com.cn/s/blog_48f93b530100jz4x.html
+- 
 - 
 - 
 - 

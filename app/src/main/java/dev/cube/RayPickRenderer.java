@@ -32,7 +32,11 @@ public class RayPickRenderer implements Renderer {
         mContext = context; 
         cube = new Cube();
     } 
- 
+
+    public void setOnSurfacePickedListener(OnSurfacePickedListener onSurfacePickedListener) { 
+        this.onSurfacePickedListener = onSurfacePickedListener; 
+    } 
+    
     private void loadTexture(GL10 gl) { 
         gl.glClearDepthf(1.0f); // 启用纹理映射 
         IntBuffer intBuffer = IntBuffer.allocate(6); // 1 change to use an array  // 允许2D贴图,纹理 
@@ -251,8 +255,8 @@ public class RayPickRenderer implements Renderer {
                 AppConfig.gbTrianglePicked = true;
                 // 触碰了哪一个面 
                 Log.i("the surface touched ", "mark: " + cube.surface);
-                // 回调 
-                if (null != onSurfacePickedListener) 
+
+                if (onSurfacePickedListener != null) 
                     onSurfacePickedListener.onSurfacePicked(cube.surface); 
                 // 填充数据到被选取三角形的渲染缓存中 
                 mBufPickedTriangle.clear(); 
@@ -290,9 +294,5 @@ public class RayPickRenderer implements Renderer {
         AppConfig.gMatProject.fillFloatArray(AppConfig.gpMatrixProjectArray); 
         // 每次修改完GL_PROJECTION后，最好将当前矩阵模型设置回GL_MODELVIEW 
         gl.glMatrixMode(GL10.GL_MODELVIEW); 
-    } 
-
-    public void setOnSurfacePickedListener(OnSurfacePickedListener onSurfacePickedListener) { 
-        this.onSurfacePickedListener = onSurfacePickedListener; 
-    } 
+    }
 } 

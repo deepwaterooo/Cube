@@ -19,7 +19,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private RayPickRenderer mRenderer; 
     private float mPreviousX, mPreviousY; // 记录上次触屏位置的坐标 
  
-    //public MyGLSurfaceView(Context context, AttributeSet attrs, OnSurfacePickedListener onSurfacePickedListener) {
     public MyGLSurfaceView(Context context, AttributeSet attrs) {    
         super(context, attrs);
         mRenderer = new RayPickRenderer(context); 
@@ -27,20 +26,23 @@ public class MyGLSurfaceView extends GLSurfaceView {
         setEGLConfigChooser(8, 8, 8, 8, 16, 0); 
         getHolder().setFormat(PixelFormat.TRANSLUCENT); // 透视上一个Activity
         setRenderer(mRenderer); 
-        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY); 
-        //mRenderer.setOnSurfacePickedListener(onSurfacePickedListener);
+        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+        //this.setRendererPickedListener(new OnSurfacePickedListener());
     } 
-
-    //public void setRendererListener(OnSurfacePickedListener onSurfacePickedListener) {
+    /*
     public MyGLSurfaceView(Context context, AttributeSet attrs, OnSurfacePickedListener onSurfacePickedListener) {
         super(context, attrs);
         mRenderer = new RayPickRenderer(context); 
-        setZOrderOnTop(true); // 透视上一个View
+        setZOrderOnTop(true); 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0); 
-        getHolder().setFormat(PixelFormat.TRANSLUCENT); // 透视上一个Activity
+        getHolder().setFormat(PixelFormat.TRANSLUCENT); 
         setRenderer(mRenderer); 
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
         mRenderer.setOnSurfacePickedListener(onSurfacePickedListener);
+        }*/
+
+    public void setRendererPickedListener(OnSurfacePickedListener onSurfacePickedListener) {
+        this.mRenderer.setOnSurfacePickedListener(onSurfacePickedListener);
     }
     
     public void onPause() { super.onPause();  } 
